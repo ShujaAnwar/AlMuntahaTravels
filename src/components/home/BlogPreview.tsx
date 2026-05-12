@@ -31,12 +31,12 @@ export default function BlogPreview() {
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div>
           <span className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block">Knowledge Hub</span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-main leading-tight">
             Latest from <br />
             <span className="text-gold-premium italic">Our Journal</span>
           </h2>
         </div>
-        <button className="px-8 py-3 glass rounded-full text-sm font-medium hover:bg-white/10 transition-all text-white/80 flex items-center gap-2 group">
+        <button className="px-8 py-3 glass rounded-full text-sm font-medium hover:scale-105 transition-all text-main flex items-center gap-2 group">
           View All Articles
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
         </button>
@@ -52,7 +52,7 @@ export default function BlogPreview() {
             transition={{ delay: i * 0.1 }}
             className="group cursor-pointer"
           >
-            <div className="relative h-64 rounded-3xl overflow-hidden mb-6 border border-white/10">
+            <div className="relative h-64 rounded-3xl overflow-hidden mb-6 border theme-border">
               <img 
                 src={post.image} 
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
@@ -63,11 +63,11 @@ export default function BlogPreview() {
             </div>
             
             <div className="px-2">
-              <span className="text-white/40 text-xs font-medium mb-3 block">{post.date}</span>
-              <h3 className="text-xl font-serif font-bold text-white mb-4 group-hover:text-gold-premium transition-colors">
+              <span className="text-muted text-xs font-medium mb-3 block">{post.date}</span>
+              <h3 className="text-xl font-serif font-bold text-main mb-4 group-hover:text-gold-premium transition-colors">
                 {post.title}
               </h3>
-              <p className="text-white/60 text-sm font-light line-clamp-2 leading-relaxed mb-6">
+              <p className="text-sub text-sm font-light line-clamp-2 leading-relaxed mb-6">
                 {post.excerpt}
               </p>
               <div className="flex items-center gap-2 text-gold-premium text-xs font-bold uppercase tracking-widest group-hover:gap-4 transition-all">

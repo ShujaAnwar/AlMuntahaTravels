@@ -37,18 +37,18 @@ export default function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-5 group">
           <div className="w-10 h-10 border-2 border-gold-premium rotate-45 flex items-center justify-center group-hover:bg-gold-premium transition-all duration-300">
              <span className="text-gold-premium group-hover:text-black -rotate-45 font-bold text-xl">M</span>
           </div>
           <div className="flex flex-col">
             <span className={cn(
-              "text-2xl md:text-3xl font-serif font-bold tracking-[0.1em] uppercase leading-none transition-colors duration-300",
+              "text-3xl md:text-4xl font-serif font-bold tracking-[0.05em] uppercase leading-none transition-colors duration-500",
               theme === 'dark' ? "text-white" : "text-emerald-dark"
             )}>
               AL MUNTAHA
             </span>
-            <span className="text-[10px] md:text-xs text-gold-premium tracking-[0.3em] font-sans font-bold uppercase mt-1">
+            <span className="text-[10px] md:text-xs text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1">
               Travel and Tours
             </span>
           </div>

@@ -14,11 +14,11 @@
 
 @layer base {
   body {
-    @apply bg-emerald-dark text-white antialiased selection:bg-gold-premium selection:text-black min-h-screen relative transition-colors duration-300;
+    @apply bg-emerald-dark text-white antialiased selection:bg-gold-premium selection:text-black min-h-screen relative transition-colors duration-500;
   }
 
   .light body {
-    @apply bg-white text-emerald-dark;
+    @apply bg-slate-50 text-emerald-dark;
   }
 
   body::before {
@@ -28,13 +28,43 @@
   }
 
   .light body::before {
-    @apply opacity-[0.05];
+    @apply opacity-[0.08];
   }
 }
 
 @layer components {
+  .theme-bg {
+    @apply transition-colors duration-500;
+  }
+  .dark .theme-bg {
+    @apply bg-emerald-dark;
+  }
+  .light .theme-bg {
+    @apply bg-white;
+  }
+
+  .theme-bg-alt {
+    @apply transition-colors duration-500;
+  }
+  .dark .theme-bg-alt {
+    @apply bg-black/40;
+  }
+  .light .theme-bg-alt {
+    @apply bg-slate-100;
+  }
+
+  .theme-border {
+    @apply transition-colors duration-500;
+  }
+  .dark .theme-border {
+    @apply border-white/10;
+  }
+  .light .theme-border {
+    @apply border-emerald-dark/10;
+  }
+
   .text-main {
-    @apply transition-colors duration-300;
+    @apply transition-colors duration-500;
   }
   .dark .text-main {
     @apply text-white;
@@ -44,7 +74,7 @@
   }
 
   .text-sub {
-    @apply transition-colors duration-300;
+    @apply transition-colors duration-500;
   }
   .dark .text-sub {
     @apply text-white/70;
@@ -54,7 +84,7 @@
   }
 
   .text-muted {
-    @apply transition-colors duration-300;
+    @apply transition-colors duration-500;
   }
   .dark .text-muted {
     @apply text-white/40;
@@ -64,17 +94,17 @@
   }
 
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+    @apply bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500;
   }
   .light .glass {
-    @apply bg-black/5 backdrop-blur-md border border-black/10;
+    @apply bg-white/70 backdrop-blur-md border border-emerald-dark/10 shadow-sm;
   }
   
   .glass-dark {
-    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+    @apply bg-black/40 backdrop-blur-xl border border-white/5 transition-all duration-500;
   }
   .light .glass-dark {
-    @apply bg-white/40 backdrop-blur-xl border border-black/5;
+    @apply bg-white backdrop-blur-xl border border-emerald-dark/5 shadow-md;
   }
 
   .gold-gradient {

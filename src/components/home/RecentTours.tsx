@@ -24,7 +24,7 @@ export default function RecentTours() {
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div>
           <span className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block">Community</span>
-          <h2 className="text-4xl font-serif font-bold text-white">Upcoming Groups</h2>
+          <h2 className="text-4xl font-serif font-bold text-main">Upcoming Groups</h2>
         </div>
       </div>
 
@@ -33,7 +33,7 @@ export default function RecentTours() {
           <motion.div
             key={i}
             whileHover={{ y: -10 }}
-            className="glass-dark rounded-[2rem] overflow-hidden flex flex-col md:flex-row border border-white/5 group"
+            className="glass-dark rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row group transition-all duration-500"
           >
             <div className="w-full md:w-2/5 h-48 md:h-auto overflow-hidden">
                <img src={group.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -43,15 +43,15 @@ export default function RecentTours() {
                   <span className="bg-emerald-deep/30 text-gold-premium text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-gold-premium/20">
                     {group.status}
                   </span>
-                  <span className="text-white/40 text-xs font-bold">{group.slots}</span>
+                  <span className="text-muted text-xs font-bold">{group.slots}</span>
                </div>
-               <h3 className="text-xl font-serif font-bold text-white mb-4">{group.title}</h3>
+               <h3 className="text-xl font-serif font-bold text-main mb-4">{group.title}</h3>
                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-3 text-white/50 text-sm">
-                    <Calendar size={14} /> <span>{group.date}</span>
+                  <div className="flex items-center gap-3 text-sub text-sm">
+                    <Calendar size={14} className="text-gold-premium" /> <span>{group.date}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-white/50 text-sm">
-                    <Users size={14} /> <span>Guided Group Tour</span>
+                  <div className="flex items-center gap-3 text-sub text-sm">
+                    <Users size={14} className="text-gold-premium" /> <span>Guided Group Tour</span>
                   </div>
                </div>
                <button className="text-left text-xs uppercase tracking-widest font-bold text-gold-premium hover:underline">

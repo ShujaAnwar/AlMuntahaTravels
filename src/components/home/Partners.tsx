@@ -18,18 +18,19 @@ export default function Partners() {
         <div className="w-20 h-1 bg-gold-premium mx-auto rounded-full" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-40 hover:opacity-100 transition-opacity duration-700">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center transition-all duration-700">
         {partners.map((partner, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 0.5, y: 0 }}
+            whileHover={{ opacity: 1, scale: 1.05 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
             className="w-32 h-16 relative flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
           >
             {/* Using text fallback as Logos from external URLs might be brittle, but adding image anyway */}
-             <div className="text-main font-serif font-bold text-[10px] text-center border border-current opacity-20 px-4 py-2 rounded-lg bg-current/5 w-full">
+             <div className="text-main font-serif font-bold text-[10px] text-center border theme-border px-4 py-2 rounded-lg theme-bg-alt w-full">
                {partner.name}
              </div>
           </motion.div>

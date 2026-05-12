@@ -31,57 +31,57 @@ export default function Home() {
       <Hero />
       
       <section id="about" className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-emerald-deep/5"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
       )}>
         <About />
       </section>
 
       <section id="packages" className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
+        "py-20 md:py-32 transition-colors duration-500",
         theme === 'dark' ? "bg-emerald-dark" : "bg-white"
       )}>
         <Packages />
       </section>
 
       <section className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-black" : "bg-emerald-deep/[0.02]"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-black" : "bg-slate-50"
       )}>
         <RecentTours />
       </section>
 
       <section id="gallery" className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-[#050505]" : "bg-white"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-emerald-dark" : "bg-white border-y border-slate-200"
       )}>
         <Gallery />
       </section>
 
       <section className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-[#050505]" : "bg-emerald-deep/[0.03]"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
       )}>
         <Testimonials />
       </section>
 
       <section className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-[#050505]" : "bg-white"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-emerald-dark" : "bg-white"
       )}>
         <Partners />
       </section>
 
       <section className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-black" : "bg-emerald-deep/[0.02]"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-black" : "bg-slate-50"
       )}>
         <BlogPreview />
       </section>
 
       <section id="contact" className={cn(
-        "py-20 md:py-32 transition-colors duration-300",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-white"
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-white border-t border-slate-200"
       )}>
         <Contact />
       </section>

@@ -13,11 +13,11 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
         >
           <span className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block">Get In Touch</span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-8">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-main mb-8">
             Speak with our <br />
             <span className="text-gold-premium italic">Travel Concierge</span>
           </h2>
-          <p className="text-white/60 mb-12 max-w-md leading-relaxed">
+          <p className="text-sub mb-12 max-w-md leading-relaxed font-light">
             Have questions about timings, visas, or custom requirements? Our team is available 24/7 to guide you through your spiritual preparations.
           </p>
 
@@ -27,8 +27,8 @@ export default function Contact() {
                 <Phone size={24} />
               </div>
               <div>
-                <h4 className="text-white font-bold mb-1">Direct Call</h4>
-                <p className="text-white/50 text-sm mb-1">+966 12 345 6789</p>
+                <h4 className="text-main font-bold mb-1">Direct Call</h4>
+                <p className="text-sub text-sm mb-1">+966 12 345 6789</p>
                 <p className="text-gold-premium text-xs uppercase font-bold tracking-widest">Available 24/7</p>
               </div>
             </div>
@@ -38,8 +38,8 @@ export default function Contact() {
                 <Mail size={24} />
               </div>
               <div>
-                <h4 className="text-white font-bold mb-1">Email Inquiry</h4>
-                <p className="text-white/50 text-sm mb-1">info@almuntaha.com</p>
+                <h4 className="text-main font-bold mb-1">Email Inquiry</h4>
+                <p className="text-sub text-sm mb-1">info@almuntaha.com</p>
                 <p className="text-gold-premium text-xs uppercase font-bold tracking-widest">Prompt Response</p>
               </div>
             </div>
@@ -49,8 +49,8 @@ export default function Contact() {
                 <MapPin size={24} />
               </div>
               <div>
-                <h4 className="text-white font-bold mb-1">Visit Office</h4>
-                <p className="text-white/50 text-sm">123 Al Haram Street, Central District, Saudi Arabia</p>
+                <h4 className="text-main font-bold mb-1">Visit Office</h4>
+                <p className="text-sub text-sm">123 Al Haram Street, Central District, Saudi Arabia</p>
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@ export default function Contact() {
            whileInView={{ opacity: 1, x: 0 }}
            viewport={{ once: true }}
            transition={{ duration: 0.8 }}
-           className="glass-dark p-8 md:p-12 rounded-[3rem] border border-white/5 relative overflow-hidden"
+           className="glass-dark p-8 md:p-12 rounded-[3.5rem] relative overflow-hidden"
         >
           {/* Subtle glow */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-deep/20 blur-[100px] -z-10" />
@@ -70,39 +70,39 @@ export default function Contact() {
           <form className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Full Name</label>
+                <label className="text-[10px] uppercase tracking-widest text-muted font-bold ml-2">Full Name</label>
                 <input 
                   type="text" 
                   placeholder="John Doe" 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-white/20"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-current opacity-60 dark:opacity-100 dark:border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-muted"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Email Address</label>
+                <label className="text-[10px] uppercase tracking-widest text-muted font-bold ml-2">Email Address</label>
                 <input 
                   type="email" 
                   placeholder="john@example.com" 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-white/20"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-current opacity-60 dark:opacity-100 dark:border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-muted"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Interested In</label>
-              <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all appearance-none cursor-pointer">
-                <option className="bg-black">Select Experience</option>
-                <option className="bg-black">Economy Umrah</option>
-                <option className="bg-black">Standard Umrah</option>
-                <option className="bg-black">VIP Royal Package</option>
-                <option className="bg-black">Custom Tour</option>
+              <label className="text-[10px] uppercase tracking-widest text-muted font-bold ml-2">Interested In</label>
+              <select className="w-full bg-black/5 dark:bg-white/5 border border-current opacity-60 dark:opacity-100 dark:border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all appearance-none cursor-pointer text-main">
+                <option className="theme-bg">Select Experience</option>
+                <option className="theme-bg">Economy Umrah</option>
+                <option className="theme-bg">Standard Umrah</option>
+                <option className="theme-bg">VIP Royal Package</option>
+                <option className="theme-bg">Custom Tour</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Your Message</label>
+              <label className="text-[10px] uppercase tracking-widest text-muted font-bold ml-2">Your Message</label>
               <textarea 
                 placeholder="How can we help make your journey special?" 
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-white/20 h-32 resize-none"
+                className="w-full bg-black/5 dark:bg-white/5 border border-current opacity-60 dark:opacity-100 dark:border-white/10 rounded-2xl px-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-muted h-32 resize-none"
               />
             </div>
 
