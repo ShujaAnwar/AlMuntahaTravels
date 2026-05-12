@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+  
+  --color-emerald-deep: #064E3B;
+  --color-emerald-dark: #02130e;
+  --color-gold-premium: #d4af37;
+  --color-gold-soft: #f9f1e7;
+}
+
+@layer base {
+  body {
+    @apply bg-emerald-dark text-white antialiased selection:bg-gold-premium selection:text-black min-h-screen relative;
+  }
+
+  body::before {
+    content: "";
+    @apply fixed inset-0 opacity-[0.03] pointer-events-none z-0;
+    background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 0l3 10 10 3-10 3-3 10-3-10-10-3 10-3 3-10z" fill="%23d4af37" fill-opacity="1"/%3E%3C/svg%3E');
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+  
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  }
+
+  .gold-gradient {
+    @apply bg-gradient-to-tr from-[#B8860B] via-[#D4AF37] to-[#FFD700];
+  }
+
+  .premium-shadow {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  .badge-ribbon {
+    @apply absolute top-0 right-0 p-3 bg-gold-premium text-black text-[10px] font-black uppercase rounded-bl-xl;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#02130e];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-emerald-deep/50 rounded-full hover:bg-emerald-deep;
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
