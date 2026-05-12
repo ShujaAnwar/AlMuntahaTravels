@@ -14,7 +14,11 @@
 
 @layer base {
   body {
-    @apply bg-emerald-dark text-white antialiased selection:bg-gold-premium selection:text-black min-h-screen relative;
+    @apply bg-emerald-dark text-white antialiased selection:bg-gold-premium selection:text-black min-h-screen relative transition-colors duration-300;
+  }
+
+  .light body {
+    @apply bg-white text-emerald-dark;
   }
 
   body::before {
@@ -22,15 +26,55 @@
     @apply fixed inset-0 opacity-[0.03] pointer-events-none z-0;
     background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 0l3 10 10 3-10 3-3 10-3-10-10-3 10-3 3-10z" fill="%23d4af37" fill-opacity="1"/%3E%3C/svg%3E');
   }
+
+  .light body::before {
+    @apply opacity-[0.05];
+  }
 }
 
 @layer components {
+  .text-main {
+    @apply transition-colors duration-300;
+  }
+  .dark .text-main {
+    @apply text-white;
+  }
+  .light .text-main {
+    @apply text-emerald-dark;
+  }
+
+  .text-sub {
+    @apply transition-colors duration-300;
+  }
+  .dark .text-sub {
+    @apply text-white/70;
+  }
+  .light .text-sub {
+    @apply text-emerald-dark/70;
+  }
+
+  .text-muted {
+    @apply transition-colors duration-300;
+  }
+  .dark .text-muted {
+    @apply text-white/40;
+  }
+  .light .text-muted {
+    @apply text-emerald-dark/40;
+  }
+
   .glass {
     @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+  .light .glass {
+    @apply bg-black/5 backdrop-blur-md border border-black/10;
   }
   
   .glass-dark {
     @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  }
+  .light .glass-dark {
+    @apply bg-white/40 backdrop-blur-xl border border-black/5;
   }
 
   .gold-gradient {

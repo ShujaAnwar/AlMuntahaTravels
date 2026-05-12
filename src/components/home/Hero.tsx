@@ -15,13 +15,13 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div ref={containerRef} className="relative h-screen overflow-hidden flex items-center justify-center">
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center pt-20 md:pt-0">
       {/* Background with Parallax */}
       <motion.div
         style={{ y }}
         className="absolute inset-0 z-0"
       >
-        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 bg-black/60 z-10" />
         <img
           src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2070"
           alt="Holy Kaaba"
@@ -36,24 +36,25 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
+          className="flex flex-col items-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-gold-premium/30 bg-gold-premium/5 rounded-full mb-8">
-            <span className="w-2 h-2 bg-gold-premium rounded-full animate-pulse"></span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-gold-premium font-bold">Premium Umrah Experiences</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 border border-gold-premium/30 bg-gold-premium/5 rounded-full mb-6 md:mb-8">
+            <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gold-premium rounded-full animate-pulse"></span>
+            <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] text-gold-premium font-bold">Premium Umrah Experiences</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.1] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif font-bold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight">
             {companyInfo.heroTitle}
           </h1>
-          <p className="text-lg md:text-xl text-white/60 font-sans max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+          <p className="text-base md:text-xl text-white/70 font-sans max-w-2xl mx-auto mb-10 leading-relaxed font-light px-4 md:px-0">
             {companyInfo.heroSub}
           </p>
 
-          <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 bg-gold-premium text-black font-bold rounded-full flex items-center gap-2 group transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
+              className="w-full sm:w-auto px-10 py-4 bg-gold-premium text-black font-bold rounded-full flex items-center justify-center gap-2 group transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
             >
               Book Umrah Now
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
@@ -61,7 +62,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 glass text-white font-medium rounded-full hover:bg-white/10 transition-all"
+              className="w-full sm:w-auto px-10 py-4 border border-white/10 glass text-white font-medium rounded-full hover:bg-white/10 transition-all"
             >
               View Packages
             </motion.button>

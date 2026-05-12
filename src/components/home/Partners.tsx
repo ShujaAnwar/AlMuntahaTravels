@@ -14,7 +14,7 @@ export default function Partners() {
     <div className="max-w-7xl mx-auto px-6">
       <div className="text-center mb-16">
         <span className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block">Our Collaborations</span>
-        <h2 className="text-3xl font-serif font-bold text-white mb-4">Trusted Partnerships</h2>
+        <h2 className="text-3xl font-serif font-bold text-main mb-4">Trusted Partnerships</h2>
         <div className="w-20 h-1 bg-gold-premium mx-auto rounded-full" />
       </div>
 
@@ -29,14 +29,14 @@ export default function Partners() {
             className="w-32 h-16 relative flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
           >
             {/* Using text fallback as Logos from external URLs might be brittle, but adding image anyway */}
-             <div className="text-white font-serif font-bold text-xs text-center border border-white/10 px-4 py-2 rounded-lg bg-white/5 w-full">
+             <div className="text-main font-serif font-bold text-[10px] text-center border border-current opacity-20 px-4 py-2 rounded-lg bg-current/5 w-full">
                {partner.name}
              </div>
           </motion.div>
         ))}
       </div>
       
-      <p className="text-center text-white/30 text-xs mt-12 max-w-lg mx-auto leading-relaxed">
+      <p className="text-center text-muted text-xs mt-12 max-w-lg mx-auto leading-relaxed">
         Collaborating with premium hospitality and aviation groups to ensure every step of your journey is managed with international standards.
       </p>
     </div>

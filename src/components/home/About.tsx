@@ -19,11 +19,11 @@ export default function About() {
           viewport={{ once: true }}
         >
           <span className="text-gold-premium tracking-[0.2em] font-medium uppercase text-sm mb-4 block">Our Story</span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-8 leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-main mb-8 leading-tight">
             Journeying with Grace, <br />
             <span className="text-gold-premium">Serving with Honor</span>
           </h2>
-          <p className="text-white/70 leading-relaxed mb-8 text-lg font-light">
+          <p className="text-sub leading-relaxed mb-8 text-lg font-light">
             Founded with a vision to make the sacred journey of Umrah accessible and comfortable for everyone, 
             Al Muntaha Travels has evolved into a symbol of trust and excellence. We believe that every 
             pilgrim is a Guest of Allah, and serving them is our highest honor.
@@ -35,8 +35,8 @@ export default function About() {
                 <ShieldCheck className="text-gold-premium" />
               </div>
               <div>
-                <h4 className="text-white font-semibold mb-1">Our Mission</h4>
-                <p className="text-white/60 text-sm">To provide seamless, spiritual, and stress-free travel solutions that allow you to focus entirely on your ibadah.</p>
+                <h4 className="text-main font-semibold mb-1">Our Mission</h4>
+                <p className="text-sub text-sm">To provide seamless, spiritual, and stress-free travel solutions that allow you to focus entirely on your ibadah.</p>
               </div>
             </div>
             <div className="flex gap-4 items-start">
@@ -44,8 +44,8 @@ export default function About() {
                 <Star className="text-gold-premium" />
               </div>
               <div>
-                <h4 className="text-white font-semibold mb-1">Our Vision</h4>
-                <p className="text-white/60 text-sm">To be the global leader in Islamic travel, known for our integrity, innovation, and commitment to the Ummah.</p>
+                <h4 className="text-main font-semibold mb-1">Our Vision</h4>
+                <p className="text-sub text-sm">To be the global leader in Islamic travel, known for our integrity, innovation, and commitment to the Ummah.</p>
               </div>
             </div>
           </div>
@@ -78,8 +78,8 @@ export default function About() {
                 viewport={{ once: true }}
                 className="flex flex-col border-l border-gold-premium pl-6"
               >
-                <span className="text-3xl font-bold text-white">{stat.value}</span>
-                <span className="text-xs text-white/40 uppercase tracking-widest">{stat.label}</span>
+                <span className="text-3xl font-bold text-main">{stat.value}</span>
+                <span className="text-xs text-muted uppercase tracking-widest">{stat.label}</span>
               </motion.div>
             ))}
           </div>

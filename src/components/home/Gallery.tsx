@@ -16,12 +16,12 @@ export default function Gallery() {
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div>
           <span className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block">Visual Journey</span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-main leading-tight">
             Memories of <br />
             <span className="text-gold-premium italic">Blessings</span>
           </h2>
         </div>
-        <p className="text-white/50 max-w-md text-sm leading-relaxed mb-2">
+        <p className="text-sub max-w-md text-sm leading-relaxed mb-2">
           Capturing the spiritual essence and moments of peace from our various pilgrimage groups across the Holy Lands.
         </p>
       </div>

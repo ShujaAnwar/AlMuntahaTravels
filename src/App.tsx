@@ -6,9 +6,11 @@ import AdminLogin from './pages/AdminLogin';
 import PackageDetails from './pages/PackageDetails';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import BackToTop from './components/layout/BackToTop';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SystemProvider } from './context/SystemContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -59,7 +61,8 @@ export default function App() {
     <Router>
       <AuthProvider>
         <SystemProvider>
-          <div className="min-h-screen font-sans selection:bg-gold-premium selection:text-black">
+          <ThemeProvider>
+            <div className="min-h-screen font-sans selection:bg-gold-premium selection:text-black">
           <motion.div
             className="fixed top-0 left-0 right-0 h-1 bg-gold-premium origin-left z-[100]"
             style={{ scaleX }}
@@ -84,12 +87,14 @@ export default function App() {
           </main>
           <Footer />
           
+          <BackToTop />
+
           {/* Floating WhatsApp Button */}
           <motion.a
             href="https://wa.me/yournumber"
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-8 right-8 z-50 p-4 bg-green-500 rounded-full shadow-lg hover:scale-110 transition-transform"
+            className="fixed bottom-24 right-6 md:bottom-32 md:right-12 z-50 p-4 bg-green-500 rounded-full shadow-lg hover:scale-110 transition-transform"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             whileHover={{ rotate: 12 }}
@@ -99,8 +104,9 @@ export default function App() {
             </svg>
           </motion.a>
         </div>
-      </SystemProvider>
-    </AuthProvider>
-  </Router>
+          </ThemeProvider>
+        </SystemProvider>
+      </AuthProvider>
+    </Router>
   );
 }

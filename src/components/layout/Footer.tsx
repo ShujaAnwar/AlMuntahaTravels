@@ -10,7 +10,10 @@ export default function Footer() {
             <div className="w-8 h-8 border-2 border-gold-premium rotate-45 flex items-center justify-center">
               <span className="-rotate-45 text-gold-premium font-bold text-lg">M</span>
             </div>
-            <span className="text-xl font-serif font-bold text-white tracking-widest uppercase">AL MUNTAHA</span>
+            <div className="flex flex-col">
+              <span className="text-xl md:text-2xl font-serif font-bold text-white tracking-widest uppercase leading-none">AL MUNTAHA</span>
+              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.3em] font-sans font-bold uppercase mt-1">Travel and Tours</span>
+            </div>
           </Link>
           <p className="text-white/60 text-sm leading-relaxed mb-6">
             Experience the spiritual heights of Makkah and Madinah with white-glove service. Our legacy is built on Barakah and Trust.

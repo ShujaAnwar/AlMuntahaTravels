@@ -8,12 +8,12 @@ export default function Packages() {
 
   return (
     <div className="max-w-7xl mx-auto px-6">
-      <div className="text-center mb-16">
+      <div className="text-center mb-10 md:mb-16">
         <motion.span
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-gold-premium tracking-[0.3em] font-medium uppercase text-xs mb-4 block"
+          className="text-gold-premium tracking-[0.2em] md:tracking-[0.3em] font-medium uppercase text-[10px] md:text-xs mb-4 block"
         >
           Holy Pilgrimage
         </motion.span>
@@ -21,7 +21,7 @@ export default function Packages() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-serif font-bold text-white mb-6"
+          className="text-3xl md:text-5xl font-serif font-bold text-main mb-6"
         >
           Special Umrah Packages
         </motion.h2>
@@ -30,13 +30,13 @@ export default function Packages() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-white/60 max-w-2xl mx-auto font-light"
+          className="text-sub max-w-2xl mx-auto font-light text-sm md:text-base px-2"
         >
           Choose from our carefully curated packages designed to meet your spiritual needs and comfort preferences.
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {packages.map((pkg, i) => (
           <motion.div
             key={pkg.id}
@@ -44,7 +44,7 @@ export default function Packages() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group glass-dark rounded-3xl overflow-hidden border border-white/5 hover:border-gold-premium/30 transition-all duration-500 hover:-translate-y-2 premium-shadow"
+            className="group glass-dark rounded-3xl overflow-hidden hover:border-gold-premium/30 transition-all duration-500 hover:-translate-y-2 premium-shadow"
           >
             {/* Image Section */}
             <div className="relative h-64 overflow-hidden">
@@ -59,40 +59,40 @@ export default function Packages() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-6">
                 <span className="text-gold-premium font-bold text-2xl">{pkg.price}</span>
-                <span className="text-white/60 text-xs ml-1 font-light">/ person</span>
+                <span className="text-white/60 text-xs ml-1 font-light italic">/ person</span>
               </div>
             </div>
 
             {/* Content Section */}
             <div className="p-8">
-              <h3 className="text-xl font-serif font-bold mb-4 group-hover:text-gold-premium transition-colors">
+              <h3 className="text-xl font-serif font-bold mb-4 group-hover:text-gold-premium transition-colors text-main">
                 {pkg.title}
               </h3>
               
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3 text-white/70 text-sm">
+                <div className="flex items-center gap-3 text-sub text-sm">
                   <Clock size={16} className="text-gold-premium" />
                   <span>{pkg.duration}</span>
                 </div>
-                <div className="flex items-center gap-3 text-white/70 text-sm">
+                <div className="flex items-center gap-3 text-sub text-sm">
                   <Hotel size={16} className="text-gold-premium" />
                   <span className="line-clamp-1">{pkg.hotelDetails}</span>
                 </div>
-                <div className="flex items-center gap-3 text-white/70 text-sm">
+                <div className="flex items-center gap-3 text-sub text-sm">
                   <MapPin size={16} className="text-gold-premium" />
                   <span className="line-clamp-1">{pkg.distanceFromHaram}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between border-t border-white/10 pt-6">
+              <div className="flex items-center justify-between border-t border-gold-premium/10 pt-6">
                 <Link
                   to={`/package/${pkg.id}`}
-                  className="text-xs uppercase tracking-widest font-bold text-white hover:text-gold-premium flex items-center gap-2 group/btn"
+                  className="text-xs uppercase tracking-widest font-bold text-main hover:text-gold-premium flex items-center gap-2 group/btn"
                 >
                   View Details
                   <ArrowUpRight size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                 </Link>
-                <button className="px-6 py-2 bg-emerald-deep/20 hover:bg-emerald-deep text-white rounded-full text-xs font-bold transition-all border border-emerald-deep/50">
+                <button className="px-6 py-2 bg-emerald-deep font-bold text-white rounded-full text-xs transition-all shadow-md hover:scale-105">
                   Book Now
                 </button>
               </div>
@@ -102,7 +102,7 @@ export default function Packages() {
       </div>
 
       <div className="mt-16 text-center">
-        <button className="glass px-8 py-3 rounded-full text-sm font-medium hover:bg-white/10 transition-all text-white/80">
+        <button className="glass px-8 py-3 rounded-full text-sm font-medium hover:scale-105 transition-all text-main">
           Need a Custom Package? Contact Us
         </button>
       </div>

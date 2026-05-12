@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
-import { motion } from 'motion/react';
-import { Menu, X, Phone, User } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Menu, X, Phone, User, Sun, Moon } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -29,7 +31,9 @@ export default function Navbar() {
     <nav
       className={cn(
         'fixed top-0 left-0 w-full z-50 transition-all duration-500',
-        scrolled ? 'bg-black/80 backdrop-blur-lg py-4' : 'bg-transparent py-6'
+        scrolled 
+          ? (theme === 'dark' ? 'bg-black/80 backdrop-blur-lg py-4' : 'bg-white/80 backdrop-blur-lg py-4 shadow-lg') 
+          : 'bg-transparent py-6'
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
@@ -37,9 +41,17 @@ export default function Navbar() {
           <div className="w-10 h-10 border-2 border-gold-premium rotate-45 flex items-center justify-center group-hover:bg-gold-premium transition-all duration-300">
              <span className="text-gold-premium group-hover:text-black -rotate-45 font-bold text-xl">M</span>
           </div>
-          <span className="text-xl font-serif font-bold tracking-[0.2em] uppercase text-white">
-            AL MUNTAHA <span className="text-gold-premium">Travels</span>
-          </span>
+          <div className="flex flex-col">
+            <span className={cn(
+              "text-2xl md:text-3xl font-serif font-bold tracking-[0.1em] uppercase leading-none transition-colors duration-300",
+              theme === 'dark' ? "text-white" : "text-emerald-dark"
+            )}>
+              AL MUNTAHA
+            </span>
+            <span className="text-[10px] md:text-xs text-gold-premium tracking-[0.3em] font-sans font-bold uppercase mt-1">
+              Travel and Tours
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Links */}
@@ -48,21 +60,39 @@ export default function Navbar() {
             <Link
               key={link.title}
               to={link.path}
-              className="text-sm font-medium hover:text-gold-premium transition-colors relative group"
+              className={cn(
+                "text-sm font-medium uppercase tracking-widest transition-all relative group/link",
+                theme === 'dark' ? "text-white/70 hover:text-gold-premium" : "text-emerald-dark/70 hover:text-gold-premium"
+              )}
             >
               {link.title}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-premium transition-all group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-premium transition-all group-hover/link:w-full" />
             </Link>
           ))}
+          
+          <button
+            onClick={toggleTheme}
+            className={cn(
+              "p-2 rounded-full transition-all duration-300",
+              theme === 'dark' ? "text-gold-premium hover:bg-white/10" : "text-emerald-deep hover:bg-emerald-deep/10"
+            )}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
           <Link
             to="/admin"
-            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+            className={cn(
+              "p-2 rounded-full transition-all",
+              theme === 'dark' ? "hover:bg-white/10" : "hover:bg-emerald-deep/10"
+            )}
           >
             <User size={20} className="text-gold-premium" />
           </Link>
           <a
             href="tel:+123456789"
-            className="flex items-center gap-2 px-5 py-2 bg-emerald-deep text-white rounded-full hover:bg-emerald-800 transition-all shadow-lg hover:shadow-emerald-900/40"
+            className="flex items-center gap-2 px-5 py-2 bg-gold-premium text-black rounded-full hover:scale-105 transition-all shadow-lg font-bold"
           >
             <Phone size={16} />
             <span className="text-sm font-medium">Book Now</span>
@@ -70,40 +100,89 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-white"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={toggleTheme}
+            className={cn(
+              "p-2 rounded-xl transition-colors",
+              theme === 'dark' ? "text-gold-premium hover:bg-white/10" : "text-emerald-deep hover:bg-emerald-deep/10"
+            )}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button
+            className={cn(
+              "p-2 rounded-xl transition-colors",
+              theme === 'dark' ? "text-white" : "text-emerald-dark"
+            )}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
-      <motion.div
-        initial={false}
-        animate={isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-        className="md:hidden overflow-hidden bg-black/95 backdrop-blur-xl border-t border-white/10"
-      >
-        <div className="px-6 py-8 flex flex-col gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.title}
-              to={link.path}
-              onClick={() => setIsOpen(false)}
-              className="text-xl font-medium hover:text-gold-premium"
-            >
-              {link.title}
-            </Link>
-          ))}
-          <Link
-            to="/admin"
-            onClick={() => setIsOpen(false)}
-            className="text-xl font-medium text-gold-premium"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+              "md:hidden absolute top-full left-0 w-full backdrop-blur-2xl border-t shadow-2xl transition-colors duration-300",
+              theme === 'dark' ? "bg-black/95 border-white/5" : "bg-white/95 border-emerald-dark/5"
+            )}
           >
-            Admin Dashboard
-          </Link>
-        </div>
-      </motion.div>
+            <div className="px-8 py-12 flex flex-col gap-8">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "text-2xl font-serif font-bold transition-colors",
+                      theme === 'dark' ? "text-white/80 hover:text-gold-premium" : "text-emerald-dark/80 hover:text-gold-premium"
+                    )}
+                  >
+                    {link.title}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.05 }}
+                className={cn(
+                  "pt-8 border-t flex flex-col gap-6",
+                  theme === 'dark' ? "border-white/5" : "border-emerald-dark/5 shadow-inner"
+                )}
+              >
+                <Link
+                  to="/admin"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 text-gold-premium font-bold uppercase tracking-widest text-xs"
+                >
+                  <User size={18} />
+                  Admin Control Panel
+                </Link>
+                <a
+                  href="tel:+966501234567"
+                  className="w-full py-4 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-lg"
+                >
+                  <Phone size={18} />
+                  Contact Support
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
