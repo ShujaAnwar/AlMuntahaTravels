@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router';
 
 const posts = [
   {
@@ -36,10 +37,13 @@ export default function BlogPreview() {
             <span className="text-gold-premium italic">Our Journal</span>
           </h2>
         </div>
-        <button className="px-8 py-3 glass rounded-full text-sm font-medium hover:scale-105 transition-all text-main flex items-center gap-2 group">
+        <Link 
+          to="/#contact"
+          className="px-8 py-3 glass rounded-full text-sm font-medium hover:scale-105 transition-all text-main flex items-center gap-2 group"
+        >
           View All Articles
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -51,6 +55,7 @@ export default function BlogPreview() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
             className="group cursor-pointer"
+            onClick={() => window.location.href = '/#contact'}
           >
             <div className="relative h-64 rounded-3xl overflow-hidden mb-6 border theme-border">
               <img 

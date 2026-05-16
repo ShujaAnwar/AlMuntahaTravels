@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Briefcase, Users, CheckCircle, Clock, XCircle, 
@@ -17,6 +18,7 @@ type LeadStatus = 'New' | 'Assigned' | 'Confirmed' | 'Completed' | 'Cancelled';
 
 export default function AgentPortal() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'leads' | 'stats' | 'history'>('leads');
   const [leads, setLeads] = useState<PackageInquiry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -131,7 +133,10 @@ export default function AgentPortal() {
         </nav>
 
         <div className="pt-6 border-t border-white/5">
-           <button className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all">
+           <button 
+             onClick={() => navigate('/login')}
+             className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all"
+           >
              <LogOut size={20} />
              <span className="hidden md:block text-sm">Logout</span>
            </button>

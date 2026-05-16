@@ -193,7 +193,7 @@ export default function Navbar() {
                   Admin Control Panel
                 </Link>
                 <a
-                  href="tel:+966501234567"
+                  href="tel:0313-2710182"
                   className="w-full py-4 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-lg"
                 >
                   <Phone size={18} />

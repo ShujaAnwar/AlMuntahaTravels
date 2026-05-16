@@ -93,9 +93,12 @@ export default function Packages() {
                   View Details
                   <ArrowUpRight size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                 </Link>
-                <button className="px-6 py-2 bg-emerald-deep font-bold text-white rounded-full text-xs transition-all shadow-md hover:scale-105">
+                <Link 
+                  to="/#contact"
+                  className="px-6 py-2 bg-emerald-deep font-bold text-white rounded-full text-xs transition-all shadow-md hover:scale-105"
+                >
                   Book Now
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -103,9 +106,12 @@ export default function Packages() {
       </div>
 
       <div className="mt-16 text-center">
-        <button className="glass px-8 py-3 rounded-full text-sm font-medium hover:scale-105 transition-all text-main">
-          Need a Custom Package? Contact Us
-        </button>
+        <Link 
+          to="/builder"
+          className="glass inline-block px-8 py-3 rounded-full text-sm font-medium hover:scale-105 transition-all text-main"
+        >
+          Need a Custom Package? Create Now
+        </Link>
       </div>
     </div>
   );

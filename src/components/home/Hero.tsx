@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { useRef } from 'react';
+import { Link } from 'react-router';
 import { useSystem } from '../../context/SystemContext';
 
 export default function Hero() {
@@ -52,21 +53,25 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-10 py-4 bg-gold-premium text-black font-bold rounded-full flex items-center justify-center gap-2 group transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
-            >
-              Book Umrah Now
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-10 py-4 border border-white/10 glass text-white font-medium rounded-full hover:bg-white/10 transition-all"
-            >
-              View Packages
-            </motion.button>
+            <Link to="/builder" className="w-full sm:w-auto">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full px-10 py-4 bg-gold-premium text-black font-bold rounded-full flex items-center justify-center gap-2 group transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
+              >
+                Book Umrah Now
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+              </motion.button>
+            </Link>
+            <Link to="/#packages" className="w-full sm:w-auto">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full px-10 py-4 border border-white/10 glass text-white font-medium rounded-full hover:bg-white/10 transition-all"
+              >
+                View Packages
+              </motion.button>
+            </Link>
           </div>
         </motion.div>
       </div>

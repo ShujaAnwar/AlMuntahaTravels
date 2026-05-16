@@ -30,7 +30,7 @@ export default function Footer() {
         <div>
           <h4 className="text-gold-premium font-semibold mb-6 uppercase tracking-widest text-xs">Quick Links</h4>
           <ul className="space-y-4 text-sub text-sm">
-            <li><Link to="/" className="hover:text-gold-premium transition-colors">Packages</Link></li>
+            <li><Link to="/#packages" className="hover:text-gold-premium transition-colors">Packages</Link></li>
             <li><Link to="/#about" className="hover:text-gold-premium transition-colors">About Us</Link></li>
             <li><Link to="/#gallery" className="hover:text-gold-premium transition-colors">Hotels & Gallery</Link></li>
             <li><Link to="/login" className="hover:text-gold-premium transition-colors font-mono opacity-20">Admin</Link></li>
@@ -60,9 +60,14 @@ export default function Footer() {
             <span className="text-xs text-gold-premium font-medium uppercase tracking-widest block mb-1 font-bold">Contact Official WhatsApp</span>
             <span className="text-xl font-bold tracking-[0.22em] text-main">0313-2710182</span>
           </div>
-          <div className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-900/40 cursor-pointer animate-bounce group-hover:scale-110 transition-transform">
+          <a 
+            href="https://wa.me/923132710182"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-900/40 cursor-pointer animate-bounce group hover:scale-110 transition-transform"
+          >
             <svg className="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.284l-.539 2.016 2.057-.528c.95.52 1.914.88 3.227.88 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.767-5.768-5.767m4.665 8.163c-.15.424-.766.772-1.077.817-.312.045-.694.075-2.096-.475-1.55-.61-2.523-2.149-2.598-2.249-.075-.1-.611-.812-.611-1.549 0-.737.387-1.101.524-1.25.137-.15.3-.187.399-.187.1 0 .2 0 .287.004.087.004.205-.034.321.246.12.287.412 1.002.449 1.076.037.075.062.162.012.262s-.075.162-.15.25c-.075.087-.157.195-.225.262-.075.075-.153.157-.066.307.087.15.388.641.834 1.036.574.51 1.058.669 1.208.744.15.075.237.062.325-.037.087-.1.375-.436.475-.586.1-.15.2-.125.337-.075.137.05.873.412 1.023.487.15.075.25.112.287.175.037.062.037.362-.113.787"/></svg>
-          </div>
+          </a>
         </div>
       </div>
 

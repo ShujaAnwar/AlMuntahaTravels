@@ -130,17 +130,23 @@ export default function PackageDetails() {
                </div>
 
                <div className="space-y-4">
-                  <button className="w-full py-4 bg-gold-premium text-black font-bold rounded-xl hover:scale-105 transition-all shadow-lg active:scale-95">
+                  <Link 
+                    to="/#contact"
+                    className="w-full py-4 bg-gold-premium text-black font-bold rounded-xl hover:scale-105 transition-all shadow-lg active:scale-95 flex items-center justify-center"
+                  >
                     Proceed to Booking
-                  </button>
-                  <button className="w-full py-4 glass border border-white/10 text-white font-medium rounded-xl hover:bg-white/10 transition-all">
-                    Download Brochure (PDF)
-                  </button>
+                  </Link>
+                  <Link 
+                    to="/#contact"
+                    className="w-full py-4 glass border border-white/10 text-white font-medium rounded-xl hover:bg-white/10 transition-all flex items-center justify-center"
+                  >
+                    Request Brochure (PDF)
+                  </Link>
                </div>
 
                <div className="mt-8 p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
                   <p className="text-xs text-white/40 mb-2 italic">Need help? Chat with us</p>
-                  <a href="https://wa.me/yournumber" className="text-gold-premium font-bold text-sm tracking-widest uppercase hover:underline">WhatsApp Support</a>
+                  <a href="https://wa.me/923132710182" target="_blank" rel="noopener noreferrer" className="text-gold-premium font-bold text-sm tracking-widest uppercase hover:underline">WhatsApp Support</a>
                </div>
             </div>
           </div>

@@ -124,10 +124,10 @@ export default function PackageBuilderCTA() {
                   Start Building Now
                 </Link>
                 <Link 
-                  to="/builder"
+                  to="/#packages"
                   className="px-16 py-8 rounded-3xl border-2 border-emerald-500/30 text-main font-bold flex items-center justify-center gap-3 hover:bg-emerald-500/10 transition-all backdrop-blur-md"
                 >
-                  Create My Package <ChevronRight size={24} />
+                  Explore Packages <ChevronRight size={24} />
                 </Link>
               </motion.div>
 

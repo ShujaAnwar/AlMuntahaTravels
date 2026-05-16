@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/layout/BackToTop';
+import ScrollToHash from './components/utils/ScrollToHash';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SystemProvider } from './context/SystemContext';
@@ -113,10 +114,11 @@ export default function App() {
           </main>
           <Footer />
           <BackToTop />
+          <ScrollToHash />
 
           {/* Floating WhatsApp Button */}
           <motion.a
-            href="https://wa.me/yournumber"
+            href="https://wa.me/923132710182"
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-24 right-6 md:bottom-32 md:right-12 z-50 p-4 bg-green-500 rounded-full shadow-lg hover:scale-110 transition-transform"

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { Calendar, Users, MapPin } from 'lucide-react';
+import { Link } from 'react-router';
 
 const groups = [
   {
@@ -59,9 +60,12 @@ export default function RecentTours() {
                     <Users size={14} className="text-gold-premium" /> <span>Guided Group Tour</span>
                   </div>
                </div>
-               <button className="text-left text-xs uppercase tracking-widest font-bold text-gold-premium hover:underline">
+               <Link 
+                 to="/#contact"
+                 className="text-left text-xs uppercase tracking-widest font-bold text-gold-premium hover:underline"
+               >
                  Join this Group
-               </button>
+               </Link>
             </div>
           </motion.div>
         ))}
