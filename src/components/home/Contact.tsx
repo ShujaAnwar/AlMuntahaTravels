@@ -28,7 +28,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-main font-bold mb-1">Direct Call</h4>
-                <p className="text-sub text-sm mb-1">+966 12 345 6789</p>
+                <p className="text-sub text-sm mb-1">0313-2710182 | 0316-8629934</p>
                 <p className="text-gold-premium text-xs uppercase font-bold tracking-widest">Available 24/7</p>
               </div>
             </div>
@@ -39,7 +39,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-main font-bold mb-1">Email Inquiry</h4>
-                <p className="text-sub text-sm mb-1">info@almuntaha.com</p>
+                <p className="text-sub text-sm mb-1">almuntahatravelsandtours@gmail.com</p>
                 <p className="text-gold-premium text-xs uppercase font-bold tracking-widest">Prompt Response</p>
               </div>
             </div>
@@ -50,7 +50,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-main font-bold mb-1">Visit Office</h4>
-                <p className="text-sub text-sm">123 Al Haram Street, Central District, Saudi Arabia</p>
+                <p className="text-sub text-sm">MRC Colony, Malir Halt, Karachi</p>
               </div>
             </div>
           </div>

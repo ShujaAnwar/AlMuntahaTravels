@@ -36,7 +36,12 @@ export default function RecentTours() {
             className="glass-dark rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row group transition-all duration-500"
           >
             <div className="w-full md:w-2/5 h-48 md:h-auto overflow-hidden">
-               <img src={group.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+               <img 
+                 src={group.image} 
+                 alt={group.title}
+                 loading="lazy"
+                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+               />
             </div>
             <div className="p-8 flex flex-col justify-center">
                <div className="flex justify-between items-center mb-4">

@@ -91,12 +91,12 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(() => {
     const saved = localStorage.getItem('almuntaha_company');
     return saved ? JSON.parse(saved) : {
-      phone: '+966 50 123 4567',
-      whatsapp: '+966 50 123 4567',
-      email: 'info@almuntaha.com',
-      address: 'King Abdulaziz Road, Makkah, Saudi Arabia',
+      phone: '0313-2710182 | 0316-8629934',
+      whatsapp: '0313-2710182',
+      email: 'almuntahatravelsandtours@gmail.com',
+      address: 'MRC Colony, Malir Halt, Karachi',
       heroTitle: 'Your Trusted Journey Towards Haram',
-      heroSub: 'Experience the spiritual heights of Makkah and Madinah with white-glove service.'
+      heroSub: 'Al Muntaha Travels and Tours - Experience the spiritual heights with Barakah and Trust.'
     };
   });
 

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import PackageDetails from './pages/PackageDetails';
+import PackageCategoryPage from './pages/PackageCategoryPage';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/layout/BackToTop';
@@ -82,6 +83,11 @@ export default function App() {
                   } 
                 />
                 <Route path="/package/:id" element={<PackageDetails />} />
+                <Route path="/umrah-packages" element={<PackageCategoryPage title="Umrah Packages 2026" category="all" description="Explore our comprehensive range of Umrah packages for 2026. From budget-friendly options to VIP luxury experiences, Al Muntaha Travels offers the best spiritual journeys from Pakistan." keywords="Umrah Packages 2026, Umrah Travel Agency, Best Umrah Deals Karachi" />} />
+                <Route path="/economy-umrah" element={<PackageCategoryPage title="Economy Umrah Packages" category="economy" description="Affordable and comfortable Umrah packages. Perform your pilgrimage with peace of mind and essential services included." keywords="Economy Umrah, Cheap Umrah Packages, Budget Umrah Pakistan" />} />
+                <Route path="/vip-umrah" element={<PackageCategoryPage title="VIP Umrah Packages" category="vip" description="Luxury VIP Umrah experiences with premium 5-star hotel stays, private VIP transport, and exclusive services." keywords="VIP Umrah, Luxury Umrah Packages, 5 Star Umrah Karachi" />} />
+                <Route path="/ramadan-umrah" element={<PackageCategoryPage title="Ramadan Umrah Packages" category="ramadan" description="Experience the blessings of Ramadan in the Holy Cities. Book your Ramadan Umrah package early for the best availability." keywords="Ramadan Umrah 2026, Umrah in Ramadan, Ramadan Packages Karachi" />} />
+                <Route path="/visa-services" element={<PackageCategoryPage title="Saudi Visa Services" category="visa" description="Fast and reliable Saudi visa processing services, including Umrah visas, Tourist visas, and Business visas." keywords="Saudi Visa Pakistan, Umrah Visa Karachi, Tourist Visa Saudi Arabia" />} />
               </Routes>
             </AnimatePresence>
           </main>

@@ -6,13 +6,13 @@ export default function Footer() {
     <footer className="theme-bg-alt border-t theme-border pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div className="col-span-1 md:col-span-1">
-          <Link to="/" className="flex items-center gap-5 mb-6 group">
-            <div className="w-8 h-8 border-2 border-gold-premium rotate-45 flex items-center justify-center">
-              <span className="-rotate-45 text-gold-premium font-bold text-lg">M</span>
+          <Link to="/" className="flex items-center gap-4 mb-6 group">
+            <div className="w-16 h-16 flex items-center justify-center">
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl md:text-3xl font-serif font-bold text-main tracking-widest uppercase leading-none">AL MUNTAHA</span>
-              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1">Travel and Tours</span>
+              <span className="text-2xl md:text-3xl font-serif font-bold text-main tracking-widest uppercase leading-none text-center">AL MUNTAHA</span>
+              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1 text-center">Travels and Tours</span>
             </div>
           </Link>
           <p className="text-sub text-sm leading-relaxed mb-6 font-light">
@@ -42,15 +42,15 @@ export default function Footer() {
           <ul className="space-y-4 text-sub text-sm">
             <li className="flex items-start gap-3">
               <MapPin size={18} className="text-gold-premium mt-1 flex-shrink-0" />
-              <span>123 Al Haram Street, Central District, Saudi Arabia</span>
+              <span>MRC Colony, Malir Halt, Karachi</span>
             </li>
             <li className="flex items-center gap-3">
               <Phone size={18} className="text-gold-premium flex-shrink-0" />
-              <span>+966 12 345 6789</span>
+              <span>0313-2710182 | 0316-8629934</span>
             </li>
             <li className="flex items-center gap-3">
               <Mail size={18} className="text-gold-premium flex-shrink-0" />
-              <span>info@almuntaha.com</span>
+              <span>almuntahatravelsandtours@gmail.com</span>
             </li>
           </ul>
         </div>
@@ -58,7 +58,7 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-end justify-center">
           <div className="text-right mb-4">
             <span className="text-xs text-gold-premium font-medium uppercase tracking-widest block mb-1 font-bold">Contact Official WhatsApp</span>
-            <span className="text-xl font-bold tracking-[0.22em] text-main">+966 50 123 4567</span>
+            <span className="text-xl font-bold tracking-[0.22em] text-main">0313-2710182</span>
           </div>
           <div className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-900/40 cursor-pointer animate-bounce group-hover:scale-110 transition-transform">
             <svg className="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.284l-.539 2.016 2.057-.528c.95.52 1.914.88 3.227.88 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.767-5.768-5.767m4.665 8.163c-.15.424-.766.772-1.077.817-.312.045-.694.075-2.096-.475-1.55-.61-2.523-2.149-2.598-2.249-.075-.1-.611-.812-.611-1.549 0-.737.387-1.101.524-1.25.137-.15.3-.187.399-.187.1 0 .2 0 .287.004.087.004.205-.034.321.246.12.287.412 1.002.449 1.076.037.075.062.162.012.262s-.075.162-.15.25c-.075.087-.157.195-.225.262-.075.075-.153.157-.066.307.087.15.388.641.834 1.036.574.51 1.058.669 1.208.744.15.075.237.062.325-.037.087-.1.375-.436.475-.586.1-.15.2-.125.337-.075.137.05.873.412 1.023.487.15.075.25.112.287.175.037.062.037.362-.113.787"/></svg>

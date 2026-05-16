@@ -55,6 +55,8 @@ export default function BlogPreview() {
             <div className="relative h-64 rounded-3xl overflow-hidden mb-6 border theme-border">
               <img 
                 src={post.image} 
+                alt={post.title}
+                loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
               />
               <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest text-gold-premium">

@@ -8,6 +8,8 @@ import Partners from '../components/home/Partners';
 import Contact from '../components/home/Contact';
 import BlogPreview from '../components/home/BlogPreview';
 import RecentTours from '../components/home/RecentTours';
+import FAQ from '../components/home/FAQ';
+import SEO from '../components/seo/SEO';
 import { useTheme } from '../context/ThemeContext';
 import { cn } from '../lib/utils';
 
@@ -28,6 +30,11 @@ export default function Home() {
       exit={{ opacity: 0 }}
       className="relative transition-colors duration-300"
     >
+      <SEO 
+        title="Al Muntaha Travels and Tours | Best Umrah Packages from Karachi" 
+        description="Premium Umrah, Hajj & Travel Services in Karachi. Specializing in Budget & VIP Umrah Packages with luxury hotels and personalized spiritual care."
+        keywords="Al Muntaha Travels, Umrah Packages 2024, Best Umrah Travel Agency Karachi, Hajj and Umrah Services Pakistan, Economy Umrah Packages"
+      />
       <Hero />
       
       <section id="about" className={cn(
@@ -77,6 +84,13 @@ export default function Home() {
         theme === 'dark' ? "bg-black" : "bg-slate-50"
       )}>
         <BlogPreview />
+      </section>
+
+      <section className={cn(
+        "py-20 md:py-32 transition-colors duration-500",
+        theme === 'dark' ? "bg-emerald-dark" : "bg-white"
+      )}>
+        <FAQ />
       </section>
 
       <section id="contact" className={cn(

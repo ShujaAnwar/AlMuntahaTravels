@@ -37,9 +37,9 @@ export default function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-5 group">
-          <div className="w-10 h-10 border-2 border-gold-premium rotate-45 flex items-center justify-center group-hover:bg-gold-premium transition-all duration-300">
-             <span className="text-gold-premium group-hover:text-black -rotate-45 font-bold text-xl">M</span>
+        <Link to="/" className="flex items-center gap-4 group">
+          <div className="w-12 h-12 flex items-center justify-center transition-all duration-300">
+             <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
           </div>
           <div className="flex flex-col">
             <span className={cn(
@@ -49,7 +49,7 @@ export default function Navbar() {
               AL MUNTAHA
             </span>
             <span className="text-[10px] md:text-xs text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1">
-              Travel and Tours
+              Travels and Tours
             </span>
           </div>
         </Link>
@@ -91,7 +91,7 @@ export default function Navbar() {
             <User size={20} className="text-gold-premium" />
           </Link>
           <a
-            href="tel:+123456789"
+            href="tel:0313-2710182"
             className="flex items-center gap-2 px-5 py-2 bg-gold-premium text-black rounded-full hover:scale-105 transition-all shadow-lg font-bold"
           >
             <Phone size={16} />

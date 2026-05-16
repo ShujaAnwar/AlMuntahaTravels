@@ -51,6 +51,7 @@ export default function Packages() {
               <img
                 src={pkg.image}
                 alt={pkg.title}
+                loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="badge-ribbon">
