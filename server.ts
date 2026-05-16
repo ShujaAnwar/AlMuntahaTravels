@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import cors from "cors";
+import compression from "compression";
 
 // Simple persistent storage
 const DATA_FILE = path.join(process.cwd(), "leads.json");
@@ -30,6 +31,7 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use(compression());
   app.use(cors());
   app.use(express.json());
 

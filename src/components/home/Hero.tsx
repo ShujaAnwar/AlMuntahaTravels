@@ -26,6 +26,7 @@ export default function Hero() {
           src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2070"
           alt="Holy Kaaba"
           className="w-full h-full object-cover"
+          fetchpriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black z-10" />
       </motion.div>

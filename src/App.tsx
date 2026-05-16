@@ -1,12 +1,5 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
-import Home from './pages/Home';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminLogin from './pages/AdminLogin';
-import PackageDetails from './pages/PackageDetails';
-import PackageCategoryPage from './pages/PackageCategoryPage';
-import PackageBuilder from './pages/PackageBuilder';
-import AgentPortal from './pages/AgentPortal';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/layout/BackToTop';
@@ -15,11 +8,31 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { SystemProvider } from './context/SystemContext';
 import { ThemeProvider } from './context/ThemeContext';
 
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const PackageDetails = lazy(() => import('./pages/PackageDetails'));
+const PackageCategoryPage = lazy(() => import('./pages/PackageCategoryPage'));
+const PackageBuilder = lazy(() => import('./pages/PackageBuilder'));
+const AgentPortal = lazy(() => import('./pages/AgentPortal'));
+
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }
+
+// Optimized Loading Component
+const PageLoading = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <motion.div
+      animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+      className="w-12 h-12 border-2 border-gold-premium border-t-transparent rounded-full animate-spin"
+    />
+  </div>
+);
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -31,7 +44,8 @@ export default function App() {
   });
   
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    // Reduced artificial delay from 2000ms to 800ms for better perceived speed
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -51,7 +65,7 @@ export default function App() {
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
               className="h-full bg-gold-premium" 
             />
           </div>
@@ -72,31 +86,32 @@ export default function App() {
           />
           <Navbar />
           <main>
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<AdminLogin />} />
-                <Route 
-                  path="/admin" 
-                  element={
-                    <ProtectedRoute>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route path="/package/:id" element={<PackageDetails />} />
-                <Route path="/builder" element={<PackageBuilder />} />
-                <Route path="/portal" element={<AgentPortal />} />
-                <Route path="/umrah-packages" element={<PackageCategoryPage title="Umrah Packages 2026" category="all" description="Explore our comprehensive range of Umrah packages for 2026. From budget-friendly options to VIP luxury experiences, Al Muntaha Travels offers the best spiritual journeys from Pakistan." keywords="Umrah Packages 2026, Umrah Travel Agency, Best Umrah Deals Karachi" />} />
-                <Route path="/economy-umrah" element={<PackageCategoryPage title="Economy Umrah Packages" category="economy" description="Affordable and comfortable Umrah packages. Perform your pilgrimage with peace of mind and essential services included." keywords="Economy Umrah, Cheap Umrah Packages, Budget Umrah Pakistan" />} />
-                <Route path="/vip-umrah" element={<PackageCategoryPage title="VIP Umrah Packages" category="vip" description="Luxury VIP Umrah experiences with premium 5-star hotel stays, private VIP transport, and exclusive services." keywords="VIP Umrah, Luxury Umrah Packages, 5 Star Umrah Karachi" />} />
-                <Route path="/ramadan-umrah" element={<PackageCategoryPage title="Ramadan Umrah Packages" category="ramadan" description="Experience the blessings of Ramadan in the Holy Cities. Book your Ramadan Umrah package early for the best availability." keywords="Ramadan Umrah 2026, Umrah in Ramadan, Ramadan Packages Karachi" />} />
-                <Route path="/visa-services" element={<PackageCategoryPage title="Saudi Visa Services" category="visa" description="Fast and reliable Saudi visa processing services, including Umrah visas, Tourist visas, and Business visas." keywords="Saudi Visa Pakistan, Umrah Visa Karachi, Tourist Visa Saudi Arabia" />} />
-              </Routes>
-            </AnimatePresence>
+            <Suspense fallback={<PageLoading />}>
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<AdminLogin />} />
+                  <Route 
+                    path="/admin" 
+                    element={
+                      <ProtectedRoute>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route path="/package/:id" element={<PackageDetails />} />
+                  <Route path="/builder" element={<PackageBuilder />} />
+                  <Route path="/portal" element={<AgentPortal />} />
+                  <Route path="/umrah-packages" element={<PackageCategoryPage title="Umrah Packages 2026" category="all" description="Explore our comprehensive range of Umrah packages for 2026. From budget-friendly options to VIP luxury experiences, Al Muntaha Travels offers the best spiritual journeys from Pakistan." keywords="Umrah Packages 2026, Umrah Travel Agency, Best Umrah Deals Karachi" />} />
+                  <Route path="/economy-umrah" element={<PackageCategoryPage title="Economy Umrah Packages" category="economy" description="Affordable and comfortable Umrah packages. Perform your pilgrimage with peace of mind and essential services included." keywords="Economy Umrah, Cheap Umrah Packages, Budget Umrah Pakistan" />} />
+                  <Route path="/vip-umrah" element={<PackageCategoryPage title="VIP Umrah Packages" category="vip" description="Luxury VIP Umrah experiences with premium 5-star hotel stays, private VIP transport, and exclusive services." keywords="VIP Umrah, Luxury Umrah Packages, 5 Star Umrah Karachi" />} />
+                  <Route path="/ramadan-umrah" element={<PackageCategoryPage title="Ramadan Umrah Packages" category="ramadan" description="Experience the blessings of Ramadan in the Holy Cities. Book your Ramadan Umrah package early for the best availability." keywords="Ramadan Umrah 2026, Umrah in Ramadan, Ramadan Packages Karachi" />} />
+                  <Route path="/visa-services" element={<PackageCategoryPage title="Saudi Visa Services" category="visa" description="Fast and reliable Saudi visa processing services, including Umrah visas, Tourist visas, and Business visas." keywords="Saudi Visa Pakistan, Umrah Visa Karachi, Tourist Visa Saudi Arabia" />} />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
           </main>
           <Footer />
-          
           <BackToTop />
 
           {/* Floating WhatsApp Button */}

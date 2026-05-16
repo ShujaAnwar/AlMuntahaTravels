@@ -63,6 +63,7 @@ export default function About() {
               src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=80&w=2070"
               alt="Madinah"
               className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-emerald-dark/20 group-hover:bg-transparent transition-all" />
           </div>
