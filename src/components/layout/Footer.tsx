@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div className="col-span-1 md:col-span-1">
           <Link to="/" className="flex items-center gap-4 mb-6 group">
-            <div className="w-16 h-16 flex items-center justify-center">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+            <div className="w-16 h-16 bg-gold-premium rounded-xl flex items-center justify-center text-black font-urdu text-4xl">
+              م
             </div>
             <div className="flex flex-col">
               <span className="text-2xl md:text-3xl font-serif font-bold text-main tracking-widest uppercase leading-none text-center">AL MUNTAHA</span>

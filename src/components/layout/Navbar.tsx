@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Phone, User, Sun, Moon } from 'lucide-react';
+import { Menu, X, Phone, User, Sun, Moon, Briefcase } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -22,6 +22,7 @@ export default function Navbar() {
   const navLinks = [
     { title: 'Home', path: '/' },
     { title: 'Packages', path: '/#packages' },
+    { title: 'Customize Your Umrah', path: '/builder', highlight: true },
     { title: 'About', path: '/#about' },
     { title: 'Gallery', path: '/#gallery' },
     { title: 'Contact', path: '/#contact' },
@@ -36,10 +37,10 @@ export default function Navbar() {
           : 'bg-transparent py-6'
       )}
     >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-4 group">
-          <div className="w-12 h-12 flex items-center justify-center transition-all duration-300">
-             <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+          <div className="w-12 h-12 bg-gold-premium rounded-xl flex items-center justify-center text-black font-urdu text-3xl transition-all duration-300">
+             م
           </div>
           <div className="flex flex-col">
             <span className={cn(
@@ -55,18 +56,20 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.title}
               to={link.path}
               className={cn(
-                "text-sm font-medium uppercase tracking-widest transition-all relative group/link",
-                theme === 'dark' ? "text-white/70 hover:text-gold-premium" : "text-emerald-dark/70 hover:text-gold-premium"
+                "text-[10px] font-bold uppercase tracking-widest transition-all relative group/link",
+                link.highlight 
+                  ? "px-4 py-2 bg-gradient-to-r from-gold-premium to-gold-premium/50 text-black rounded-lg shadow-lg shadow-gold-premium/20 animate-pulse-slow hover:scale-105"
+                  : (theme === 'dark' ? "text-white/70 hover:text-gold-premium" : "text-emerald-dark/70 hover:text-gold-premium")
               )}
             >
               {link.title}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-premium transition-all group-hover/link:w-full" />
+              {!link.highlight && <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-premium transition-all group-hover/link:w-full" />}
             </Link>
           ))}
           
@@ -81,6 +84,16 @@ export default function Navbar() {
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
+          <Link
+            to="/portal"
+            className={cn(
+              "p-2 rounded-full transition-all",
+              theme === 'dark' ? "hover:bg-white/10" : "hover:bg-emerald-deep/10"
+            )}
+            title="Agent Portal"
+          >
+            <Briefcase size={20} className="text-gold-premium" />
+          </Link>
           <Link
             to="/admin"
             className={cn(
@@ -163,6 +176,14 @@ export default function Navbar() {
                   theme === 'dark' ? "border-white/5" : "border-emerald-dark/5 shadow-inner"
                 )}
               >
+                <Link
+                  to="/portal"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 text-gold-premium font-bold uppercase tracking-widest text-xs"
+                >
+                  <Briefcase size={18} />
+                  Agent Portal
+                </Link>
                 <Link
                   to="/admin"
                   onClick={() => setIsOpen(false)}

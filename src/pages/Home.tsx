@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import Hero from '../components/home/Hero';
 import About from '../components/home/About';
+import PackageBuilderCTA from '../components/home/PackageBuilderCTA';
 import Packages from '../components/home/Packages';
 import Gallery from '../components/home/Gallery';
 import Testimonials from '../components/home/Testimonials';
@@ -37,6 +38,8 @@ export default function Home() {
       />
       <Hero />
       
+      <PackageBuilderCTA />
+
       <section id="about" className={cn(
         "py-20 md:py-32 transition-colors duration-500",
         theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"

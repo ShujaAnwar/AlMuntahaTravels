@@ -66,7 +66,7 @@ export default function AdminDashboard() {
         <div className="p-8 border-b border-white/5">
           <div className="flex items-center gap-3 group">
             <div className="w-8 h-8 border-2 border-gold-premium rotate-45 flex items-center justify-center">
-              <span className="-rotate-45 text-gold-premium font-bold text-lg">M</span>
+              <span className="-rotate-45 text-gold-premium font-urdu font-bold text-lg">م</span>
             </div>
             <span className="text-lg font-serif font-bold text-white tracking-widest">ADMIN</span>
           </div>

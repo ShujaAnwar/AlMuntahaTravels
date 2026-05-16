@@ -23,17 +23,11 @@
 
   body::before {
     content: "";
-    @apply fixed inset-0 opacity-[0.07] pointer-events-none z-0 transition-opacity duration-700;
-    background-image: url('/logo.png');
-    background-size: 500px;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: invert(0.5) sepia(1) saturate(5) hue-rotate(-15deg);
+    @apply fixed inset-0 pointer-events-none z-0;
   }
 
   .light body::before {
-    @apply opacity-[0.12];
-    filter: none;
+    @apply opacity-0;
   }
 }
 
@@ -122,6 +116,36 @@
 
   .badge-ribbon {
     @apply absolute top-0 right-0 p-3 bg-gold-premium text-black text-[10px] font-black uppercase rounded-bl-xl;
+  }
+
+  .urdu-text {
+    @apply font-urdu leading-relaxed;
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4)); }
+    50% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.7)); }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
   }
 }
 

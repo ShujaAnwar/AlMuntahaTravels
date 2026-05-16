@@ -57,6 +57,59 @@ export interface Enquiry {
   notes?: string;
 }
 
+export interface PackageInquiry {
+  id: string;
+  personal: {
+    fullName: string;
+    whatsapp: string;
+    contact: string;
+    email: string;
+    city: string;
+    travelers: number;
+    type: 'Family' | 'Group' | 'Individual';
+  };
+  journey: {
+    type: 'Umrah' | 'Hajj' | 'Ramadan Umrah' | 'VIP Umrah' | 'Group Umrah' | 'Custom Tour';
+    departureDate: string;
+    returnDate: string;
+    flexible: boolean;
+    days: number;
+  };
+  makkah: {
+    distancePref: string;
+    hotels: string[];
+  };
+  madinah: {
+    distancePref: string;
+    hotels: string[];
+  };
+  rooms: {
+    type: string[];
+    smoking: boolean;
+    connected: boolean;
+    elderly: boolean;
+  };
+  food: {
+    plan: string;
+    preference: string[];
+  };
+  transport: {
+    required: boolean;
+    type: string;
+    services: string[];
+  };
+  extras: string[];
+  budget: {
+    range: 'Economy' | 'Standard' | 'Premium' | 'VIP Luxury';
+    customAmount?: number;
+  };
+  notes: string;
+  status: 'New' | 'Assigned' | 'Confirmed' | 'Completed' | 'Cancelled';
+  createdAt: string;
+  assignedTo: string | null;
+  assignedAt: string | null;
+}
+
 export interface CompanyInfo {
   phone: string;
   whatsapp: string;

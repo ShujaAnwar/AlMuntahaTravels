@@ -45,7 +45,7 @@ export default function AdminLogin() {
       >
         <div className="text-center mb-10">
           <div className="w-16 h-16 border-2 border-gold-premium rotate-45 flex items-center justify-center mx-auto mb-6">
-            <span className="-rotate-45 text-gold-premium font-bold text-2xl">M</span>
+            <span className="-rotate-45 text-gold-premium font-urdu font-bold text-3xl">م</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-white mb-2 uppercase tracking-widest">Admin Control</h1>
           <p className="text-white/40 text-sm">Secure access for Al Muntaha Travels</p>
