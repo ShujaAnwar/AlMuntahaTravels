@@ -139,7 +139,7 @@ export default function AgentPortal() {
       </div>
 
       {/* Main Content Area */}
-      <main className="md:ml-64 p-6 md:p-12">
+      <main className="md:ml-64 p-6 md:p-12 relative">
         {/* Header Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           {[

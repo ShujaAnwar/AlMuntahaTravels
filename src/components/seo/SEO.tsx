@@ -15,7 +15,7 @@ const SEO: React.FC<SEOProps> = ({
   description = 'Premium Umrah and Travel services from Karachi, Pakistan. Al Muntaha Travels and Tours provides comfort, care, and barakah for your spiritual journey including VIP Umrah, Economy Umrah, and Visa services.',
   canonical = 'https://almuntahatravels.com',
   ogType = 'website',
-  ogImage = '/logo.png',
+  ogImage = 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa',
   keywords = 'Al Muntaha Travels, Umrah Packages Pakistan, Umrah Travel Agency Karachi, Best Umrah Services, Hajj and Umrah Packages, Travel and Tours Pakistan, Economy Umrah, VIP Umrah'
 }) => {
   const fullTitle = title.includes('Al Muntaha') ? title : `${title} | Al Muntaha Travels and Tours`;
@@ -50,8 +50,6 @@ const SEO: React.FC<SEOProps> = ({
           "name": "Al Muntaha Travels and Tours",
           "alternateName": "Al Muntaha Travels",
           "url": "https://almuntahatravels.com",
-          "logo": "https://almuntahatravels.com/logo.png",
-          "image": "https://almuntahatravels.com/logo.png",
           "description": description,
           "address": {
             "@type": "PostalAddress",

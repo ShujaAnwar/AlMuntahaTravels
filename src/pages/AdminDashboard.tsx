@@ -114,7 +114,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto px-6 lg:px-12 py-10">
+      <main className="flex-1 overflow-y-auto px-6 lg:px-12 py-10 relative">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-10">
             <div>
