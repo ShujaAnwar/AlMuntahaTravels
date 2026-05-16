@@ -636,7 +636,7 @@ export default function PackageBuilder() {
   if (isSuccess) {
     return (
       <div className="min-h-screen pt-32 pb-20 flex items-center justify-center px-6">
-        <SEO title="Inquiry Received | Al Muntaha Travels" />
+        <SEO title="Inquiry Received | AL MUNTAHA TRAVELS SOLUTIONS" />
         <motion.div 
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -667,10 +667,10 @@ export default function PackageBuilder() {
 
   return (
     <div className={cn(
-      "min-h-screen pt-32 pb-20 transition-colors duration-500",
+      "min-h-screen pt-32 pb-20 transition-colors duration-500 relative",
       theme === 'dark' ? "bg-black" : "bg-slate-50"
     )}>
-      <SEO title="Smart Package Builder | Al Muntaha Travels" description="Create your own custom Umrah or Hajj package with our smart multi-step wizard." />
+      <SEO title="Smart Package Builder | AL MUNTAHA TRAVELS SOLUTIONS" description="Create your own custom Umrah or Hajj package with our smart multi-step wizard." />
       
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row gap-12 items-start">

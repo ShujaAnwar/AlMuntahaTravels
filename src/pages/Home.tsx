@@ -32,9 +32,9 @@ export default function Home() {
       className="relative transition-colors duration-300"
     >
       <SEO 
-        title="Al Muntaha Travels and Tours | Best Umrah Packages from Karachi" 
+        title="Al Muntaha TRAVELS SOLUTIONS | Best Umrah Packages from Karachi" 
         description="Premium Umrah, Hajj & Travel Services in Karachi. Specializing in Budget & VIP Umrah Packages with luxury hotels and personalized spiritual care."
-        keywords="Al Muntaha Travels, Umrah Packages 2024, Best Umrah Travel Agency Karachi, Hajj and Umrah Services Pakistan, Economy Umrah Packages"
+        keywords="AL MUNTAHA TRAVELS SOLUTIONS, Umrah Packages 2024, Best Umrah Travel Agency Karachi, Hajj and Umrah Services Pakistan, Economy Umrah Packages"
       />
       <Hero />
       

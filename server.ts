@@ -80,10 +80,12 @@ async function startServer() {
       const assignedAt = lead.assignedAt ? new Date(lead.assignedAt).getTime() : 0;
       const hoursPassed = (now - assignedAt) / (1000 * 60 * 60);
 
-      if (!lead.assignedTo || (lead.status !== "Confirmed" && hoursPassed >= 24)) {
+      if (!lead.assignedTo || lead.assignedTo === agentId || (lead.status !== "Confirmed" && hoursPassed >= 24)) {
         lead.assignedTo = agentId;
         lead.assignedAt = new Date().toISOString();
-        lead.status = "Assigned";
+        if (lead.status === "New") {
+          lead.status = "Assigned";
+        }
         saveLeads(leads);
         res.json(lead);
       } else {

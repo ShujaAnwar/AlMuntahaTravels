@@ -12,7 +12,7 @@ export default function Footer() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl md:text-3xl font-serif font-bold text-main tracking-widest uppercase leading-none text-center">AL MUNTAHA</span>
-              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1 text-center">Travels and Tours</span>
+              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1 text-center">TRAVELS SOLUTIONS</span>
             </div>
           </Link>
           <p className="text-sub text-sm leading-relaxed mb-6 font-light">
@@ -28,12 +28,13 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-gold-premium font-semibold mb-6 uppercase tracking-widest text-xs">Quick Links</h4>
+          <h4 className="text-gold-premium font-semibold mb-6 uppercase tracking-widest text-xs">Explore Packages</h4>
           <ul className="space-y-4 text-sub text-sm">
-            <li><Link to="/#packages" className="hover:text-gold-premium transition-colors">Packages</Link></li>
-            <li><Link to="/#about" className="hover:text-gold-premium transition-colors">About Us</Link></li>
-            <li><Link to="/#gallery" className="hover:text-gold-premium transition-colors">Hotels & Gallery</Link></li>
-            <li><Link to="/login" className="hover:text-gold-premium transition-colors font-mono opacity-20">Admin</Link></li>
+            <li><Link to="/umrah-packages" className="hover:text-gold-premium transition-colors">All Umrah Packages</Link></li>
+            <li><Link to="/economy-umrah" className="hover:text-gold-premium transition-colors">Economy Umrah</Link></li>
+            <li><Link to="/vip-umrah" className="hover:text-gold-premium transition-colors">VIP Umrah</Link></li>
+            <li><Link to="/ramadan-umrah" className="hover:text-gold-premium transition-colors">Ramadan Groups</Link></li>
+            <li><Link to="/visa-services" className="hover:text-gold-premium transition-colors">Visa Services</Link></li>
           </ul>
         </div>
 
@@ -50,7 +51,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Mail size={18} className="text-gold-premium flex-shrink-0" />
-              <span>almuntahatravelsandtours@gmail.com</span>
+              <span>almuntahatravels.solutions@gmail.com</span>
             </li>
           </ul>
         </div>
@@ -85,7 +86,7 @@ export default function Footer() {
           "And proclaim to the people the Hajj [pilgrimage]; they will come to you on foot and on every lean camel..."
         </p>
         <p className="text-muted text-xs tracking-widest uppercase">
-          © {new Date().getFullYear()} Al Muntaha Travels. Finalized with Excellence.
+          © {new Date().getFullYear()} AL MUNTAHA TRAVELS SOLUTIONS. Finalized with Excellence.
         </p>
       </div>
     </footer>

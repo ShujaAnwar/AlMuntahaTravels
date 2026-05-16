@@ -25,7 +25,7 @@ export default function About() {
           </h2>
           <p className="text-sub leading-relaxed mb-8 text-lg font-light">
             Founded with a vision to make the sacred journey of Umrah accessible and comfortable for everyone, 
-            Al Muntaha Travels has evolved into a symbol of trust and excellence. We believe that every 
+            AL MUNTAHA TRAVELS SOLUTIONS has evolved into a symbol of trust and excellence. We believe that every 
             pilgrim is a Guest of Allah, and serving them is our highest honor.
           </p>
           

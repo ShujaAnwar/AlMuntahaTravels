@@ -50,7 +50,7 @@ export default function Navbar() {
               AL MUNTAHA
             </span>
             <span className="text-[10px] md:text-xs text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1">
-              Travels and Tours
+              TRAVELS SOLUTIONS
             </span>
           </div>
         </Link>
@@ -103,13 +103,13 @@ export default function Navbar() {
           >
             <User size={20} className="text-gold-premium" />
           </Link>
-          <a
-            href="tel:0313-2710182"
+          <Link
+            to="/#contact"
             className="flex items-center gap-2 px-5 py-2 bg-gold-premium text-black rounded-full hover:scale-105 transition-all shadow-lg font-bold"
           >
             <Phone size={16} />
             <span className="text-sm font-medium">Book Now</span>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Toggle */}

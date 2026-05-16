@@ -48,7 +48,7 @@ export default function AdminLogin() {
             <span className="-rotate-45 text-gold-premium font-urdu font-bold text-3xl">م</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-white mb-2 uppercase tracking-widest">Admin Control</h1>
-          <p className="text-white/40 text-sm">Secure access for Al Muntaha Travels</p>
+          <p className="text-white/40 text-sm">Secure access for AL MUNTAHA TRAVELS SOLUTIONS</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,11 +1,11 @@
 import { useParams, Link } from 'react-router';
 import { motion } from 'motion/react';
-import { usePackages } from '../hooks/usePackages';
+import { useSystem } from '../context/SystemContext';
 import { Check, ArrowLeft, Hotel, MapPin, Calendar, Users, Plane, Shield } from 'lucide-react';
 
 export default function PackageDetails() {
   const { id } = useParams();
-  const { packages } = usePackages();
+  const { packages } = useSystem();
   const pkg = packages.find(p => p.id === id);
 
   if (!pkg) return (

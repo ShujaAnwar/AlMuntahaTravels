@@ -24,7 +24,7 @@ export default function PackageCategoryPage({ title, category, description, keyw
       className="pt-24 min-h-screen"
     >
       <SEO 
-        title={`${title} | Al Muntaha Travels`} 
+        title={`${title} | AL MUNTAHA TRAVELS SOLUTIONS`} 
         description={description}
         keywords={keywords}
       />

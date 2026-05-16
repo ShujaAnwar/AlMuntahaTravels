@@ -93,10 +93,10 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
     return saved ? JSON.parse(saved) : {
       phone: '0313-2710182 | 0316-8629934',
       whatsapp: '0313-2710182',
-      email: 'almuntahatravelsandtours@gmail.com',
+      email: 'almuntahatravels.solutions@gmail.com',
       address: 'MRC Colony, Malir Halt, Karachi',
       heroTitle: 'Your Trusted Journey Towards Haram',
-      heroSub: 'Al Muntaha Travels and Tours - Experience the spiritual heights with Barakah and Trust.'
+      heroSub: 'Al Muntaha TRAVELS SOLUTIONS - Experience the spiritual heights with Barakah and Trust.'
     };
   });
 

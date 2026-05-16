@@ -5,7 +5,7 @@ const testimonials = [
   {
     name: "Shuja Anwaar",
     role: "Premium Pilgrim",
-    comment: "MashAllah, the service provided by Al Muntaha Travels was beyond excellence. From the moment we landed in Jeddah till we left, everything was handled with extreme care.",
+    comment: "MashAllah, the service provided by AL MUNTAHA TRAVELS SOLUTIONS was beyond excellence. From the moment we landed in Jeddah till we left, everything was handled with extreme care.",
     rating: 5,
     avatar: "https://i.pravatar.cc/150?u=shuja",
     language: 'en'
