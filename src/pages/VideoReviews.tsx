@@ -4,7 +4,12 @@ import { Youtube, Play, Star, Quote } from 'lucide-react';
 import { useSystem } from '../context/SystemContext';
 import SEO from '../components/seo/SEO';
 
-const VideoCard = ({ video }: { video: any }) => {
+interface VideoCardProps {
+  video: any;
+  key?: React.Key;
+}
+
+const VideoCard = ({ video }: VideoCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

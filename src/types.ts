@@ -42,6 +42,17 @@ export interface Partner {
   name: string;
   logo: string;
   description: string;
+  website?: string;
+}
+
+export interface AgentUser {
+  id: string;
+  username: string;
+  password: string;
+  name: string;
+  agencyName: string;
+  status: 'active' | 'suspended';
+  createdAt: string;
 }
 
 export interface Project {

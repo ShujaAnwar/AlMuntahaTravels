@@ -27,9 +27,10 @@ import ReviewManagement from '../components/admin/ReviewManagement';
 import VideoReviewManagement from '../components/admin/VideoReviewManagement';
 import EnquiryManagement from '../components/admin/EnquiryManagement';
 import PartnerManagement from '../components/admin/PartnerManagement';
+import UserManagement from '../components/admin/UserManagement';
 import CMSSettings from '../components/admin/CMSSettings';
 
-type AdminSection = 'overview' | 'packages' | 'gallery' | 'reviews' | 'videos' | 'enquiries' | 'partners' | 'cms';
+type AdminSection = 'overview' | 'packages' | 'gallery' | 'reviews' | 'videos' | 'enquiries' | 'partners' | 'agents' | 'cms';
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
@@ -42,6 +43,7 @@ export default function AdminDashboard() {
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'packages', label: 'Packages', icon: Package },
     { id: 'enquiries', label: 'Enquiries', icon: MessageSquare, badge: unreadEnquiries },
+    { id: 'agents', label: 'Travel Agents', icon: Users },
     { id: 'gallery', label: 'Gallery', icon: ImageIcon },
     { id: 'reviews', label: 'Reviews', icon: Star },
     { id: 'videos', label: 'Video Reviews', icon: Youtube },
@@ -58,6 +60,7 @@ export default function AdminDashboard() {
       case 'videos': return <VideoReviewManagement />;
       case 'enquiries': return <EnquiryManagement />;
       case 'partners': return <PartnerManagement />;
+      case 'agents': return <UserManagement />;
       case 'cms': return <CMSSettings />;
       default: return <Overview />;
     }

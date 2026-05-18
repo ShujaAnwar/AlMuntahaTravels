@@ -18,14 +18,20 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const success = await login(password);
+      const success = await login(email, password);
       if (success) {
-        navigate('/admin');
+        // Find if it's admin or partner
+        const role = localStorage.getItem('al_muntaha_role');
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/portal');
+        }
       } else {
         setError('Invalid credentials. Please try again.');
       }
-    } catch (err) {
-      setError('An error occurred during login.');
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during login.');
     } finally {
       setLoading(false);
     }
@@ -53,15 +59,15 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Email Address</label>
+            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Username / Email</label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
               <input
                 required
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@almuntaha.com"
+                placeholder="admin or agent_username"
                 className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:border-gold-premium outline-none transition-all placeholder:text-white/20"
               />
             </div>

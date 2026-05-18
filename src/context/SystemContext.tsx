@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Package, Review, GalleryItem, Partner, Project, Enquiry, CompanyInfo } from '../types';
+import { Package, Review, GalleryItem, Partner, Project, Enquiry, CompanyInfo, VideoReview, AgentUser } from '../types';
 import { supabase } from '../lib/supabase';
 
 interface SystemContextType {
@@ -10,6 +10,7 @@ interface SystemContextType {
   projects: Project[];
   enquiries: Enquiry[];
   videoReviews: VideoReview[];
+  agents: AgentUser[];
   companyInfo: CompanyInfo;
   isLoading: boolean;
   
@@ -29,6 +30,10 @@ interface SystemContextType {
   
   addPartner: (p: Omit<Partner, 'id'>) => void;
   deletePartner: (id: string) => void;
+  
+  addAgent: (a: Omit<AgentUser, 'id' | 'createdAt' | 'status'>) => void;
+  deleteAgent: (id: string) => void;
+  updateAgentStatus: (id: string, status: AgentUser['status']) => void;
   
   updateEnquiryStatus: (id: string, status: Enquiry['status'], notes?: string) => void;
   updateCompanyInfo: (info: Partial<CompanyInfo>) => void;
@@ -73,6 +78,7 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
   const [videoReviews, setVideoReviews] = useState<VideoReview[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
+  const [agents, setAgents] = useState<AgentUser[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
@@ -134,6 +140,13 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
             const saved = localStorage.getItem('almuntaha_partners');
             if (saved) setPartners(JSON.parse(saved));
           }
+
+          const { data: agentData } = await supabase.from('agents').select('*');
+          if (agentData && agentData.length > 0) setAgents(agentData);
+          else {
+            const saved = localStorage.getItem('almuntaha_agents');
+            if (saved) setAgents(JSON.parse(saved));
+          }
         } else {
           const revSaved = localStorage.getItem('almuntaha_reviews');
           if (revSaved) setReviews(JSON.parse(revSaved));
@@ -143,6 +156,9 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
 
           const partSaved = localStorage.getItem('almuntaha_partners');
           if (partSaved) setPartners(JSON.parse(partSaved));
+
+          const agentSaved = localStorage.getItem('almuntaha_agents');
+          if (agentSaved) setAgents(JSON.parse(agentSaved));
         }
 
         const companySaved = localStorage.getItem('almuntaha_company');
@@ -166,9 +182,10 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('almuntaha_gallery', JSON.stringify(gallery));
       localStorage.setItem('almuntaha_enquiries', JSON.stringify(enquiries));
       localStorage.setItem('almuntaha_partners', JSON.stringify(partners));
+      localStorage.setItem('almuntaha_agents', JSON.stringify(agents));
       localStorage.setItem('almuntaha_company', JSON.stringify(companyInfo));
     }
-  }, [packages, reviews, gallery, enquiries, partners, companyInfo, isLoading]);
+  }, [packages, reviews, gallery, enquiries, partners, agents, companyInfo, isLoading]);
 
   const addPackage = async (p: Omit<Package, 'id'>) => {
     const newPkg = { ...p, id: Date.now().toString() };
@@ -244,12 +261,34 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
     if (supabase) await supabase.from('gallery').insert([newItem]);
   };
 
+  const addAgent = async (a: Omit<AgentUser, 'id' | 'createdAt' | 'status'>) => {
+    const newAgent: AgentUser = {
+      ...a,
+      id: Date.now().toString(),
+      status: 'active',
+      createdAt: new Date().toISOString()
+    };
+    setAgents([...agents, newAgent]);
+    if (supabase) await supabase.from('agents').insert([newAgent]);
+  };
+
+  const deleteAgent = async (id: string) => {
+    setAgents(agents.filter(a => a.id !== id));
+    if (supabase) await supabase.from('agents').delete().eq('id', id);
+  };
+
+  const updateAgentStatus = async (id: string, status: AgentUser['status']) => {
+    setAgents(agents.map(a => a.id === id ? { ...a, status } : a));
+    if (supabase) await supabase.from('agents').update({ status }).eq('id', id);
+  };
+
   return (
     <SystemContext.Provider value={{
-      packages, reviews, gallery, partners, projects, enquiries, companyInfo, isLoading, videoReviews,
+      packages, reviews, gallery, partners, agents, projects, enquiries, companyInfo, isLoading, videoReviews,
       addPackage, updatePackage, deletePackage,
       addReview, deleteReview, 
       addPartner, deletePartner,
+      addAgent, deleteAgent, updateAgentStatus,
       addVideoReview, deleteVideoReview,
       addGalleryItem, deleteGalleryItem,
       updateEnquiryStatus, updateCompanyInfo

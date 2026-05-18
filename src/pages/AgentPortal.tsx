@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { PackageInquiry } from '../types';
 import SEO from '../components/seo/SEO';
 
@@ -18,14 +19,23 @@ type LeadStatus = 'New' | 'Assigned' | 'Confirmed' | 'Completed' | 'Cancelled';
 
 export default function AgentPortal() {
   const { theme } = useTheme();
+  const { user, isAuthenticated, role, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'leads' | 'stats' | 'history'>('leads');
   const [leads, setLeads] = useState<PackageInquiry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [dateQuery, setDateQuery] = useState('');
-  const [agentId] = useState('AGENT-001'); // Mock agent ID
   const [selectedLead, setSelectedLead] = useState<PackageInquiry | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated || role !== 'partner') {
+      navigate('/login');
+    }
+  }, [isAuthenticated, role, navigate]);
+
+  const agentId = user && 'id' in user ? user.id : 'ADMIN';
+  const agentName = user?.name || 'Partner';
 
   const fetchLeads = async () => {
     try {
@@ -107,8 +117,8 @@ export default function AgentPortal() {
       <div className="fixed left-0 top-24 bottom-0 w-20 md:w-64 glass-dark border-r border-white/5 z-40 hidden md:flex flex-col p-6">
         <div className="mb-10 px-2">
           <div className="w-12 h-12 bg-gold-premium rounded-xl flex items-center justify-center text-black font-urdu text-3xl mb-4">م</div>
-          <h2 className="text-xl font-serif font-bold text-main">AL MUNTAHA</h2>
-          <span className="text-[10px] uppercase tracking-widest text-gold-premium font-bold">Portal v2.0</span>
+          <h2 className="text-xl font-serif font-bold text-main">{agentName}</h2>
+          <span className="text-[10px] uppercase tracking-widest text-gold-premium font-bold">Partner Agent</span>
         </div>
 
         <nav className="flex-grow space-y-2">
@@ -134,7 +144,10 @@ export default function AgentPortal() {
 
         <div className="pt-6 border-t border-white/5">
            <button 
-             onClick={() => navigate('/login')}
+             onClick={() => {
+               logout();
+               navigate('/login');
+             }}
              className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all"
            >
              <LogOut size={20} />

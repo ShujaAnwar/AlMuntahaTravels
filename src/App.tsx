@@ -19,9 +19,10 @@ const PackageBuilder = lazy(() => import('./pages/PackageBuilder'));
 const AgentPortal = lazy(() => import('./pages/AgentPortal'));
 const VideoReviews = lazy(() => import('./pages/VideoReviews'));
 
-function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
+function ProtectedRoute({ children, role: requiredRole }: { children: ReactNode, role?: 'admin' | 'partner' }) {
+  const { isAuthenticated, role } = useAuth();
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (requiredRole && role !== requiredRole) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
 
@@ -78,8 +79,8 @@ export default function App() {
 
   return (
     <Router>
-      <AuthProvider>
-        <SystemProvider>
+      <SystemProvider>
+        <AuthProvider>
           <ThemeProvider>
             <div className="relative min-h-screen font-sans selection:bg-gold-premium selection:text-black">
           <motion.div
@@ -96,14 +97,21 @@ export default function App() {
                   <Route 
                     path="/admin" 
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute role="admin">
                         <AdminDashboard />
                       </ProtectedRoute>
                     } 
                   />
                   <Route path="/package/:id" element={<PackageDetails />} />
                   <Route path="/builder" element={<PackageBuilder />} />
-                  <Route path="/portal" element={<AgentPortal />} />
+                  <Route 
+                    path="/portal" 
+                    element={
+                      <ProtectedRoute role="partner">
+                        <AgentPortal />
+                      </ProtectedRoute>
+                    } 
+                  />
                   <Route path="/video-reviews" element={<VideoReviews />} />
                   <Route path="/umrah-packages" element={<PackageCategoryPage title="Umrah Packages 2026" category="all" description="Explore our comprehensive range of Umrah packages for 2026. From budget-friendly options to VIP luxury experiences, AL MUNTAHA TRAVELS SOLUTIONS offers the best spiritual journeys from Pakistan." keywords="Umrah Packages 2026, Umrah Travel Agency, Best Umrah Deals Karachi" />} />
                   <Route path="/economy-umrah" element={<PackageCategoryPage title="Economy Umrah Packages" category="economy" description="Affordable and comfortable Umrah packages. Perform your pilgrimage with peace of mind and essential services included." keywords="Economy Umrah, Cheap Umrah Packages, Budget Umrah Pakistan" />} />
@@ -134,8 +142,8 @@ export default function App() {
           </motion.a>
         </div>
           </ThemeProvider>
-        </SystemProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </SystemProvider>
     </Router>
   );
 }
