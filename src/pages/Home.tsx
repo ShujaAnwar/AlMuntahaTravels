@@ -43,14 +43,14 @@ export default function Home() {
       <section id="about" className={cn(
         "py-20 md:py-32 transition-colors duration-500",
         theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
-      )}>
+      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '600px' }}>
         <About />
       </section>
 
       <section id="packages" className={cn(
         "py-20 md:py-32 transition-colors duration-500",
         theme === 'dark' ? "bg-emerald-dark" : "bg-white"
-      )}>
+      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '800px' }}>
         <Packages />
       </section>
 
@@ -64,7 +64,7 @@ export default function Home() {
       <section id="gallery" className={cn(
         "py-20 md:py-32 transition-colors duration-500",
         theme === 'dark' ? "bg-emerald-dark" : "bg-white border-y border-slate-200"
-      )}>
+      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '1000px' }}>
         <Gallery />
       </section>
 

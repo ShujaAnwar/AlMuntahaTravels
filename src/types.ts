@@ -1,3 +1,10 @@
+export interface VideoReview {
+  id: string;
+  title: string;
+  youtubeId: string;
+  description?: string;
+}
+
 export interface Package {
   id: string;
   title: string;

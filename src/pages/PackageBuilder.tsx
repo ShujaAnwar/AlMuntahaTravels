@@ -546,9 +546,12 @@ export default function PackageBuilder() {
             ))}
           </div>
           <div className="space-y-6 max-w-xl mx-auto">
-            <div className="flex justify-between items-end">
-              <label className="text-sm font-medium text-main">Custom Budget (PKR)</label>
-              <span className="text-4xl font-serif font-bold text-gold-premium">Rs. {formData.budget.customAmount?.toLocaleString()}</span>
+            <div className="flex flex-col items-center mb-4">
+              <label className="text-sm font-medium text-main mb-2">Estimated Budget</label>
+              <div className="flex flex-col items-center">
+                <span className="text-4xl font-serif font-bold text-gold-premium">Rs. {formData.budget.customAmount?.toLocaleString()}</span>
+                <span className="text-xl text-white/40 mt-1">Approx. {Math.round(formData.budget.customAmount / 74).toLocaleString()} SAR</span>
+              </div>
             </div>
             <input 
               type="range"
@@ -624,7 +627,10 @@ export default function PackageBuilder() {
           </div>
           <div className="p-8 glass-dark rounded-[2.5rem] border border-gold-premium/30 bg-gold-premium/5 text-center">
              <h4 className="text-2xl font-serif font-bold text-main mb-2">Estimated Budget Range</h4>
-             <span className="text-4xl font-serif font-bold text-gold-premium italic">Rs. {formData.budget.customAmount?.toLocaleString()}</span>
+             <div className="flex flex-col items-center">
+               <span className="text-4xl font-serif font-bold text-gold-premium italic">Rs. {formData.budget.customAmount?.toLocaleString()}</span>
+               <span className="text-xl text-white/40 mt-1 italic">~ {Math.round(formData.budget.customAmount / 74).toLocaleString()} SAR</span>
+             </div>
              <p className="text-sub text-xs mt-4">Final price will be calculated by our experts based on real-time availability.</p>
           </div>
         </motion.div>

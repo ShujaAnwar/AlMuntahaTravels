@@ -17,6 +17,7 @@ const PackageDetails = lazy(() => import('./pages/PackageDetails'));
 const PackageCategoryPage = lazy(() => import('./pages/PackageCategoryPage'));
 const PackageBuilder = lazy(() => import('./pages/PackageBuilder'));
 const AgentPortal = lazy(() => import('./pages/AgentPortal'));
+const VideoReviews = lazy(() => import('./pages/VideoReviews'));
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -103,6 +104,7 @@ export default function App() {
                   <Route path="/package/:id" element={<PackageDetails />} />
                   <Route path="/builder" element={<PackageBuilder />} />
                   <Route path="/portal" element={<AgentPortal />} />
+                  <Route path="/video-reviews" element={<VideoReviews />} />
                   <Route path="/umrah-packages" element={<PackageCategoryPage title="Umrah Packages 2026" category="all" description="Explore our comprehensive range of Umrah packages for 2026. From budget-friendly options to VIP luxury experiences, AL MUNTAHA TRAVELS SOLUTIONS offers the best spiritual journeys from Pakistan." keywords="Umrah Packages 2026, Umrah Travel Agency, Best Umrah Deals Karachi" />} />
                   <Route path="/economy-umrah" element={<PackageCategoryPage title="Economy Umrah Packages" category="economy" description="Affordable and comfortable Umrah packages. Perform your pilgrimage with peace of mind and essential services included." keywords="Economy Umrah, Cheap Umrah Packages, Budget Umrah Pakistan" />} />
                   <Route path="/vip-umrah" element={<PackageCategoryPage title="VIP Umrah Packages" category="vip" description="Luxury VIP Umrah experiences with premium 5-star hotel stays, private VIP transport, and exclusive services." keywords="VIP Umrah, Luxury Umrah Packages, 5 Star Umrah Karachi" />} />

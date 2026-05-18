@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Briefcase,
   Layers,
-  PhoneCall
+  PhoneCall,
+  Youtube
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useSystem } from '../context/SystemContext';
@@ -23,11 +24,12 @@ import Overview from '../components/admin/Overview';
 import PackageManagement from '../components/admin/PackageManagement';
 import GalleryManagement from '../components/admin/GalleryManagement';
 import ReviewManagement from '../components/admin/ReviewManagement';
+import VideoReviewManagement from '../components/admin/VideoReviewManagement';
 import EnquiryManagement from '../components/admin/EnquiryManagement';
 import PartnerManagement from '../components/admin/PartnerManagement';
 import CMSSettings from '../components/admin/CMSSettings';
 
-type AdminSection = 'overview' | 'packages' | 'gallery' | 'reviews' | 'enquiries' | 'partners' | 'cms';
+type AdminSection = 'overview' | 'packages' | 'gallery' | 'reviews' | 'videos' | 'enquiries' | 'partners' | 'cms';
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
@@ -42,6 +44,7 @@ export default function AdminDashboard() {
     { id: 'enquiries', label: 'Enquiries', icon: MessageSquare, badge: unreadEnquiries },
     { id: 'gallery', label: 'Gallery', icon: ImageIcon },
     { id: 'reviews', label: 'Reviews', icon: Star },
+    { id: 'videos', label: 'Video Reviews', icon: Youtube },
     { id: 'partners', label: 'Partners', icon: Briefcase },
     { id: 'cms', label: 'Site Content', icon: Layers },
   ];
@@ -52,6 +55,7 @@ export default function AdminDashboard() {
       case 'packages': return <PackageManagement />;
       case 'gallery': return <GalleryManagement />;
       case 'reviews': return <ReviewManagement />;
+      case 'videos': return <VideoReviewManagement />;
       case 'enquiries': return <EnquiryManagement />;
       case 'partners': return <PartnerManagement />;
       case 'cms': return <CMSSettings />;

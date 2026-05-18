@@ -19,7 +19,7 @@ export default function Hero() {
     <div ref={containerRef} className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center pt-20 md:pt-0">
       {/* Background with Parallax */}
       <motion.div
-        style={{ y }}
+        style={{ y, willChange: 'transform' }}
         className="absolute inset-0 z-0"
       >
         <div className="absolute inset-0 bg-black/60 z-10" />

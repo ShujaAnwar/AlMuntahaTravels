@@ -3,17 +3,63 @@ import { motion } from 'motion/react';
 import { Plus, Search, Edit2, Trash2, Filter, MoreVertical, X, Check } from 'lucide-react';
 import { useSystem } from '../../context/SystemContext';
 import { Package } from '../../types';
+import ImageUpload from './ImageUpload';
 
 export default function PackageManagement() {
   const { packages, addPackage, updatePackage, deletePackage } = useSystem();
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdding, setIsAdding] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingPackage, setEditingPackage] = useState<Package | null>(null);
+  const [formData, setFormData] = useState<Partial<Package>>({
+    title: '',
+    category: 'Standard',
+    price: '',
+    duration: '',
+    image: '',
+    hotelDetails: '',
+    distanceFromHaram: '',
+    transportDetails: '',
+    features: [],
+    description: ''
+  });
 
   const filteredPackages = packages.filter(p => 
     p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingPackage) {
+      updatePackage(editingPackage.id, formData);
+    } else {
+      addPackage(formData as Omit<Package, 'id'>);
+    }
+    handleClose();
+  };
+
+  const handleEdit = (pkg: Package) => {
+    setEditingPackage(pkg);
+    setFormData(pkg);
+    setIsAdding(true);
+  };
+
+  const handleClose = () => {
+    setIsAdding(false);
+    setEditingPackage(null);
+    setFormData({
+      title: '',
+      category: 'Standard',
+      price: '',
+      duration: '',
+      image: '',
+      hotelDetails: '',
+      distanceFromHaram: '',
+      transportDetails: '',
+      features: [],
+      description: ''
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -74,7 +120,10 @@ export default function PackageManagement() {
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                      <button className="p-2 text-white/40 hover:text-white transition-colors">
+                      <button 
+                        onClick={() => handleEdit(pkg)}
+                        className="p-2 text-white/40 hover:text-white transition-colors"
+                      >
                         <Edit2 size={18} />
                       </button>
                       <button 
@@ -92,67 +141,109 @@ export default function PackageManagement() {
         </div>
       </div>
 
-      {/* Add/Edit Modal (Simplified for now) */}
-      {(isAdding || editingId) && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => { setIsAdding(false); setEditingId(null); }} />
+      {/* Add/Edit Modal */}
+      {isAdding && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 overflow-y-auto">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={handleClose} />
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#02130e] border border-white/10 w-full max-w-2xl rounded-[2.5rem] p-10 relative z-10"
+            className="bg-[#02130e] border border-white/10 w-full max-w-4xl rounded-[2.5rem] p-8 md:p-10 relative z-10 my-8"
           >
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif font-bold text-white uppercase tracking-wider">
-                {isAdding ? 'Add Package' : 'Edit Package'}
+                {editingPackage ? 'Edit Package' : 'Add Package'}
               </h2>
-              <button onClick={() => { setIsAdding(false); setEditingId(null); }} className="text-white/40 hover:text-white">
+              <button onClick={handleClose} className="text-white/40 hover:text-white">
                 <X size={24} />
               </button>
             </div>
             
-            <form className="space-y-6" onSubmit={(e) => {
-              e.preventDefault();
-              // Add form data handling here
-              setIsAdding(false);
-            }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Package Title</label>
-                  <input className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" placeholder="e.g., Ramadan Gold VIP" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Category</label>
-                  <select className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30 appearance-none">
-                    <option value="VIP">VIP</option>
-                    <option value="Standard">Standard</option>
-                    <option value="Economy">Economy</option>
-                  </select>
-                </div>
-              </div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Package Title</label>
+                    <input 
+                      required
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                      placeholder="e.g., Ramadan Gold VIP" 
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Category</label>
+                      <select 
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30 appearance-none"
+                      >
+                        <option value="VIP">VIP</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Economy">Economy</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Duration</label>
+                      <input 
+                        value={formData.duration}
+                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                        placeholder="e.g., 15 Days" 
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Price From</label>
-                  <input className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" placeholder="$0.00" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Duration</label>
-                  <input className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" placeholder="e.g., 15 Days" />
-                </div>
-              </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Price (PKR | SAR)</label>
+                    <input 
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                      placeholder="Rs. 500,000 | 6,500 SAR" 
+                    />
+                  </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Image URL</label>
-                <input className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" placeholder="https://unsplash.com/..." />
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Hotel Details</label>
+                    <input 
+                      value={formData.hotelDetails}
+                      onChange={(e) => setFormData({ ...formData, hotelDetails: e.target.value })}
+                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                      placeholder="e.g., 5* Pullman ZamZam Makkah" 
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <ImageUpload 
+                    label="Package Cover Image"
+                    currentImage={formData.image}
+                    onUploadSuccess={(url) => setFormData({ ...formData, image: url })}
+                  />
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Distance from Haram</label>
+                    <input 
+                      value={formData.distanceFromHaram}
+                      onChange={(e) => setFormData({ ...formData, distanceFromHaram: e.target.value })}
+                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                      placeholder="e.g., 0m (In Clock Tower)" 
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="pt-6">
                 <button 
                   type="submit"
-                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)]"
+                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:scale-[1.01] transition-transform"
                 >
                   <Check size={20} />
-                  Save Package Details
+                  {editingPackage ? 'Update Package' : 'Create Package'}
                 </button>
               </div>
             </form>

@@ -2,10 +2,34 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Plus, Trash2, Star, User, MessageCircle, X, Check } from 'lucide-react';
 import { useSystem } from '../../context/SystemContext';
+import ImageUpload from './ImageUpload';
 
 export default function ReviewManagement() {
   const { reviews, addReview, deleteReview } = useSystem();
   const [isAdding, setIsAdding] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    rating: 5,
+    comment: '',
+    language: 'en' as 'en' | 'ur',
+    avatar: '',
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.comment) return;
+    addReview(formData);
+    setFormData({
+      name: '',
+      rating: 5,
+      comment: '',
+      language: 'en',
+      avatar: '',
+      date: new Date().toISOString().split('T')[0]
+    });
+    setIsAdding(false);
+  };
 
   return (
     <div className="space-y-8">
@@ -13,7 +37,7 @@ export default function ReviewManagement() {
         <div className="flex items-center gap-10">
            <div>
              <span className="block text-3xl font-bold text-white mb-1">
-               {reviews.reduce((acc, curr) => acc + curr.rating, 0) / (reviews.length || 1)}
+               {(reviews.length > 0 ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length : 5).toFixed(1)}
              </span>
              <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Avg Rating</span>
            </div>
@@ -70,12 +94,12 @@ export default function ReviewManagement() {
       </div>
 
       {isAdding && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 overflow-y-auto">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsAdding(false)} />
           <motion.div 
              initial={{ opacity: 0, scale: 0.95 }}
              animate={{ opacity: 1, scale: 1 }}
-             className="bg-[#02130e] border border-white/10 w-full max-w-lg rounded-[2.5rem] p-10 relative z-10"
+             className="bg-[#02130e] border border-white/10 w-full max-w-lg rounded-[2.5rem] p-8 md:p-10 relative z-10 my-8"
           >
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif font-bold text-white uppercase tracking-wider">Add Client Review</h2>
@@ -84,29 +108,64 @@ export default function ReviewManagement() {
               </button>
             </div>
             
-            <form className="space-y-6" onSubmit={(e) => {
-              e.preventDefault();
-              setIsAdding(false);
-            }}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Client Name</label>
-                <input className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none" placeholder="Full name..." />
+                <input 
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none" 
+                  placeholder="Full name..." 
+                />
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Rating</label>
-                <select className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none appearance-none">
-                  <option value="5">5 Stars</option>
-                  <option value="4">4 Stars</option>
-                  <option value="3">3 Stars</option>
-                </select>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Rating</label>
+                  <select 
+                    value={formData.rating}
+                    onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
+                    className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none appearance-none"
+                  >
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Language</label>
+                  <select 
+                    value={formData.language}
+                    onChange={(e) => setFormData({ ...formData, language: e.target.value as any })}
+                    className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none appearance-none"
+                  >
+                    <option value="en">English</option>
+                    <option value="ur">Urdu</option>
+                  </select>
+                </div>
               </div>
+
+              <ImageUpload 
+                label="Client Avatar"
+                currentImage={formData.avatar}
+                onUploadSuccess={(url) => setFormData({ ...formData, avatar: url })}
+              />
+
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Review Content</label>
-                <textarea rows={4} className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none" placeholder="Deeply spiritual journey..." />
+                <textarea 
+                  required
+                  rows={4} 
+                  value={formData.comment}
+                  onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none" 
+                  placeholder="Deeply spiritual journey..." 
+                />
               </div>
               
               <div className="pt-6">
-                <button type="submit" className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3">
+                <button type="submit" className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)]">
                   <Check size={20} />
                   Publish Review
                 </button>

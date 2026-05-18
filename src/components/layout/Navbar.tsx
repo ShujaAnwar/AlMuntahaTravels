@@ -12,6 +12,17 @@ export default function Navbar() {
   const location = useLocation();
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -22,6 +33,7 @@ export default function Navbar() {
   const navLinks = [
     { title: 'Home', path: '/' },
     { title: 'Packages', path: '/#packages' },
+    { title: 'Video Reviews', path: '/video-reviews' },
     { title: 'Customize Your Umrah', path: '/builder', highlight: true },
     { title: 'About', path: '/#about' },
     { title: 'Gallery', path: '/#gallery' },
@@ -31,11 +43,12 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 w-full z-50 transition-all duration-500',
+        'fixed top-0 left-0 w-full z-50 transition-all duration-500 will-change-transform',
         scrolled 
-          ? (theme === 'dark' ? 'bg-black/80 backdrop-blur-lg py-4' : 'bg-white/80 backdrop-blur-lg py-4 shadow-lg') 
+          ? (theme === 'dark' ? 'bg-black/80 backdrop-blur-md py-4' : 'bg-white/80 backdrop-blur-md py-4 shadow-lg') 
           : 'bg-transparent py-6'
       )}
+      style={{ transform: 'translateZ(0)' }}
     >
       <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-4 group">
