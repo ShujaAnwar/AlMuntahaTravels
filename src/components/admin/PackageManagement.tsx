@@ -9,6 +9,7 @@ export default function PackageManagement() {
   const { packages, addPackage, updatePackage, deletePackage } = useSystem();
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [editingPackage, setEditingPackage] = useState<Package | null>(null);
   const [formData, setFormData] = useState<Partial<Package>>({
     title: '',
@@ -28,14 +29,21 @@ export default function PackageManagement() {
     p.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingPackage) {
-      updatePackage(editingPackage.id, formData);
-    } else {
-      addPackage(formData as Omit<Package, 'id'>);
+    setIsSaving(true);
+    try {
+      if (editingPackage) {
+        await updatePackage(editingPackage.id, formData);
+      } else {
+        await addPackage(formData as Omit<Package, 'id'>);
+      }
+      handleClose();
+    } catch (error) {
+      console.error("Error saving package:", error);
+    } finally {
+      setIsSaving(false);
     }
-    handleClose();
   };
 
   const handleEdit = (pkg: Package) => {
@@ -222,7 +230,7 @@ export default function PackageManagement() {
                   <ImageUpload 
                     label="Package Cover Image"
                     currentImage={formData.image}
-                    onUploadSuccess={(url) => setFormData({ ...formData, image: url })}
+                    onUploadSuccess={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   />
 
                   <div className="space-y-2">
@@ -240,10 +248,17 @@ export default function PackageManagement() {
               <div className="pt-6">
                 <button 
                   type="submit"
-                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:scale-[1.01] transition-transform"
+                  disabled={isSaving}
+                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:scale-[1.01] transition-transform disabled:opacity-50"
                 >
-                  <Check size={20} />
-                  {editingPackage ? 'Update Package' : 'Create Package'}
+                  {isSaving ? (
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
+                      <Plus size={20} />
+                    </motion.div>
+                  ) : (
+                    <Check size={20} />
+                  )}
+                  {isSaving ? 'Saving...' : (editingPackage ? 'Update Package' : 'Create Package')}
                 </button>
               </div>
             </form>

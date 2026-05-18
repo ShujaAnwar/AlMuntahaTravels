@@ -7,6 +7,7 @@ import ImageUpload from './ImageUpload';
 export default function ReviewManagement() {
   const { reviews, addReview, deleteReview } = useSystem();
   const [isAdding, setIsAdding] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     rating: 5,
@@ -16,19 +17,26 @@ export default function ReviewManagement() {
     date: new Date().toISOString().split('T')[0]
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.comment) return;
-    addReview(formData);
-    setFormData({
-      name: '',
-      rating: 5,
-      comment: '',
-      language: 'en',
-      avatar: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-    setIsAdding(false);
+    setIsSaving(true);
+    try {
+      await addReview(formData);
+      setFormData({
+        name: '',
+        rating: 5,
+        comment: '',
+        language: 'en',
+        avatar: '',
+        date: new Date().toISOString().split('T')[0]
+      });
+      setIsAdding(false);
+    } catch (error) {
+      console.error("Review save error:", error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -149,7 +157,7 @@ export default function ReviewManagement() {
               <ImageUpload 
                 label="Client Avatar"
                 currentImage={formData.avatar}
-                onUploadSuccess={(url) => setFormData({ ...formData, avatar: url })}
+                onUploadSuccess={(url) => setFormData(prev => ({ ...prev, avatar: url }))}
               />
 
               <div className="space-y-2">
@@ -165,9 +173,19 @@ export default function ReviewManagement() {
               </div>
               
               <div className="pt-6">
-                <button type="submit" className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)]">
-                  <Check size={20} />
-                  Publish Review
+                <button 
+                  type="submit" 
+                  disabled={isSaving}
+                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] disabled:opacity-50"
+                >
+                  {isSaving ? (
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
+                      <Star size={20} />
+                    </motion.div>
+                  ) : (
+                    <Check size={20} />
+                  )}
+                  {isSaving ? 'Publishing...' : 'Publish Review'}
                 </button>
               </div>
             </form>

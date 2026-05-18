@@ -7,6 +7,7 @@ import ImageUpload from './ImageUpload';
 export default function GalleryManagement() {
   const { gallery, addGalleryItem, deleteGalleryItem } = useSystem();
   const [isAdding, setIsAdding] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [filter, setFilter] = useState<'all' | 'Makkah' | 'Madinah' | 'Tours'>('all');
   const [formData, setFormData] = useState({
     title: '',
@@ -19,12 +20,19 @@ export default function GalleryManagement() {
     ? gallery 
     : gallery.filter(item => item.category === filter);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.url || !formData.title) return;
-    addGalleryItem(formData);
-    setFormData({ title: '', category: 'Makkah', url: '', type: 'image' });
-    setIsAdding(false);
+    setIsSaving(true);
+    try {
+      await addGalleryItem(formData);
+      setFormData({ title: '', category: 'Makkah', url: '', type: 'image' });
+      setIsAdding(false);
+    } catch (error) {
+      console.error("Gallery save error:", error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -131,17 +139,23 @@ export default function GalleryManagement() {
               <ImageUpload 
                 label="Gallery Image"
                 currentImage={formData.url}
-                onUploadSuccess={(url) => setFormData({ ...formData, url })}
+                onUploadSuccess={(url) => setFormData(prev => ({ ...prev, url }))}
               />
               
               <div className="pt-6">
                 <button 
                   type="submit"
-                  disabled={!formData.url}
-                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!formData.url || isSaving}
+                  className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  <CheckCircle2 size={20} />
-                  Add to Live Gallery
+                  {isSaving ? (
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
+                      <PlusCircle size={20} />
+                    </motion.div>
+                  ) : (
+                    <CheckCircle2 size={20} />
+                  )}
+                  {isSaving ? 'Uploading to Gallery...' : 'Add to Live Gallery'}
                 </button>
               </div>
             </form>

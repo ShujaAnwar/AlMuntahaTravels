@@ -14,6 +14,13 @@ export default function ImageUpload({ onUploadSuccess, currentImage, label, clas
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync preview with currentImage prop
+  React.useEffect(() => {
+    if (currentImage !== undefined) {
+      setPreview(currentImage || null);
+    }
+  }, [currentImage]);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
