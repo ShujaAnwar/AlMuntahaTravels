@@ -10,6 +10,7 @@ export default function PackageManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [editingPackage, setEditingPackage] = useState<Package | null>(null);
   const [formData, setFormData] = useState<Partial<Package>>({
     title: '',
@@ -175,7 +176,7 @@ export default function PackageManagement() {
                     <input 
                       required
                       value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                       className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
                       placeholder="e.g., Ramadan Gold VIP" 
                     />
@@ -186,7 +187,7 @@ export default function PackageManagement() {
                       <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Category</label>
                       <select 
                         value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                        onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as any }))}
                         className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30 appearance-none"
                       >
                         <option value="VIP">VIP</option>
@@ -198,7 +199,7 @@ export default function PackageManagement() {
                       <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Duration</label>
                       <input 
                         value={formData.duration}
-                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                        onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
                         className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
                         placeholder="e.g., 15 Days" 
                       />
@@ -209,7 +210,7 @@ export default function PackageManagement() {
                     <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Price (PKR | SAR)</label>
                     <input 
                       value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
                       className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
                       placeholder="Rs. 500,000 | 6,500 SAR" 
                     />
@@ -219,7 +220,7 @@ export default function PackageManagement() {
                     <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Hotel Details</label>
                     <input 
                       value={formData.hotelDetails}
-                      onChange={(e) => setFormData({ ...formData, hotelDetails: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, hotelDetails: e.target.value }))}
                       className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
                       placeholder="e.g., 5* Pullman ZamZam Makkah" 
                     />
@@ -230,6 +231,7 @@ export default function PackageManagement() {
                   <ImageUpload 
                     label="Package Cover Image"
                     currentImage={formData.image}
+                    onUploading={setIsUploading}
                     onUploadSuccess={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   />
 
@@ -237,28 +239,48 @@ export default function PackageManagement() {
                     <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Distance from Haram</label>
                     <input 
                       value={formData.distanceFromHaram}
-                      onChange={(e) => setFormData({ ...formData, distanceFromHaram: e.target.value })}
+                      onChange={(e) => setFormData(prev => ({ ...prev, distanceFromHaram: e.target.value }))}
                       className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
                       placeholder="e.g., 0m (In Clock Tower)" 
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Transport Details</label>
+                    <input 
+                      value={formData.transportDetails}
+                      onChange={(e) => setFormData(prev => ({ ...prev, transportDetails: e.target.value }))}
+                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30" 
+                      placeholder="e.g., Private Transport Luxury GMC" 
                     />
                   </div>
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-2">Description</label>
+                <textarea 
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white outline-none focus:border-gold-premium/30 min-h-[100px]" 
+                  placeholder="Tell more about this package..." 
+                />
+              </div>
+
               <div className="pt-6">
                 <button 
                   type="submit"
-                  disabled={isSaving}
+                  disabled={isSaving || isUploading}
                   className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:scale-[1.01] transition-transform disabled:opacity-50"
                 >
-                  {isSaving ? (
+                  {isSaving || isUploading ? (
                     <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
                       <Plus size={20} />
                     </motion.div>
                   ) : (
                     <Check size={20} />
                   )}
-                  {isSaving ? 'Saving...' : (editingPackage ? 'Update Package' : 'Create Package')}
+                  {isSaving ? 'Saving...' : (isUploading ? 'Uploading Image...' : (editingPackage ? 'Update Package' : 'Create Package'))}
                 </button>
               </div>
             </form>

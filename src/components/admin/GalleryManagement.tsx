@@ -8,6 +8,7 @@ export default function GalleryManagement() {
   const { gallery, addGalleryItem, deleteGalleryItem } = useSystem();
   const [isAdding, setIsAdding] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [filter, setFilter] = useState<'all' | 'Makkah' | 'Madinah' | 'Tours'>('all');
   const [formData, setFormData] = useState({
     title: '',
@@ -139,23 +140,24 @@ export default function GalleryManagement() {
               <ImageUpload 
                 label="Gallery Image"
                 currentImage={formData.url}
+                onUploading={setIsUploading}
                 onUploadSuccess={(url) => setFormData(prev => ({ ...prev, url }))}
               />
               
               <div className="pt-6">
                 <button 
                   type="submit"
-                  disabled={!formData.url || isSaving}
+                  disabled={!formData.url || isSaving || isUploading}
                   className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  {isSaving ? (
+                  {isSaving || isUploading ? (
                     <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
                       <PlusCircle size={20} />
                     </motion.div>
                   ) : (
                     <CheckCircle2 size={20} />
                   )}
-                  {isSaving ? 'Uploading to Gallery...' : 'Add to Live Gallery'}
+                  {isSaving ? 'Uploading to Gallery...' : (isUploading ? 'Uploading Image...' : 'Add to Live Gallery')}
                 </button>
               </div>
             </form>

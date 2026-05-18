@@ -110,6 +110,18 @@ CREATE TABLE IF NOT EXISTS company_info (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 10. Create Agents Table
+CREATE TABLE IF NOT EXISTS agents (
+  id TEXT PRIMARY KEY,
+  username TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  name TEXT NOT NULL,
+  agencyName TEXT,
+  status TEXT NOT NULL CHECK (status IN ('active', 'suspended')),
+  createdAt TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Initial Data Injection
 
 -- Initial Packages

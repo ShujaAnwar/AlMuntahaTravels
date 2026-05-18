@@ -8,6 +8,7 @@ export default function ReviewManagement() {
   const { reviews, addReview, deleteReview } = useSystem();
   const [isAdding, setIsAdding] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     rating: 5,
@@ -157,6 +158,7 @@ export default function ReviewManagement() {
               <ImageUpload 
                 label="Client Avatar"
                 currentImage={formData.avatar}
+                onUploading={setIsUploading}
                 onUploadSuccess={(url) => setFormData(prev => ({ ...prev, avatar: url }))}
               />
 
@@ -175,17 +177,17 @@ export default function ReviewManagement() {
               <div className="pt-6">
                 <button 
                   type="submit" 
-                  disabled={isSaving}
+                  disabled={isSaving || isUploading}
                   className="w-full py-5 bg-gold-premium text-black font-bold rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)] disabled:opacity-50"
                 >
-                  {isSaving ? (
+                  {isSaving || isUploading ? (
                     <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
                       <Star size={20} />
                     </motion.div>
                   ) : (
                     <Check size={20} />
                   )}
-                  {isSaving ? 'Publishing...' : 'Publish Review'}
+                  {isSaving ? 'Publishing...' : (isUploading ? 'Uploading Avatar...' : 'Publish Review')}
                 </button>
               </div>
             </form>

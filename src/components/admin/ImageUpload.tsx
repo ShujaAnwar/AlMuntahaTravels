@@ -3,12 +3,13 @@ import { Upload, X, Check, Loader2, Image as ImageIcon } from 'lucide-react';
 
 interface ImageUploadProps {
   onUploadSuccess: (url: string) => void;
+  onUploading?: (uploading: boolean) => void;
   currentImage?: string;
   label?: string;
   className?: string;
 }
 
-export default function ImageUpload({ onUploadSuccess, currentImage, label, className = "" }: ImageUploadProps) {
+export default function ImageUpload({ onUploadSuccess, onUploading, currentImage, label, className = "" }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(currentImage || null);
@@ -38,6 +39,7 @@ export default function ImageUpload({ onUploadSuccess, currentImage, label, clas
     }
 
     setIsUploading(true);
+    onUploading?.(true);
     setError(null);
 
     const formData = new FormData();
@@ -61,6 +63,7 @@ export default function ImageUpload({ onUploadSuccess, currentImage, label, clas
       setError('Failed to upload image. Please try again.');
     } finally {
       setIsUploading(false);
+      onUploading?.(false);
     }
   };
 
