@@ -3,41 +3,56 @@ import { useSystem } from '../../context/SystemContext';
 import { Calendar, MapPin, Clock, ArrowUpRight, Hotel } from 'lucide-react';
 import { Link } from 'react-router';
 
-export default function Packages() {
+interface PackagesProps {
+  limit?: number;
+  filterCategory?: string;
+  showTitle?: boolean;
+}
+
+export default function Packages({ limit, filterCategory, showTitle = true }: PackagesProps) {
   const { packages } = useSystem();
+
+  const filteredPackages = filterCategory && filterCategory !== 'all'
+    ? packages.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase())
+    : packages;
+
+  const displayPackages = limit ? filteredPackages.slice(0, limit) : filteredPackages;
 
   return (
     <div className="max-w-7xl mx-auto px-6">
-      <div className="text-center mb-10 md:mb-16">
-        <motion.span
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-gold-premium tracking-[0.2em] md:tracking-[0.3em] font-medium uppercase text-[10px] md:text-xs mb-4 block"
-        >
-          Holy Pilgrimage
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-serif font-bold text-main mb-6"
-        >
-          Special Umrah Packages
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="text-sub max-w-2xl mx-auto font-light text-sm md:text-base px-2"
-        >
-          Choose from our carefully curated packages designed to meet your spiritual needs and comfort preferences.
-        </motion.p>
-      </div>
+      {showTitle && (
+        <div className="text-center mb-10 md:mb-16">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-gold-premium tracking-[0.2em] md:tracking-[0.3em] font-medium uppercase text-[10px] md:text-xs mb-4 block"
+          >
+            Holy Pilgrimage
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-serif font-bold text-main mb-6"
+          >
+            Special Umrah Packages
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-sub max-w-2xl mx-auto font-light text-sm md:text-base px-2"
+          >
+            Choose from our carefully curated packages designed to meet your spiritual needs and comfort preferences.
+          </motion.p>
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        {packages.map((pkg, i) => (
+      {displayPackages.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {displayPackages.map((pkg, i) => (
           <motion.div
             key={pkg.id}
             initial={{ opacity: 0, y: 30 }}
@@ -102,8 +117,15 @@ export default function Packages() {
               </div>
             </div>
           </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 glass-dark rounded-[40px] border border-white/5">
+          <Hotel size={48} className="text-gold-premium/20 mx-auto mb-6" />
+          <h3 className="text-2xl font-serif text-white mb-2">No packages currently listed</h3>
+          <p className="text-white/40">Please contact us on WhatsApp for a custom requirement.</p>
+        </div>
+      )}
 
       <div className="mt-16 text-center">
         <Link 

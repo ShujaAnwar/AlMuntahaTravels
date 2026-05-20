@@ -44,7 +44,7 @@ export default function PackageCategoryPage({ title, category, description, keyw
         "py-20",
         theme === 'dark' ? "bg-emerald-dark" : "bg-white"
       )}>
-        <Packages /> {/* This component currently shows all, but we could filter it if we wanted */}
+        <Packages filterCategory={category} showTitle={false} />
       </section>
 
       <section className={cn(

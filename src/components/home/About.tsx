@@ -60,7 +60,11 @@ export default function About() {
         >
           <div className="aspect-[4/3] rounded-3xl overflow-hidden premium-shadow relative group">
             <img
-              src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=80&w=2070"
+              src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=75&w=800"
+              srcSet="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=60&w=480 480w,
+                      https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=70&w=800 800w,
+                      https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=85&w=1200 1200w"
+              sizes="(max-width: 1024px) 100vw, 50vw"
               alt="Madinah"
               className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
               loading="lazy"

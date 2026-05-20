@@ -8,14 +8,14 @@ const groups = [
     date: "March 2026",
     slots: "5 Slots Left",
     status: "Filling Fast",
-    image: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=600"
+    image: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=70&w=600"
   },
   {
     title: "Summer Spiritual Retreat",
     date: "July 2026",
     slots: "15 Slots Left",
     status: "Open",
-    image: "https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=80&w=600"
+    image: "https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=70&w=600"
   }
 ];
 

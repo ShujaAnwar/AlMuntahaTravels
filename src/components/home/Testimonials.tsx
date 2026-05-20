@@ -64,7 +64,7 @@ export default function Testimonials() {
 
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-emerald-deep">
-                <img src={review.avatar} alt={review.name} className="w-full h-full object-cover" />
+                <img src={review.avatar} alt={review.name} loading="lazy" className="w-full h-full object-cover" />
               </div>
               <div>
                 <h4 className="text-main font-bold">{review.name}</h4>
@@ -85,7 +85,7 @@ export default function Testimonials() {
            </button>
         </div>
         <div className="w-full md:w-1/2 aspect-video rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center border theme-border group cursor-pointer relative overflow-hidden">
-           <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=800" className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all" />
+           <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=70&w=600" loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all" />
            <div className="w-16 h-16 rounded-full bg-gold-premium flex items-center justify-center text-black group-hover:scale-110 transition-transform relative z-10">
               <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-current border-b-[8px] border-b-transparent ml-1" />
            </div>

@@ -2,12 +2,12 @@ import { motion } from 'motion/react';
 import { Maximize2 } from 'lucide-react';
 
 const galleryItems = [
-  { url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=800', size: 'large', title: 'The Holy Kaaba' },
-  { url: 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=80&w=800', size: 'small', title: 'Madinah Munawwarah' },
-  { url: 'https://images.unsplash.com/photo-1565552645632-d7cd3f98c7b5?auto=format&fit=crop&q=80&w=800', size: 'small', title: 'Masjid al-Nabawi' },
-  { url: 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=800', size: 'medium', title: 'Sunset in Mecca' },
-  { url: 'https://images.unsplash.com/photo-1610448721566-47369c768e70?auto=format&fit=crop&q=80&w=800', size: 'medium', title: 'Evening Prayer' },
-  { url: 'https://images.unsplash.com/photo-1551041777-ed07f843d47a?auto=format&fit=crop&q=80&w=800', size: 'large', title: 'Mount Arafat' },
+  { url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=70&w=800', size: 'large', title: 'The Holy Kaaba' },
+  { url: 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=65&w=400', size: 'small', title: 'Madinah Munawwarah' },
+  { url: 'https://images.unsplash.com/photo-1565552645632-d7cd3f98c7b5?auto=format&fit=crop&q=65&w=400', size: 'small', title: 'Masjid al-Nabawi' },
+  { url: 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=65&w=600', size: 'medium', title: 'Sunset in Mecca' },
+  { url: 'https://images.unsplash.com/photo-1610448721566-47369c768e70?auto=format&fit=crop&q=65&w=600', size: 'medium', title: 'Evening Prayer' },
+  { url: 'https://images.unsplash.com/photo-1551041777-ed07f843d47a?auto=format&fit=crop&q=70&w=800', size: 'large', title: 'Mount Arafat' },
 ];
 
 export default function Gallery() {

@@ -24,7 +24,12 @@ export default function Hero() {
       >
         <div className="absolute inset-0 bg-black/60 z-10" />
         <img
-          src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2070"
+          src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=75&w=1200"
+          srcSet="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=60&w=640 640w,
+                  https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=70&w=1200 1200w,
+                  https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2070 2070w"
+          sizes="100vw"
+          fetchPriority="high"
           alt="Holy Kaaba"
           className="w-full h-full object-cover"
         />

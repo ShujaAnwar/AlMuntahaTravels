@@ -6,6 +6,7 @@ import cors from "cors";
 import compression from "compression";
 import { createClient } from "@supabase/supabase-js";
 import multer from "multer";
+import { GoogleGenAI } from "@google/genai";
 
 // Supabase client (Lazy Initialization)
 let supabaseClient: any = null;
@@ -42,6 +43,33 @@ function saveLeads(leads: any[]) {
   }
 }
 
+// Lead Distribution System
+async function assignLeadToAgent(lead: any) {
+  const supabase = getSupabase();
+  let agents: any[] = [];
+
+  if (supabase) {
+    const { data } = await supabase.from("agents").select("*").eq("status", "active");
+    agents = data || [];
+  } else {
+    // Fallback: This is limited since we don't store agents in JSON locally in this file
+    // But in a real app, agents would be in a DB.
+    return null;
+  }
+
+  if (agents.length === 0) return null;
+
+  // Simple load balancing: Assign to agent with least "Assigned" leads
+  const leads = readLeads();
+  const agentLeadCounts = agents.map(agent => ({
+    id: agent.id,
+    count: leads.filter((l: any) => l.assignedTo === agent.id && l.status === "Assigned").length
+  }));
+
+  agentLeadCounts.sort((a, b) => a.count - b.count);
+  return agentLeadCounts[0].id; // The agent with the least leads
+}
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -49,6 +77,16 @@ async function startServer() {
   app.use(compression());
   app.use(cors());
   app.use(express.json());
+
+  // Gemini Client Initialization
+  const genAI = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY || "",
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      }
+    }
+  });
 
   // Configure Multer for image uploads
   const storage = multer.diskStorage({
@@ -93,13 +131,15 @@ async function startServer() {
   });
 
   app.post("/api/leads", async (req, res) => {
+    const assignedAgentId = await assignLeadToAgent(req.body);
+    
     const newLead = {
       id: Math.random().toString(36).substring(2, 11),
       ...req.body,
-      status: "New",
+      status: assignedAgentId ? "Assigned" : "New",
       createdAt: new Date().toISOString(),
-      assignedTo: null,
-      assignedAt: null
+      assignedTo: assignedAgentId || null,
+      assignedAt: assignedAgentId ? new Date().toISOString() : null
     };
 
     const supabase = getSupabase();
@@ -114,6 +154,38 @@ async function startServer() {
     leads.push(newLead);
     saveLeads(leads);
     res.json(newLead);
+  });
+
+  // AI Chat Endpoint
+  app.post("/api/chat", async (req, res) => {
+    const { message, history } = req.body;
+    try {
+      const model = "gemini-3-flash-preview";
+      const systemInstruction = `You are the AI assistant for AL MUNTAHA TRAVELS SOLUTIONS. 
+      You help users with Umrah and Hajj packages, Saudi visa info, and travel bookings.
+      Be professional, spiritual, and helpful. Always encourage users to leave their WhatsApp number for a custom quote.
+      Karachi based, MRC Colony Malir Halt.
+      Packages range from Economy (Budget) to VIP Luxury.`;
+
+      const contents = [
+        { role: 'user', parts: [{ text: systemInstruction }] },
+        ...(history || []).map((h: any) => ({
+          role: h.role === 'user' ? 'user' : 'model',
+          parts: [{ text: h.text }]
+        })),
+        { role: 'user', parts: [{ text: message }] }
+      ];
+
+      const response = await genAI.models.generateContent({
+        model,
+        contents,
+      });
+
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("Gemini Error:", error);
+      res.status(500).json({ error: "AI Assistant is currently busy. Please try WhatsApp." });
+    }
   });
 
   app.patch("/api/leads/:id", async (req, res) => {
@@ -201,8 +273,20 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    app.use(express.static(distPath, {
+      maxAge: '1y',
+      etag: true,
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+          res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        } else {
+          // Cache fingerprinted build assets aggressively (1 year)
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+      }
+    }));
     app.get("*", (req, res) => {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.sendFile(path.join(distPath, "index.html"));
     });
   }

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   User, MapPin, Calendar, Hotel, Bed, Utensils, 
   Car, Plus, Star, Check, ArrowRight, ArrowLeft,
-  ChevronRight, Heart, Sparkles, ShieldCheck
+  ChevronRight, Heart, Sparkles, ShieldCheck, Bot
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useTheme } from '../context/ThemeContext';
@@ -121,6 +121,31 @@ export default function PackageBuilder() {
       }));
     }
   }, [formData.journey.departureDate, formData.journey.returnDate]);
+
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  const getAiSuggestion = async () => {
+    setIsAiLoading(true);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Given my current selections for an ${formData.journey.type} journey for ${formData.personal.travelers} people with a budget of ${formData.budget.customAmount} PKR, what hotels and services would you recommend? My notes: ${formData.notes}`,
+          history: []
+        })
+      });
+      const data = await response.json();
+      if (data.text) {
+        setFormData(prev => ({ ...prev, notes: prev.notes + "\n\n--- AI SUGGESTION ---\n" + data.text }));
+        setStep(10); // Move to notes step to show result
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
 
   const nextStep = () => setStep(s => Math.min(s + 1, STEPS.length - 1));
   const prevStep = () => setStep(s => Math.max(s - 1, 0));
@@ -709,6 +734,21 @@ export default function PackageBuilder() {
                   )}>{s}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={getAiSuggestion}
+                disabled={isAiLoading}
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-emerald-deep text-gold-premium border-2 border-gold-premium/50 rounded-2xl font-bold hover:bg-emerald-900 transition-all shadow-lg active:scale-95 disabled:opacity-50"
+              >
+                {isAiLoading ? 'Analyzing...' : (
+                  <>
+                    <Bot size={20} />
+                    AI Smart Suggest
+                  </>
+                )}
+              </button>
             </div>
 
             <div className="mt-12 p-8 glass-dark rounded-3xl border border-white/5 space-y-4 bg-gold-premium/5">

@@ -4,6 +4,8 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/layout/BackToTop';
 import ScrollToHash from './components/utils/ScrollToHash';
+import ChatAssistant from './components/common/ChatAssistant';
+import ExitIntentPopup from './components/common/ExitIntentPopup';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SystemProvider } from './context/SystemContext';
@@ -125,6 +127,8 @@ export default function App() {
           <Footer />
           <BackToTop />
           <ScrollToHash />
+          <ChatAssistant />
+          <ExitIntentPopup />
 
           {/* Floating WhatsApp Button */}
           <motion.a
