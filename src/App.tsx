@@ -4,12 +4,14 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/layout/BackToTop';
 import ScrollToHash from './components/utils/ScrollToHash';
-import ChatAssistant from './components/common/ChatAssistant';
-import ExitIntentPopup from './components/common/ExitIntentPopup';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SystemProvider } from './context/SystemContext';
 import { ThemeProvider } from './context/ThemeContext';
+
+// Lazy load non-critical widgets to minimize initial bundle size and speed up PageSpeed Index
+const ChatAssistant = lazy(() => import('./components/common/ChatAssistant'));
+const ExitIntentPopup = lazy(() => import('./components/common/ExitIntentPopup'));
 
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
@@ -40,7 +42,8 @@ const PageLoading = () => (
 );
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  // Disabled artificial delay for instant rendering performance and high Lighthouse FCP/LCP scores
+  const [loading, setLoading] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -127,8 +130,10 @@ export default function App() {
           <Footer />
           <BackToTop />
           <ScrollToHash />
-          <ChatAssistant />
-          <ExitIntentPopup />
+          <Suspense fallback={null}>
+            <ChatAssistant />
+            <ExitIntentPopup />
+          </Suspense>
 
           {/* Floating WhatsApp Button */}
           <motion.a

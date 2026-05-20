@@ -1,18 +1,21 @@
 import { motion } from 'motion/react';
+import { lazy, Suspense } from 'react';
 import Hero from '../components/home/Hero';
-import About from '../components/home/About';
-import PackageBuilderCTA from '../components/home/PackageBuilderCTA';
-import Packages from '../components/home/Packages';
-import Gallery from '../components/home/Gallery';
-import Testimonials from '../components/home/Testimonials';
-import Partners from '../components/home/Partners';
-import Contact from '../components/home/Contact';
-import BlogPreview from '../components/home/BlogPreview';
-import RecentTours from '../components/home/RecentTours';
-import FAQ from '../components/home/FAQ';
 import SEO from '../components/seo/SEO';
 import { useTheme } from '../context/ThemeContext';
 import { cn } from '../lib/utils';
+
+// Lazy load below-the-fold home page sections to maximize lighthouse performance
+const About = lazy(() => import('../components/home/About'));
+const PackageBuilderCTA = lazy(() => import('../components/home/PackageBuilderCTA'));
+const Packages = lazy(() => import('../components/home/Packages'));
+const RecentTours = lazy(() => import('../components/home/RecentTours'));
+const Gallery = lazy(() => import('../components/home/Gallery'));
+const Testimonials = lazy(() => import('../components/home/Testimonials'));
+const Partners = lazy(() => import('../components/home/Partners'));
+const BlogPreview = lazy(() => import('../components/home/BlogPreview'));
+const FAQ = lazy(() => import('../components/home/FAQ'));
+const Contact = lazy(() => import('../components/home/Contact'));
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -38,70 +41,90 @@ export default function Home() {
       />
       <Hero />
       
-      <PackageBuilderCTA />
+      <Suspense fallback={<div className="min-h-[250px] animate-pulse bg-gold-premium/5" />}>
+        <PackageBuilderCTA />
+      </Suspense>
 
-      <section id="about" className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
-      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '600px' }}>
-        <About />
-      </section>
+      <Suspense fallback={<div className="min-h-[250px]" />}>
+        <section id="about" className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '600px' }}>
+          <About />
+        </section>
+      </Suspense>
 
-      <section id="packages" className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-emerald-dark" : "bg-white"
-      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '800px' }}>
-        <Packages />
-      </section>
+      <Suspense fallback={<div className="min-h-[250px]" />}>
+        <section id="packages" className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-emerald-dark" : "bg-white"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '800px' }}>
+          <Packages />
+        </section>
+      </Suspense>
 
-      <section className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-black" : "bg-slate-50"
-      )}>
-        <RecentTours />
-      </section>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <section className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-black" : "bg-slate-50"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '500px' }}>
+          <RecentTours />
+        </section>
+      </Suspense>
 
-      <section id="gallery" className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-emerald-dark" : "bg-white border-y border-slate-200"
-      )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '1000px' }}>
-        <Gallery />
-      </section>
+      <Suspense fallback={<div className="min-h-[250px]" />}>
+        <section id="gallery" className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-emerald-dark" : "bg-white border-y border-slate-200"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '1000px' }}>
+          <Gallery />
+        </section>
+      </Suspense>
 
-      <section className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
-      )}>
-        <Testimonials />
-      </section>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <section className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-slate-100"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '600px' }}>
+          <Testimonials />
+        </section>
+      </Suspense>
 
-      <section className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-emerald-dark" : "bg-white"
-      )}>
-        <Partners />
-      </section>
+      <Suspense fallback={<div className="min-h-[150px]" />}>
+        <section className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-emerald-dark" : "bg-white"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '300px' }}>
+          <Partners />
+        </section>
+      </Suspense>
 
-      <section className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-black" : "bg-slate-50"
-      )}>
-        <BlogPreview />
-      </section>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <section className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-black" : "bg-slate-50"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '600px' }}>
+          <BlogPreview />
+        </section>
+      </Suspense>
 
-      <section className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-emerald-dark" : "bg-white"
-      )}>
-        <FAQ />
-      </section>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <section className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-emerald-dark" : "bg-white"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '500px' }}>
+          <FAQ />
+        </section>
+      </Suspense>
 
-      <section id="contact" className={cn(
-        "py-20 md:py-32 transition-colors duration-500",
-        theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-white border-t border-slate-200"
-      )}>
-        <Contact />
-      </section>
+      <Suspense fallback={<div className="min-h-[250px]" />}>
+        <section id="contact" className={cn(
+          "py-20 md:py-32 transition-colors duration-500",
+          theme === 'dark' ? "bg-gradient-to-b from-black to-emerald-dark" : "bg-white border-t border-slate-200"
+        )} style={{ contentVisibility: 'auto', containIntrinsicHeight: '700px' }}>
+          <Contact />
+        </section>
+      </Suspense>
     </motion.div>
   );
 }
