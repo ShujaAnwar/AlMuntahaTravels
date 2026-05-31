@@ -1,521 +1,556 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Briefcase, Users, CheckCircle, Clock, XCircle, 
-  Search, Filter, ExternalLink, Calendar, Phone, 
-  MapPin, MessageSquare, ShieldCheck, Lock, Unlock,
-  BarChart3, FileText, Settings, LogOut, ChevronRight,
-  Hotel, Bed, Car, Plus
+import {
+  Briefcase, Users, CheckCircle, Clock, XCircle,
+  Search, Phone, Calendar, MessageCircle, Lock,
+  Unlock, BarChart3, LogOut, ChevronDown, RefreshCw,
+  Star, TrendingUp, AlertCircle, Check, X
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { PackageInquiry } from '../types';
 import SEO from '../components/seo/SEO';
 
-// Simplified Lead State for Management
 type LeadStatus = 'New' | 'Assigned' | 'Confirmed' | 'Completed' | 'Cancelled';
 
+const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bg: string }> = {
+  New:       { label: 'New Lead',  color: 'text-amber-400',  bg: 'bg-amber-400/10 border-amber-400/30' },
+  Assigned:  { label: 'Assigned',  color: 'text-blue-400',   bg: 'bg-blue-400/10 border-blue-400/30'  },
+  Confirmed: { label: 'Confirmed', color: 'text-emerald-400', bg: 'bg-emerald-400/10 border-emerald-400/30' },
+  Completed: { label: 'Completed', color: 'text-green-400',  bg: 'bg-green-400/10 border-green-400/30' },
+  Cancelled: { label: 'Cancelled', color: 'text-red-400',    bg: 'bg-red-400/10 border-red-400/30'   },
+};
+
+const BUDGET_LABELS: Record<string, string> = {
+  Economy: '280K–380K',
+  Standard: '380K–550K',
+  Premium: '550K–800K',
+  'VIP Luxury': '800K+',
+};
+
+// ─── Lead Card ────────────────────────────────────────────────────────────────
+function LeadCard({
+  lead, agentId, onAccept, onStatusChange, onExpand
+}: {
+  lead: PackageInquiry;
+  agentId: string;
+  onAccept: (id: string) => void;
+  onStatusChange: (id: string, status: LeadStatus) => void;
+  onExpand: (lead: PackageInquiry) => void;
+}) {
+  const isMine = lead.assignedTo === agentId;
+  const isLockedByOther = lead.assignedTo && lead.assignedTo !== agentId;
+  const assignedAt = lead.assignedAt ? new Date(lead.assignedAt).getTime() : 0;
+  const lockExpired = isLockedByOther && (Date.now() - assignedAt) / 3600000 >= 24;
+  const isAvailable = !lead.assignedTo || lockExpired;
+  const status = (lead.status as LeadStatus) || 'New';
+  const sc = STATUS_CONFIG[status] || STATUS_CONFIG.New;
+
+  const waLink = `https://wa.me/${lead.personal.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(
+    `Assalamualaikum ${lead.personal.fullName}! I'm from AL MUNTAHA TRAVELS. Regarding your ${lead.journey.type} package inquiry (ID: ${lead.id}). I'd like to share a personalized quote for you. Please let me know a convenient time to discuss. JazakAllah!`
+  )}`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={cn(
+        'bg-white/5 border rounded-2xl overflow-hidden transition-all',
+        isMine ? 'border-blue-500/30' :
+        isLockedByOther && !lockExpired ? 'border-white/5 opacity-60' :
+        'border-white/10 hover:border-white/20'
+      )}
+    >
+      {/* Card Top */}
+      <div className="p-4 sm:p-5">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full border', sc.bg, sc.color)}>
+                {sc.label}
+              </span>
+              {isLockedByOther && !lockExpired && (
+                <span className="text-[10px] font-bold flex items-center gap-1 text-red-400 bg-red-400/10 border border-red-400/30 px-2 py-0.5 rounded-full">
+                  <Lock size={10} /> Locked
+                </span>
+              )}
+              {lockExpired && (
+                <span className="text-[10px] font-bold flex items-center gap-1 text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded-full">
+                  <Unlock size={10} /> Expired Lock
+                </span>
+              )}
+              {isMine && (
+                <span className="text-[10px] font-bold flex items-center gap-1 text-blue-400 bg-blue-400/10 border border-blue-400/30 px-2 py-0.5 rounded-full">
+                  <Star size={10} /> My Lead
+                </span>
+              )}
+            </div>
+            <h3 className="text-white font-bold text-lg leading-tight">{lead.personal.fullName}</h3>
+            <p className="text-white/40 text-xs font-mono">#{lead.id.slice(-8).toUpperCase()}</p>
+          </div>
+          {/* Budget badge */}
+          <div className="flex-shrink-0 text-right">
+            <div className="text-[#C9A84C] font-black text-base">{BUDGET_LABELS[lead.budget?.range] || '—'}</div>
+            <div className="text-white/40 text-[10px]">PKR (est.)</div>
+          </div>
+        </div>
+
+        {/* Quick Info */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="bg-white/5 rounded-xl px-3 py-2">
+            <div className="text-white/40 text-[9px] uppercase font-bold mb-0.5">Package</div>
+            <div className="text-white text-xs font-semibold">{lead.journey.type}</div>
+          </div>
+          <div className="bg-white/5 rounded-xl px-3 py-2">
+            <div className="text-white/40 text-[9px] uppercase font-bold mb-0.5">Travelers</div>
+            <div className="text-white text-xs font-semibold flex items-center gap-1">
+              <Users size={11} /> {lead.personal.travelers} pax
+            </div>
+          </div>
+          <div className="bg-white/5 rounded-xl px-3 py-2">
+            <div className="text-white/40 text-[9px] uppercase font-bold mb-0.5">Departure</div>
+            <div className="text-white text-xs font-semibold">
+              {lead.journey.departureDate ? new Date(lead.journey.departureDate).toLocaleDateString('en-PK', { day: 'numeric', month: 'short' }) : 'Flexible'}
+            </div>
+          </div>
+          <div className="bg-white/5 rounded-xl px-3 py-2">
+            <div className="text-white/40 text-[9px] uppercase font-bold mb-0.5">City</div>
+            <div className="text-white text-xs font-semibold">{lead.personal.city || '—'}</div>
+          </div>
+        </div>
+
+        {/* Action Row */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => onExpand(lead)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-white/10 text-white/60 text-xs font-medium hover:border-white/20 hover:text-white transition-all"
+          >
+            View Details
+          </button>
+
+          {/* WhatsApp — only for assigned leads */}
+          {isMine && (
+            <a
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white text-xs font-bold transition-all"
+            >
+              <MessageCircle size={13} /> WhatsApp
+            </a>
+          )}
+
+          {/* Accept button */}
+          {isAvailable && !isMine && (
+            <button
+              onClick={() => onAccept(lead.id)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#C9A84C] hover:bg-[#b8973d] text-black text-xs font-bold transition-all"
+            >
+              <Check size={13} /> Accept Lead
+            </button>
+          )}
+
+          {/* Status updater — only owner */}
+          {isMine && (
+            <div className="relative ml-auto">
+              <select
+                value={lead.status}
+                onChange={e => onStatusChange(lead.id, e.target.value as LeadStatus)}
+                className="appearance-none bg-white/5 border border-white/10 rounded-xl pl-3 pr-7 py-2 text-xs text-white/70 outline-none cursor-pointer hover:border-white/20"
+              >
+                <option value="Assigned" className="bg-[#020d09]">Assigned</option>
+                <option value="Confirmed" className="bg-[#020d09]">Confirmed</option>
+                <option value="Completed" className="bg-[#020d09]">Completed</option>
+                <option value="Cancelled" className="bg-[#020d09]">Cancelled</option>
+              </select>
+              <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Lead Detail Modal ────────────────────────────────────────────────────────
+function LeadModal({ lead, onClose }: { lead: PackageInquiry; onClose: () => void }) {
+  const waLink = `https://wa.me/${lead.personal.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(
+    `Assalamualaikum ${lead.personal.fullName}! I'm from AL MUNTAHA TRAVELS regarding your ${lead.journey.type} package inquiry.`
+  )}`;
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose} className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      <motion.div
+        initial={{ y: '100%', opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: '100%', opacity: 0 }}
+        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        className="relative w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0a1a12] border border-white/10 rounded-t-3xl sm:rounded-3xl"
+      >
+        {/* Modal Header */}
+        <div className="sticky top-0 bg-[#0a1a12] border-b border-white/10 px-5 py-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-white font-bold text-lg">{lead.personal.fullName}</h3>
+            <p className="text-white/40 text-xs font-mono">#{lead.id.slice(-8).toUpperCase()}</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all">
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="p-5 space-y-4">
+          {/* Contact */}
+          <Section title="Contact Details">
+            <Row label="WhatsApp" value={lead.personal.whatsapp} />
+            <Row label="Email" value={lead.personal.email || '—'} />
+            <Row label="City" value={lead.personal.city || '—'} />
+            <Row label="Travel Type" value={lead.personal.type} />
+            <a href={waLink} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 mt-3 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-bold rounded-xl transition-all w-full justify-center">
+              <MessageCircle size={16} /> Open WhatsApp Chat
+            </a>
+          </Section>
+
+          {/* Journey */}
+          <Section title="Journey Details">
+            <Row label="Package Type" value={lead.journey.type} />
+            <Row label="Departure" value={lead.journey.departureDate || 'Flexible'} />
+            <Row label="Return" value={lead.journey.returnDate || '—'} />
+            <Row label="Duration" value={lead.journey.days ? `${lead.journey.days} days` : '—'} />
+            <Row label="Travelers" value={`${lead.personal.travelers} persons`} />
+            <Row label="Budget" value={lead.budget?.range || '—'} />
+          </Section>
+
+          {/* Hotel Prefs */}
+          <Section title="Hotel Preferences">
+            <Row label="Makkah Distance" value={lead.makkah?.distancePref || '—'} />
+            <Row label="Makkah Hotels" value={lead.makkah?.hotels?.join(', ') || 'No preference'} />
+            <Row label="Madinah Distance" value={lead.madinah?.distancePref || '—'} />
+            <Row label="Madinah Hotels" value={lead.madinah?.hotels?.join(', ') || 'No preference'} />
+            <Row label="Room Type" value={lead.rooms?.type?.join(', ') || '—'} />
+          </Section>
+
+          {/* Services */}
+          <Section title="Services & Add-Ons">
+            <Row label="Meal Plan" value={lead.food?.plan || '—'} />
+            <Row label="Transport" value={lead.transport?.required ? lead.transport.type : 'Not needed'} />
+            {lead.extras?.length > 0 && (
+              <div>
+                <span className="text-white/40 text-xs">Extras:</span>
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {lead.extras.map(e => (
+                    <span key={e} className="text-xs bg-[#C9A84C]/10 text-[#C9A84C] px-2 py-0.5 rounded-full border border-[#C9A84C]/20">
+                      {e}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </Section>
+
+          {/* Notes */}
+          {lead.notes && (
+            <Section title="Special Instructions">
+              <p className="text-white/70 text-sm leading-relaxed bg-white/5 rounded-xl p-3 italic">
+                {lead.notes}
+              </p>
+            </Section>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+      <h4 className="text-[#C9A84C] text-xs font-bold uppercase tracking-wider mb-3">{title}</h4>
+      <div className="space-y-2">{children}</div>
+    </div>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-white/40 text-xs flex-shrink-0">{label}</span>
+      <span className="text-white text-xs font-medium text-right">{value}</span>
+    </div>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 export default function AgentPortal() {
-  const { theme } = useTheme();
   const { user, isAuthenticated, role, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'leads' | 'stats' | 'history'>('leads');
+
   const [leads, setLeads] = useState<PackageInquiry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [dateQuery, setDateQuery] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [search, setSearch] = useState('');
+  const [filterStatus, setFilterStatus] = useState<string>('All');
   const [selectedLead, setSelectedLead] = useState<PackageInquiry | null>(null);
+  const [activeTab, setActiveTab] = useState<'leads' | 'stats'>('leads');
+
+  const agentId = user && 'id' in user ? (user as any).id : 'ADMIN';
+  const agentName = user?.name || 'Agent';
 
   useEffect(() => {
-    if (!isAuthenticated || role !== 'partner') {
-      navigate('/login');
-    }
+    if (!isAuthenticated || role !== 'partner') navigate('/login');
   }, [isAuthenticated, role, navigate]);
 
-  const agentId = user && 'id' in user ? user.id : 'ADMIN';
-  const agentName = user?.name || 'Partner';
-
-  const fetchLeads = async () => {
+  const fetchLeads = async (silent = false) => {
+    if (!silent) setIsLoading(true);
+    else setIsRefreshing(true);
     try {
-      const response = await fetch('/api/leads');
-      const data = await response.json();
+      const res = await fetch('/api/leads');
+      const data = await res.json();
       setLeads(data.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
-    } catch (e) {
-      console.error(e);
-    } finally {
+    } catch {/* silently fail */} finally {
       setIsLoading(false);
+      setIsRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchLeads();
-    const interval = setInterval(fetchLeads, 10000); // Poll every 10s for real-time feel
-    return () => clearInterval(interval);
+    const iv = setInterval(() => fetchLeads(true), 15000);
+    return () => clearInterval(iv);
   }, []);
 
   const handleAccept = async (leadId: string) => {
     try {
-      const response = await fetch(`/api/leads/${leadId}/accept`, {
+      const res = await fetch(`/api/leads/${leadId}/accept`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ agentId })
+        body: JSON.stringify({ agentId }),
       });
-      if (response.ok) {
-        fetchLeads();
-      } else {
-        const err = await response.json();
-        alert(err.error);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+      if (res.ok) fetchLeads(true);
+      else { const e = await res.json(); alert(e.error || 'Could not accept lead'); }
+    } catch {/* */}
   };
 
-  const updateStatus = async (leadId: string, status: LeadStatus) => {
+  const handleStatusChange = async (leadId: string, status: LeadStatus) => {
     try {
       await fetch(`/api/leads/${leadId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
+        body: JSON.stringify({ status }),
       });
-      fetchLeads();
-    } catch (e) {
-      console.error(e);
-    }
+      fetchLeads(true);
+    } catch {/* */}
   };
 
-  const filteredLeads = leads.filter(l => {
-    const matchesSearch = l.personal.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.personal.whatsapp.includes(searchQuery) ||
-      l.id.includes(searchQuery);
-    
-    const matchesDate = !dateQuery || 
-      l.journey.departureDate.includes(dateQuery) || 
-      l.createdAt.includes(dateQuery);
-
-    return matchesSearch && matchesDate;
+  const filtered = leads.filter(l => {
+    const matchSearch = l.personal.fullName.toLowerCase().includes(search.toLowerCase()) ||
+      l.personal.whatsapp.includes(search) || l.id.includes(search);
+    const matchStatus = filterStatus === 'All' || l.status === filterStatus;
+    return matchSearch && matchStatus;
   });
 
+  // Stats
+  const myLeads = leads.filter(l => l.assignedTo === agentId);
   const stats = {
-    total: leads.length,
-    new: leads.filter(l => l.status === 'New').length,
-    assigned: leads.filter(l => l.status === 'Assigned').length,
-    confirmed: leads.filter(l => l.status === 'Confirmed').length,
-    completed: leads.filter(l => l.status === 'Completed').length,
+    available: leads.filter(l => !l.assignedTo).length,
+    mine: myLeads.length,
+    confirmed: myLeads.filter(l => l.status === 'Confirmed').length,
+    completed: myLeads.filter(l => l.status === 'Completed').length,
   };
 
   return (
-    <div className={cn(
-      "min-h-screen pt-24 pb-20 relative transition-colors duration-500",
-      theme === 'dark' ? "bg-[#050505]" : "bg-slate-50"
-    )}>
-      <SEO title="Agent Portal | Travel Management System" />
-      
-      {/* Sidebar - Dashboard Style */}
-      <div className="fixed left-0 top-24 bottom-0 w-20 md:w-64 glass-dark border-r border-white/5 z-40 hidden md:flex flex-col p-6">
-        <div className="mb-10 px-2">
-          <div className="w-12 h-12 bg-gold-premium rounded-xl flex items-center justify-center text-black font-urdu text-3xl mb-4">م</div>
-          <h2 className="text-xl font-serif font-bold text-main">{agentName}</h2>
-          <span className="text-[10px] uppercase tracking-widest text-gold-premium font-bold">Partner Agent</span>
-        </div>
+    <div className="min-h-screen bg-[#020d09] pt-16">
+      <SEO title="Agent Portal | AL MUNTAHA TRAVELS" />
 
-        <nav className="flex-grow space-y-2">
-          {[
-            { id: 'leads', label: 'Active Leads', icon: Briefcase },
-            { id: 'stats', label: 'Performance', icon: BarChart3 },
-            { id: 'history', label: 'History', icon: FileText },
-            { id: 'settings', label: 'Settings', icon: Settings },
-          ].map(item => (
+      {/* Top Nav */}
+      <div className="sticky top-0 z-50 bg-[#020d09]/90 backdrop-blur-xl border-b border-white/10">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-[#064E3B] border border-[#C9A84C]/30 rounded-xl flex items-center justify-center text-[#C9A84C] font-bold text-sm">م</div>
+            <div>
+              <div className="text-white font-bold text-sm">{agentName}</div>
+              <div className="text-[#C9A84C] text-[10px] font-bold uppercase tracking-wider">Partner Agent</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Live indicator */}
+            <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/30 rounded-full px-3 py-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-green-400 text-[10px] font-bold">LIVE</span>
+            </div>
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
-              className={cn(
-                "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all",
-                activeTab === item.id ? "bg-gold-premium text-black font-bold shadow-lg shadow-gold-premium/10" : "text-sub hover:bg-white/5"
-              )}
+              onClick={() => { logout(); navigate('/login'); }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-white/10 text-white/60 text-xs font-medium hover:border-white/20 hover:text-white transition-all"
             >
-              <item.icon size={20} />
-              <span className="hidden md:block text-sm">{item.label}</span>
+              <LogOut size={14} /> Sign Out
             </button>
-          ))}
-        </nav>
-
-        <div className="pt-6 border-t border-white/5">
-           <button 
-             onClick={() => {
-               logout();
-               navigate('/login');
-             }}
-             className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all"
-           >
-             <LogOut size={20} />
-             <span className="hidden md:block text-sm">Logout</span>
-           </button>
+          </div>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <main className="md:ml-64 p-6 md:p-12 relative">
-        {/* Header Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+      <div className="max-w-5xl mx-auto px-4 py-6">
+
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {[
-            { label: 'Total Inquiries', val: stats.total, color: 'text-main', icon: Users },
-            { label: 'Unassigned', val: stats.new, color: 'text-gold-premium', icon: Lock },
-            { label: 'My Assignments', val: leads.filter(l => l.assignedTo === agentId).length, color: 'text-blue-400', icon: Briefcase },
-            { label: 'Total Sales', val: stats.completed, color: 'text-emerald-400', icon: CheckCircle }
-          ].map((s, i) => (
-            <div key={i} className="glass-dark p-6 rounded-3xl border border-white/5">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-sub">
-                  <s.icon size={20} />
-                </div>
-                <span className="text-xs font-bold text-muted">+12%</span>
+            { label: 'Available Leads', val: stats.available, color: 'text-amber-400', icon: AlertCircle },
+            { label: 'My Active Leads', val: stats.mine, color: 'text-blue-400', icon: Briefcase },
+            { label: 'Confirmed', val: stats.confirmed, color: 'text-[#C9A84C]', icon: CheckCircle },
+            { label: 'Completed', val: stats.completed, color: 'text-green-400', icon: TrendingUp },
+          ].map(s => (
+            <div key={s.label} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+              <s.icon size={20} className={s.color} />
+              <div>
+                <div className={cn('text-2xl font-black', s.color)}>{s.val}</div>
+                <div className="text-white/40 text-[10px] font-medium">{s.label}</div>
               </div>
-              <h3 className={cn("text-3xl font-bold font-serif mb-1", s.color)}>{s.val}</h3>
-              <p className="text-[10px] uppercase tracking-widest text-sub font-bold">{s.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Toolbar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
-          <div className="relative w-full md:w-96">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-sub" size={18} />
-            <input 
-              type="text"
-              placeholder="Search leads by name, ID or WhatsApp..."
-              className="w-full theme-bg-alt border theme-border rounded-2xl pl-16 pr-6 py-4 outline-none focus:ring-2 ring-gold-premium/50"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-4 w-full md:w-auto">
-            <div className="relative flex-grow md:flex-none">
-               <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-sub" size={18} />
-               <input 
-                 type="date"
-                 className="w-full theme-bg-alt border theme-border rounded-2xl pl-16 pr-6 py-4 outline-none focus:ring-2 ring-gold-premium/50 text-sub"
-                 value={dateQuery}
-                 onChange={e => setDateQuery(e.target.value)}
-               />
-               {dateQuery && (
-                 <button 
-                   onClick={() => setDateQuery('')}
-                   className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-red-400"
-                 >
-                   Clear
-                 </button>
-               )}
-            </div>
-            <button 
-              onClick={fetchLeads}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 bg-gold-premium text-black font-bold rounded-2xl hover:scale-105 transition-transform"
-            >
-              Refresh Leads
+        {/* Tabs */}
+        <div className="flex gap-1 bg-white/5 border border-white/10 rounded-2xl p-1 mb-5 w-fit">
+          {(['leads', 'stats'] as const).map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)}
+              className={cn('px-5 py-2 rounded-xl text-sm font-bold capitalize transition-all',
+                activeTab === tab ? 'bg-[#C9A84C] text-black' : 'text-white/50 hover:text-white'
+              )}>
+              {tab === 'leads' ? 'All Leads' : 'My Performance'}
             </button>
-          </div>
+          ))}
         </div>
 
-        {/* Table/Cards List */}
-        <div className="space-y-6">
-          <AnimatePresence>
-            {filteredLeads.map((lead, i) => {
-              const isMine = lead.assignedTo === agentId;
-              const isLocked = lead.assignedTo && lead.assignedTo !== agentId;
-              const isAvailable = !lead.assignedTo;
-              
-              // Check if lock expired (24h)
-              const assignedAt = lead.assignedAt ? new Date(lead.assignedAt).getTime() : 0;
-              const lockExpired = (new Date().getTime() - assignedAt) / (1000 * 60 * 60) >= 24;
-              const canSteal = (isLocked && lockExpired) || isAvailable;
-
-              return (
-                <motion.div
-                  key={lead.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={cn(
-                    "glass-dark rounded-[2.5rem] border overflow-hidden p-8 flex flex-col md:flex-row gap-8 transition-all hover:bg-white/5",
-                    isMine ? "border-blue-400/30" : isLocked && !lockExpired ? "border-red-400/20 opacity-60" : "border-white/5"
-                  )}
+        {/* LEADS TAB */}
+        {activeTab === 'leads' && (
+          <div className="space-y-4">
+            {/* Search + Filter */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="relative flex-1 min-w-[200px]">
+                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search by name, phone, ID..."
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-white text-sm placeholder:text-white/30 outline-none focus:border-[#C9A84C]/40"
+                />
+              </div>
+              <div className="relative">
+                <select
+                  value={filterStatus}
+                  onChange={e => setFilterStatus(e.target.value)}
+                  className="appearance-none bg-white/5 border border-white/10 rounded-xl pl-3 pr-8 py-2.5 text-white text-sm outline-none cursor-pointer hover:border-white/20"
                 >
-                  <div className="flex-grow">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="text-[10px] font-bold bg-white/5 px-3 py-1 rounded-full text-muted">ID: {lead.id}</span>
-                      <span className={cn(
-                        "text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest",
-                        lead.status === 'New' ? "bg-gold-premium/20 text-gold-premium" :
-                        lead.status === 'Assigned' ? "bg-blue-400/20 text-blue-400" :
-                        lead.status === 'Confirmed' ? "bg-emerald-400/20 text-emerald-400" : "bg-muted text-black"
-                      )}>
-                        {lead.status}
-                      </span>
-                      {isLocked && !lockExpired && <div className="flex items-center gap-1 text-red-400 text-[10px] font-bold"><Lock size={12}/> Locked</div>}
-                      {isLocked && lockExpired && <div className="flex items-center gap-1 text-gold-premium text-[10px] font-bold"><Unlock size={12}/> Expired</div>}
-                    </div>
-
-                    <h4 className="text-2xl font-serif font-bold text-main mb-2">{lead.personal.fullName}</h4>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-muted block mb-1">WhatsApp</span>
-                        <div className="flex items-center gap-2 text-main font-medium">
-                          <Phone size={14} className="text-emerald-500" /> {lead.personal.whatsapp}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-muted block mb-1">Package / Dates</span>
-                        <div className="flex flex-col gap-1 text-main font-medium">
-                          <div className="flex items-center gap-2">
-                             <Calendar size={14} className="text-gold-premium" /> {lead.journey.type}
-                          </div>
-                          <div className="text-[10px] text-sub">
-                            {lead.journey.departureDate} — {lead.journey.returnDate}
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-muted block mb-1">Travelers</span>
-                        <div className="flex items-center gap-2 text-main font-medium">
-                          <Users size={14} className="text-sub" /> {lead.personal.travelers} Persons
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-muted block mb-1">Estimated Budget</span>
-                        <div className="text-gold-premium font-black">Rs. {lead.budget.customAmount?.toLocaleString()}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex md:flex-col justify-end gap-3 min-w-[200px]">
-                    <button 
-                      onClick={() => setSelectedLead(lead)}
-                      className="flex-1 bg-white/5 border border-white/10 text-main py-4 rounded-2xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                    >
-                      <FileText size={18} /> Details
-                    </button>
-                    {isAvailable || (isLocked && lockExpired) ? (
-                      <button 
-                        onClick={() => handleAccept(lead.id)}
-                        className="flex-1 btn-primary py-4 rounded-2xl flex items-center justify-center gap-2 font-bold"
-                      >
-                        Accept Lead <ChevronRight size={18} />
-                      </button>
-                    ) : isMine ? (
-                      <>
-                        <button className="flex-1 bg-blue-400 text-black py-4 rounded-2xl font-bold flex items-center justify-center gap-2">
-                           <MessageSquare size={18} /> Contact Now
-                        </button>
-                        <select 
-                          className="flex-1 theme-bg-alt border theme-border rounded-2xl px-4 py-4 text-xs font-bold outline-none"
-                          value={lead.status}
-                          onChange={(e) => updateStatus(lead.id, e.target.value as any)}
-                        >
-                          <option value="Assigned">Assigned</option>
-                          <option value="Confirmed">Confirmed</option>
-                          <option value="Completed">Completed</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
-                      </>
-                    ) : (
-                      <div className="flex-1 glass-dark border border-white/5 rounded-2xl p-4 flex items-center justify-center text-muted italic text-xs">
-                        Managed by {lead.assignedTo}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-
-          {filteredLeads.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center py-32 text-center">
-               <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-sub mb-6">
-                 <Search size={32} />
-               </div>
-               <h3 className="text-xl font-serif text-main mb-2">No inquiries found</h3>
-               <p className="text-sub">Try broadening your search or refresh to check for new leads.</p>
+                  <option value="All" className="bg-[#020d09]">All Status</option>
+                  {Object.keys(STATUS_CONFIG).map(s => (
+                    <option key={s} value={s} className="bg-[#020d09]">{s}</option>
+                  ))}
+                </select>
+                <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+              </div>
+              <button
+                onClick={() => fetchLeads(true)}
+                className={cn('p-2.5 rounded-xl border border-white/10 text-white/60 hover:text-white hover:border-white/20 transition-all', isRefreshing && 'animate-spin')}
+              >
+                <RefreshCw size={15} />
+              </button>
             </div>
-          )}
-        </div>
-      </main>
 
-      {/* Full Details Modal */}
-      <AnimatePresence>
-        {selectedLead && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedLead(null)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto glass-dark border border-white/10 rounded-[3rem] p-8 md:p-12 shadow-2xl"
-            >
-              <div className="flex justify-between items-start mb-12">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[10px] font-bold bg-gold-premium/20 text-gold-premium px-3 py-1 rounded-full uppercase tracking-widest">Full Requirements</span>
-                    <span className="text-sub font-mono text-xs">ID: {selectedLead.id}</span>
-                  </div>
-                  <h2 className="text-4xl font-serif font-bold text-main">{selectedLead.personal.fullName}</h2>
-                </div>
-                <button 
-                  onClick={() => setSelectedLead(null)}
-                  className="w-12 h-12 rounded-full glass-dark border border-white/10 flex items-center justify-center text-sub hover:text-main"
-                >
-                  <XCircle size={24} />
+            {/* Lead count */}
+            <div className="flex items-center gap-2">
+              <span className="text-white/40 text-sm">{filtered.length} leads found</span>
+              {filterStatus !== 'All' && (
+                <button onClick={() => setFilterStatus('All')} className="text-xs text-[#C9A84C] hover:underline">
+                  Clear filter
                 </button>
+              )}
+            </div>
+
+            {/* Leads List */}
+            {isLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-8 h-8 border-2 border-[#C9A84C]/30 border-t-[#C9A84C] rounded-full animate-spin" />
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                {/* Section: Basic & Personal */}
-                <div className="space-y-8">
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                      <Users size={14}/> Personal Details
-                    </h5>
-                    <div className="space-y-3">
-                      <div className="flex justify-between"><span className="text-sub text-xs">Email:</span> <span className="text-main font-medium">{selectedLead.personal.email}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">WhatsApp:</span> <span className="text-main font-medium">{selectedLead.personal.whatsapp}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">City:</span> <span className="text-main font-medium">{selectedLead.personal.city}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">Traveler Type:</span> <span className="text-main font-medium">{selectedLead.personal.type}</span></div>
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                      <Calendar size={14}/> Journey Overview
-                    </h5>
-                    <div className="space-y-3">
-                      <div className="flex justify-between"><span className="text-sub text-xs">Type:</span> <span className="text-main font-medium">{selectedLead.journey.type}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">Departure:</span> <span className="text-main font-medium">{selectedLead.journey.departureDate}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">Return:</span> <span className="text-main font-medium">{selectedLead.journey.returnDate}</span></div>
-                      <div className="flex justify-between"><span className="text-sub text-xs">Flexible:</span> <span className="text-main font-medium">{selectedLead.journey.flexible ? 'Yes' : 'No'}</span></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section: Hotels & Rooms */}
-                <div className="space-y-8">
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                      <Hotel size={14}/> Hotel Preferences
-                    </h5>
-                    <div className="space-y-6">
-                      <div>
-                        <span className="text-[10px] text-muted block mb-1">Makkah Distance: {selectedLead.makkah.distancePref}</span>
-                        <div className="flex flex-wrap gap-1">
-                          {selectedLead.makkah.hotels.map(h => <span key={h} className="text-xs bg-white/10 px-2 py-1 rounded text-main font-medium">{h}</span>)}
-                          {selectedLead.makkah.hotels.length === 0 && <span className="text-xs text-muted">No specific hotels selected</span>}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-muted block mb-1">Madinah Distance: {selectedLead.madinah.distancePref}</span>
-                        <div className="flex flex-wrap gap-1">
-                          {selectedLead.madinah.hotels.map(h => <span key={h} className="text-xs bg-white/10 px-2 py-1 rounded text-main font-medium">{h}</span>)}
-                          {selectedLead.madinah.hotels.length === 0 && <span className="text-xs text-muted">No specific hotels selected</span>}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                       <Bed size={14}/> Room Details
-                    </h5>
-                    <div className="space-y-3">
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {selectedLead.rooms.type.map(t => <span key={t} className="text-xs bg-gold-premium/10 text-gold-premium px-2 py-1 rounded font-bold">{t}</span>)}
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className={cn("text-[10px] px-2 py-1 rounded border", selectedLead.rooms.smoking ? "border-emerald-500/50 text-emerald-500" : "border-white/5 text-muted")}>Smoking: {selectedLead.rooms.smoking ? 'Yes' : 'No'}</div>
-                        <div className={cn("text-[10px] px-2 py-1 rounded border", selectedLead.rooms.connected ? "border-emerald-500/50 text-emerald-500" : "border-white/5 text-muted")}>Connected: {selectedLead.rooms.connected ? 'Yes' : 'No'}</div>
-                        <div className={cn("text-[10px] px-2 py-1 rounded border", selectedLead.rooms.elderly ? "border-emerald-500/50 text-emerald-500" : "border-white/5 text-muted")}>Elderly Ready: {selectedLead.rooms.elderly ? 'Yes' : 'No'}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section: Services & Extras */}
-                <div className="space-y-8">
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                       <Car size={14}/> Transport & Food
-                    </h5>
-                    <div className="space-y-4">
-                      <div className="pb-3 border-b border-white/5">
-                        <span className="text-[10px] text-muted block mb-1">Meal Plan</span>
-                        <span className="text-main text-sm font-bold">{selectedLead.food.plan}</span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {selectedLead.food.preference.map(p => <span key={p} className="text-[10px] bg-white/5 px-2 py-0.5 rounded">{p}</span>)}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-muted block mb-1">Transport</span>
-                        {selectedLead.transport.required ? (
-                          <>
-                            <span className="text-main text-sm font-bold">{selectedLead.transport.type}</span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {selectedLead.transport.services.map(s => <span key={s} className="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded font-bold">{s}</span>)}
-                            </div>
-                          </>
-                        ) : <span className="text-muted text-xs">No transport needed</span>}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                    <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                       <Plus size={14}/> Add-Ons
-                    </h5>
-                    <div className="flex flex-wrap gap-1">
-                       {selectedLead.extras.map(e => <span key={e} className="text-xs bg-white/5 px-2 py-1 rounded text-main font-medium">{e}</span>)}
-                       {selectedLead.extras.length === 0 && <span className="text-xs text-muted">No extras selected</span>}
-                    </div>
-                  </div>
-                </div>
-
+            ) : filtered.length === 0 ? (
+              <div className="text-center py-20">
+                <Search size={40} className="text-white/20 mx-auto mb-4" />
+                <p className="text-white/40">No leads match your search</p>
               </div>
-
-              {/* Special Notes Section */}
-              <div className="mt-8 p-8 rounded-[2rem] glass-dark border border-white/5 shadow-inner">
-                <h5 className="text-gold-premium text-[10px] uppercase font-bold tracking-widest mb-4 flex items-center gap-2">
-                   <MessageSquare size={14}/> Special Instructions / Notes
-                </h5>
-                <p className="text-main leading-relaxed italic whitespace-pre-wrap urdu-text text-lg">
-                  {selectedLead.notes || "No special instructions provided."}
-                </p>
+            ) : (
+              <div className="space-y-3">
+                <AnimatePresence>
+                  {filtered.map(lead => (
+                    <LeadCard
+                      key={lead.id}
+                      lead={lead}
+                      agentId={agentId}
+                      onAccept={handleAccept}
+                      onStatusChange={handleStatusChange}
+                      onExpand={setSelectedLead}
+                    />
+                  ))}
+                </AnimatePresence>
               </div>
-
-              <div className="mt-12 flex justify-end">
-                <button 
-                  onClick={() => setSelectedLead(null)}
-                  className="px-12 py-5 bg-gold-premium text-black font-black rounded-2xl hover:scale-105 transition-transform shadow-2xl shadow-gold-premium/20"
-                >
-                  Close Inquiry Details
-                </button>
-              </div>
-            </motion.div>
+            )}
           </div>
         )}
-      </AnimatePresence>
 
-      <div className="fixed bottom-8 right-8 z-50">
-        <div className="bg-emerald-500 text-white px-4 py-2 rounded-full text-xs font-black flex items-center gap-2 shadow-2xl animate-pulse">
-          <div className="w-2 h-2 bg-white rounded-full" />
-          SYSTEM LIVE
-        </div>
+        {/* STATS TAB */}
+        {activeTab === 'stats' && (
+          <div className="space-y-4">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+                <BarChart3 size={18} className="text-[#C9A84C]" /> My Performance Summary
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: 'Total Leads Accepted', val: stats.mine },
+                  { label: 'Confirmed Bookings', val: stats.confirmed },
+                  { label: 'Completed Trips', val: stats.completed },
+                  { label: 'Conversion Rate', val: stats.mine > 0 ? `${Math.round((stats.confirmed / stats.mine) * 100)}%` : '0%' },
+                ].map(item => (
+                  <div key={item.label} className="bg-white/5 rounded-xl p-4 text-center">
+                    <div className="text-[#C9A84C] font-black text-3xl">{item.val}</div>
+                    <div className="text-white/40 text-xs mt-1">{item.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* My Leads List */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-white font-bold mb-4">My Active Leads ({myLeads.length})</h3>
+              {myLeads.length === 0 ? (
+                <p className="text-white/40 text-sm text-center py-6">No leads accepted yet. Go to All Leads to accept some!</p>
+              ) : (
+                <div className="space-y-3">
+                  {myLeads.map(lead => (
+                    <LeadCard
+                      key={lead.id}
+                      lead={lead}
+                      agentId={agentId}
+                      onAccept={handleAccept}
+                      onStatusChange={handleStatusChange}
+                      onExpand={setSelectedLead}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Detail Modal */}
+      <AnimatePresence>
+        {selectedLead && (
+          <LeadModal lead={selectedLead} onClose={() => setSelectedLead(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
