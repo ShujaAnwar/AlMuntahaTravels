@@ -1,0 +1,50 @@
+{
+  "name": "AL MUNTAHA TRAVELS",
+  "short_name": "AL MUNTAHA",
+  "description": "Premium Umrah & Islamic Travel Services from Pakistan. Book your sacred journey with comfort, care & barakah.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020d09",
+  "theme_color": "#064E3B",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "religion", "lifestyle"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Umrah",
+      "short_name": "Book",
+      "description": "Start booking your Umrah journey",
+      "url": "/builder",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "View Packages",
+      "short_name": "Packages",
+      "description": "Browse Umrah packages",
+      "url": "/#packages",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

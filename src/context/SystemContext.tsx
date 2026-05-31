@@ -41,33 +41,85 @@ interface SystemContextType {
 
 const SystemContext = createContext<SystemContextType | undefined>(undefined);
 
-// Initial mock data
+// Initial mock data — Rich and comprehensive
 const initialPackages: Package[] = [
   {
     id: '1',
-    title: 'Ramadan Special Umrah',
+    title: 'Ramadan Royal Umrah',
     category: 'VIP',
     duration: '15 Days',
     price: 'Rs. 695,000 | 9,350 SAR',
-    hotelDetails: '5* Pullman ZamZam Makkah',
-    distanceFromHaram: '0m (In Clock Tower)',
-    transportDetails: 'Private GMC Transport',
-    image: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80',
-    features: ['Visa Included', 'Ziyarat of Makkah & Madinah', 'Buffet Suhoor & Iftar', 'Expert Guide'],
-    description: 'Experience the spiritual rewards of Ramadan in the Holy Cities.'
+    hotelDetails: '5★ Pullman ZamZam Makkah & Anwar Madinah',
+    distanceFromHaram: '0m (Directly in Clock Tower Complex)',
+    transportDetails: 'Private GMC | VIP Luxury',
+    image: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa Included', 'Return Flights', 'Suhoor & Iftar Buffet', 'Expert Alim Guide', 'Ziyarat Tours', 'Airport VIP Reception', 'Private Transport', '24/7 Support'],
+    description: 'Experience the magnificent spiritual rewards of Ramadan in the Holy Cities with our most exclusive VIP package. 5-star luxury meets sacred spirituality.'
   },
   {
     id: '2',
-    title: 'Economy Umrah Plus',
+    title: 'Economy Umrah Package',
     category: 'Economy',
     duration: '10 Days',
     price: 'Rs. 325,000 | 4,380 SAR',
-    hotelDetails: '3* Hotel in Misfalah',
-    distanceFromHaram: '600m with Shuttle',
-    transportDetails: 'Shared Bus',
-    image: 'https://images.unsplash.com/photo-1565551905470-24dd30277053?auto=format&fit=crop&q=80',
-    features: ['Visa Included', 'Group Leader', 'Budget Friendly'],
-    description: 'Affordable Umrah with essential comfort for pilgrim seekers.'
+    hotelDetails: '3★ Al Safwa Hotel, Misfalah',
+    distanceFromHaram: '600m with Free Shuttle Service',
+    transportDetails: 'Shared Bus (A/C)',
+    image: 'https://images.unsplash.com/photo-1565552645632-d7cd3f98c7b5?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa Processing', 'Group Leader Included', 'Shuttle Service', 'Budget-Friendly', 'Halal Meals Available'],
+    description: 'Affordable Umrah without compromising on quality. Perfect for budget-conscious pilgrims seeking a meaningful spiritual journey.'
+  },
+  {
+    id: '3',
+    title: 'Standard Umrah Plus',
+    category: 'Standard',
+    duration: '12 Days',
+    price: 'Rs. 465,000 | 6,250 SAR',
+    hotelDetails: '4★ Elaf Mashaer Hotel',
+    distanceFromHaram: '200m from Haram Main Entrance',
+    transportDetails: 'Private Hiace (Group-Shared)',
+    image: 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa Included', 'Breakfast Daily', 'City Ziyarat', 'Group Guide', 'Medical Assistance', 'SIM Card'],
+    description: 'The perfect balance of comfort and affordability. Our Standard package is ideal for families and couples seeking a quality spiritual experience.'
+  },
+  {
+    id: '4',
+    title: 'VIP Royal Umrah Exclusive',
+    category: 'VIP',
+    duration: '14 Days',
+    price: 'Rs. 895,000 | 12,000 SAR',
+    hotelDetails: '5★ Fairmont Makkah Clock Tower',
+    distanceFromHaram: '0m (Clock Tower — Haram View Room)',
+    transportDetails: 'Dedicated Private Luxury SUV',
+    image: 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa + Insurance', 'Business Class Option', 'Haram View Suite', 'Private Alim', 'All Meals Included', 'VIP Lounge Access', 'Personal Concierge', 'Exclusive Ziyarat'],
+    description: 'The pinnacle of Islamic travel luxury. Our Royal VIP package offers unparalleled comfort with a Haram-view suite at the world-famous Fairmont Clock Tower.'
+  },
+  {
+    id: '5',
+    title: 'Family Umrah Special',
+    category: 'Standard',
+    duration: '10 Days',
+    price: 'Rs. 395,000 | 5,300 SAR',
+    hotelDetails: '4★ Makkah Millennium Hotel',
+    distanceFromHaram: '300m (5 min walk)',
+    transportDetails: 'Family Private Van',
+    image: 'https://images.unsplash.com/photo-1610448721566-47369c768e70?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa for Full Family', 'Family Room Available', 'Child-Friendly Services', 'Kids Ihram Kit', 'Elderly Assistance', 'Connected Rooms'],
+    description: 'Designed exclusively for families. Special arrangements for children, elderly members, and connected family rooms for a comfortable family Umrah.'
+  },
+  {
+    id: '6',
+    title: 'Group Umrah Tour 2026',
+    category: 'Economy',
+    duration: '08 Days',
+    price: 'Rs. 285,000 | 3,850 SAR',
+    hotelDetails: '3★ Hotel Makkah (Group)',
+    distanceFromHaram: '800m (Shuttle Available)',
+    transportDetails: 'Group Coach (A/C)',
+    image: 'https://images.unsplash.com/photo-1551041777-ed07f843d47a?auto=format&fit=crop&q=80&w=800',
+    features: ['Visa Included', 'Experienced Group Leader', 'Madinah Ziyarat', 'Group Support', 'Budget Plan Available'],
+    description: 'Join our managed group tours for an enriching collective spiritual experience. Ideal for mosques, organizations, and friends groups.'
   }
 ];
 

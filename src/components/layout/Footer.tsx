@@ -1,93 +1,247 @@
-import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, Youtube, Twitter, ArrowRight, Heart, Star } from 'lucide-react';
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
+import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
+
+const quickLinks = [
+  { label: 'All Umrah Packages', href: '/umrah-packages' },
+  { label: 'Economy Umrah', href: '/economy-umrah' },
+  { label: 'VIP Royal Umrah', href: '/vip-umrah' },
+  { label: 'Ramadan Groups', href: '/ramadan-umrah' },
+  { label: 'Saudi Visa Services', href: '/visa-services' },
+  { label: 'Custom Package Builder', href: '/builder' },
+];
+
+const companyLinks = [
+  { label: 'About Us', href: '/#about' },
+  { label: 'Gallery', href: '/#gallery' },
+  { label: 'Reviews', href: '/#reviews' },
+  { label: 'Blog & Guides', href: '/#blog' },
+  { label: 'Contact Us', href: '/#contact' },
+  { label: 'Agent Portal', href: '/portal' },
+];
+
+const socialLinks = [
+  { Icon: Facebook, href: '#', label: 'Facebook', color: 'hover:bg-blue-600' },
+  { Icon: Instagram, href: '#', label: 'Instagram', color: 'hover:bg-pink-600' },
+  { Icon: Twitter, href: '#', label: 'Twitter / X', color: 'hover:bg-sky-500' },
+  { Icon: Youtube, href: '#', label: 'YouTube', color: 'hover:bg-red-600' },
+];
 
 export default function Footer() {
+  const { theme } = useTheme();
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="theme-bg-alt border-t theme-border pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-        <div className="col-span-1 md:col-span-1">
-          <Link to="/" className="flex items-center gap-4 mb-6 group">
-            <div className="w-16 h-16 bg-gold-premium rounded-xl flex items-center justify-center text-black font-urdu text-4xl">
-              م
+    <footer className={cn(
+      "border-t theme-border transition-colors duration-300",
+      theme === 'dark' ? "bg-[#030d07]" : "bg-slate-900 text-white"
+    )}>
+      {/* ===== NEWSLETTER/CTA BAR ===== */}
+      <div className={cn(
+        "border-b",
+        theme === 'dark' ? "border-white/5 bg-emerald-deep/10" : "border-white/10 bg-emerald-deep"
+      )}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className={cn(
+                "text-xl md:text-2xl font-serif font-bold mb-1",
+                theme === 'dark' ? "text-main" : "text-white"
+              )}>
+                Start Your Sacred Journey Today
+              </h3>
+              <p className={cn(
+                "text-sm",
+                theme === 'dark' ? "text-sub" : "text-white/70"
+              )}>
+                Get a free consultation from our Umrah experts
+              </p>
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl md:text-3xl font-serif font-bold text-main tracking-widest uppercase leading-none text-center">AL MUNTAHA</span>
-              <span className="text-[8px] md:text-[10px] text-gold-premium tracking-[0.4em] font-sans font-bold uppercase mt-1 text-center">TRAVELS SOLUTIONS</span>
-            </div>
-          </Link>
-          <p className="text-sub text-sm leading-relaxed mb-6 font-light">
-            Experience the spiritual heights of Makkah and Madinah with white-glove service. Our legacy is built on Barakah and Trust.
-          </p>
-          <div className="flex gap-4">
-            {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
-              <a key={i} href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold-premium hover:text-black transition-all">
-                <Icon size={18} />
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <a
+                href="https://wa.me/923132710182?text=Assalamu%20Alaikum!%20I%20want%20to%20book%20Umrah."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 hover:scale-105 transition-all text-sm shadow-lg"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                WhatsApp Consultation
               </a>
-            ))}
+              <Link
+                to="/builder"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gold-premium text-black font-bold rounded-full hover:scale-105 transition-all text-sm shadow-lg"
+              >
+                Build My Package <ArrowRight size={14} />
+              </Link>
+            </div>
           </div>
-        </div>
-
-        <div>
-          <h4 className="text-gold-premium font-semibold mb-6 uppercase tracking-widest text-xs">Explore Packages</h4>
-          <ul className="space-y-4 text-sub text-sm">
-            <li><Link to="/umrah-packages" className="hover:text-gold-premium transition-colors">All Umrah Packages</Link></li>
-            <li><Link to="/economy-umrah" className="hover:text-gold-premium transition-colors">Economy Umrah</Link></li>
-            <li><Link to="/vip-umrah" className="hover:text-gold-premium transition-colors">VIP Umrah</Link></li>
-            <li><Link to="/ramadan-umrah" className="hover:text-gold-premium transition-colors">Ramadan Groups</Link></li>
-            <li><Link to="/visa-services" className="hover:text-gold-premium transition-colors">Visa Services</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-gold-premium font-semibold mb-6 uppercase tracking-widest text-xs">Contact Info</h4>
-          <ul className="space-y-4 text-sub text-sm">
-            <li className="flex items-start gap-3">
-              <MapPin size={18} className="text-gold-premium mt-1 flex-shrink-0" />
-              <span>MRC Colony, Malir Halt, Karachi</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <Phone size={18} className="text-gold-premium flex-shrink-0" />
-              <span>0313-2710182 | 0316-8629934</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <Mail size={18} className="text-gold-premium flex-shrink-0" />
-              <span>almuntahatravels.solutions@gmail.com</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex flex-col items-center md:items-end justify-center">
-          <div className="text-right mb-4">
-            <span className="text-xs text-gold-premium font-medium uppercase tracking-widest block mb-1 font-bold">Contact Official WhatsApp</span>
-            <span className="text-xl font-bold tracking-[0.22em] text-main">0313-2710182</span>
-          </div>
-          <a 
-            href="https://wa.me/923132710182"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-900/40 cursor-pointer animate-bounce group hover:scale-110 transition-transform"
-          >
-            <svg className="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.284l-.539 2.016 2.057-.528c.95.52 1.914.88 3.227.88 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.767-5.768-5.767m4.665 8.163c-.15.424-.766.772-1.077.817-.312.045-.694.075-2.096-.475-1.55-.61-2.523-2.149-2.598-2.249-.075-.1-.611-.812-.611-1.549 0-.737.387-1.101.524-1.25.137-.15.3-.187.399-.187.1 0 .2 0 .287.004.087.004.205-.034.321.246.12.287.412 1.002.449 1.076.037.075.062.162.012.262s-.075.162-.15.25c-.075.087-.157.195-.225.262-.075.075-.153.157-.066.307.087.15.388.641.834 1.036.574.51 1.058.669 1.208.744.15.075.237.062.325-.037.087-.1.375-.436.475-.586.1-.15.2-.125.337-.075.137.05.873.412 1.023.487.15.075.25.112.287.175.037.062.037.362-.113.787"/></svg>
-          </a>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mb-12 flex items-center justify-between gap-12 border-t theme-border pt-12">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-muted whitespace-nowrap">Global Partners</span>
-        <div className="flex gap-12 items-center opacity-40 overflow-hidden">
-          {["Hilton", "Mövenpick", "Saudia", "Marriott", "Hyatt"].map((partner) => (
-            <span key={partner} className="font-serif italic text-lg text-main">{partner}</span>
-          ))}
-        </div>
-      </div>
+      {/* ===== MAIN FOOTER ===== */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+          
+          {/* Column 1: Brand */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-1">
+            <Link to="/" className="flex items-center gap-4 mb-6 group">
+              <div className="w-14 h-14 bg-gold-premium rounded-2xl flex items-center justify-center text-black font-urdu text-3xl shadow-lg shadow-gold-premium/20 group-hover:scale-110 transition-transform">
+                م
+              </div>
+              <div>
+                <div className="text-2xl font-serif font-bold text-white tracking-wider uppercase leading-none">
+                  AL MUNTAHA
+                </div>
+                <div className="text-[9px] text-gold-premium tracking-[0.4em] font-bold uppercase mt-1">
+                  TRAVELS SOLUTIONS
+                </div>
+              </div>
+            </Link>
+            
+            <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xs">
+              Pakistan's trusted Umrah & Islamic travel company. 12+ years of serving the Ummah with premium services, barakah, and care.
+            </p>
+            
+            {/* Islamic quote */}
+            <div className="p-4 rounded-2xl border border-gold-premium/20 bg-gold-premium/5 mb-6">
+              <p className="text-gold-premium font-urdu text-lg urdu-text mb-1">
+                وَلِلَّهِ عَلَى النَّاسِ حِجُّ الْبَيْتِ
+              </p>
+              <p className="text-white/40 text-xs">
+                "And Hajj to the House is a duty that mankind owes to Allah" — Quran 3:97
+              </p>
+            </div>
+            
+            {/* Social links */}
+            <div className="flex gap-3">
+              {socialLinks.map(({ Icon, href, label, color }, i) => (
+                <a
+                  key={i}
+                  href={href}
+                  aria-label={label}
+                  className={cn(
+                    "w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:text-white hover:border-transparent transition-all",
+                    color
+                  )}
+                >
+                  <Icon size={15} className="text-white/60" />
+                </a>
+              ))}
+            </div>
+          </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-8 border-t theme-border flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-muted text-xs italic font-serif">
-          "And proclaim to the people the Hajj [pilgrimage]; they will come to you on foot and on every lean camel..."
-        </p>
-        <p className="text-muted text-xs tracking-widest uppercase">
-          © {new Date().getFullYear()} AL MUNTAHA TRAVELS SOLUTIONS. Finalized with Excellence.
-        </p>
+          {/* Column 2: Packages */}
+          <div>
+            <h4 className="text-gold-premium font-bold uppercase tracking-widest text-[10px] mb-6 flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-gold-premium" />
+              Explore Packages
+            </h4>
+            <ul className="space-y-3">
+              {quickLinks.map((link, i) => (
+                <li key={i}>
+                  <Link
+                    to={link.href}
+                    className="text-white/50 text-sm hover:text-gold-premium transition-colors flex items-center gap-2 group"
+                  >
+                    <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Company */}
+          <div>
+            <h4 className="text-gold-premium font-bold uppercase tracking-widest text-[10px] mb-6 flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-gold-premium" />
+              Company
+            </h4>
+            <ul className="space-y-3">
+              {companyLinks.map((link, i) => (
+                <li key={i}>
+                  <Link
+                    to={link.href}
+                    className="text-white/50 text-sm hover:text-gold-premium transition-colors flex items-center gap-2 group"
+                  >
+                    <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Contact */}
+          <div>
+            <h4 className="text-gold-premium font-bold uppercase tracking-widest text-[10px] mb-6 flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-gold-premium" />
+              Contact Info
+            </h4>
+            <ul className="space-y-4">
+              <li>
+                <a href="tel:+923132710182" className="flex items-start gap-3 group">
+                  <Phone size={15} className="text-gold-premium mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-white/70 text-sm group-hover:text-white transition-colors">0313-2710182</p>
+                    <p className="text-white/40 text-xs">0316-8629934</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:almuntahatravels.solutions@gmail.com" className="flex items-start gap-3 group">
+                  <Mail size={15} className="text-gold-premium mt-0.5 flex-shrink-0" />
+                  <p className="text-white/70 text-sm group-hover:text-white transition-colors break-all">
+                    almuntahatravels.solutions@gmail.com
+                  </p>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://maps.google.com/?q=Malir+Halt+Karachi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 group"
+                >
+                  <MapPin size={15} className="text-gold-premium mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-white/70 text-sm group-hover:text-white transition-colors">MRC Colony, Malir Halt</p>
+                    <p className="text-white/40 text-xs">Karachi, Pakistan</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
+
+            {/* Ratings */}
+            <div className="mt-6 flex items-center gap-2 p-3 rounded-xl border border-gold-premium/20 bg-gold-premium/5">
+              <div className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => <Star key={i} size={12} className="fill-gold-premium text-gold-premium" />)}
+              </div>
+              <span className="text-white/60 text-xs">4.9/5 — 850+ Reviews</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== BOTTOM BAR ===== */}
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-white/30 text-xs text-center md:text-left">
+            © {year} AL MUNTAHA TRAVELS SOLUTIONS. All rights reserved. 
+            <span className="text-white/20"> | Licensed Travel Agency — Pakistan Tourism Development Corporation</span>
+          </p>
+          <div className="flex items-center gap-1 text-white/30 text-xs">
+            <span>Made with</span>
+            <Heart size={10} className="text-red-400 fill-red-400 mx-1" />
+            <span>for the Ummah</span>
+          </div>
+          <div className="flex gap-4 text-xs text-white/30">
+            <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Terms of Service</a>
+          </div>
+        </div>
       </div>
     </footer>
   );
