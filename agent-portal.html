@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Agent Portal — Al Muntaha Travels</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --emerald: #10b981;
+      --emerald-dark: #059669;
+      --emerald-light: #34d399;
+      --gold: #f59e0b;
+      --gold-light: #fbbf24;
+      --dark-1: #0a0a0a;
+      --dark-2: #111827;
+      --dark-3: #1f2937;
+      --transition: all 0.3s ease;
+      --radius: 12px;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:var(--dark-2); color:#f9fafb; min-height:100vh; overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+    button { cursor:pointer; border:none; outline:none; font-family:inherit; }
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:var(--dark-3); }
+    ::-webkit-scrollbar-thumb { background:var(--emerald-dark); border-radius:3px; }
+
+    /* ===== AUTH ===== */
+    #agent-auth {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#0a0a0a 0%,#0d2818 50%,#0a0a0a 100%);
+    }
+
+    .agent-auth-card {
+      background:rgba(17,24,39,0.95);
+      border:1px solid rgba(245,158,11,0.2);
+      border-radius:20px;
+      padding:2.5rem;
+      width:100%;
+      max-width:420px;
+      backdrop-filter:blur(20px);
+    }
+
+    .agent-logo {
+      text-align:center;
+      margin-bottom:2rem;
+    }
+
+    .agent-logo-main {
+      font-size:1.6rem;
+      font-weight:800;
+      background:linear-gradient(135deg,#f59e0b,#fbbf24,#d97706);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      display:block;
+    }
+
+    .agent-logo-sub {
+      font-size:0.65rem;
+      color:var(--emerald-light);
+      letter-spacing:3px;
+      text-transform:uppercase;
+    }
+
+    .portal-badge {
+      display:inline-block;
+      padding:0.3rem 1rem;
+      background:rgba(16,185,129,0.1);
+      border:1px solid rgba(16,185,129,0.3);
+      color:var(--emerald-light);
+      font-size:0.7rem;
+      font-weight:700;
+      border-radius:50px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      margin-bottom:1.5rem;
+    }
+
+    .auth-input {
+      width:100%;
+      padding:0.875rem 1rem;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:10px;
+      color:white;
+      font-size:0.9rem;
+      font-family:inherit;
+      margin-bottom:1rem;
+      transition:var(--transition);
+    }
+
+    .auth-input:focus {
+      outline:none;
+      border-color:var(--emerald);
+      box-shadow:0 0 0 3px rgba(16,185,129,0.1);
+    }
+
+    .auth-btn {
+      width:100%;
+      padding:1rem;
+      background:linear-gradient(135deg,#10b981,#059669);
+      color:white;
+      font-weight:700;
+      font-size:1rem;
+      border-radius:10px;
+      transition:var(--transition);
+    }
+
+    .auth-btn:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(16,185,129,0.3); }
+
+    /* ===== PORTAL LAYOUT ===== */
+    #agent-portal { display:none; min-height:100vh; }
+
+    .portal-topbar {
+      background:var(--dark-1);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      padding:1rem 2rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .portal-logo-text {
+      font-size:1.2rem;
+      font-weight:800;
+      background:linear-gradient(135deg,#f59e0b,#fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .agent-info {
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+    }
+
+    .agent-avatar {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#10b981,#059669);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.875rem;
+      font-weight:700;
+    }
+
+    .agent-name {
+      font-size:0.875rem;
+      font-weight:600;
+    }
+
+    .btn-logout-agent {
+      padding:0.4rem 1rem;
+      background:rgba(239,68,68,0.1);
+      border:1px solid rgba(239,68,68,0.2);
+      color:#fca5a5;
+      font-size:0.8rem;
+      border-radius:6px;
+      transition:var(--transition);
+    }
+
+    .btn-logout-agent:hover { background:rgba(239,68,68,0.2); }
+
+    /* ===== PORTAL CONTENT ===== */
+    .portal-content {
+      max-width:1200px;
+      margin:0 auto;
+      padding:2rem 1.5rem;
+    }
+
+    .portal-stats {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:1rem;
+      margin-bottom:2.5rem;
+    }
+
+    .portal-stat {
+      background:var(--dark-3);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:var(--radius);
+      padding:1.25rem;
+      text-align:center;
+      transition:var(--transition);
+    }
+
+    .portal-stat:hover { border-color:rgba(245,158,11,0.2); transform:translateY(-3px); }
+
+    .portal-stat .num {
+      font-size:2rem;
+      font-weight:800;
+      background:linear-gradient(135deg,#f59e0b,#fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1;
+    }
+
+    .portal-stat .lbl {
+      font-size:0.75rem;
+      color:rgba(255,255,255,0.4);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-top:0.3rem;
+    }
+
+    .leads-section h2 {
+      font-size:1.25rem;
+      font-weight:700;
+      color:white;
+      margin-bottom:1.5rem;
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+    }
+
+    .leads-section h2 span {
+      font-size:0.75rem;
+      font-weight:600;
+      padding:0.25rem 0.6rem;
+      background:rgba(16,185,129,0.15);
+      border:1px solid rgba(16,185,129,0.3);
+      color:var(--emerald-light);
+      border-radius:50px;
+    }
+
+    .leads-filter {
+      display:flex;
+      gap:0.5rem;
+      margin-bottom:1.5rem;
+      flex-wrap:wrap;
+    }
+
+    .leads-filter button {
+      padding:0.4rem 1rem;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.6);
+      font-size:0.8rem;
+      font-weight:500;
+      border-radius:6px;
+      transition:var(--transition);
+    }
+
+    .leads-filter button:hover,
+    .leads-filter button.active {
+      background:rgba(16,185,129,0.15);
+      border-color:rgba(16,185,129,0.3);
+      color:var(--emerald-light);
+    }
+
+    .leads-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+      gap:1.25rem;
+    }
+
+    .lead-card {
+      background:var(--dark-3);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      overflow:hidden;
+      transition:var(--transition);
+      position:relative;
+    }
+
+    .lead-card:hover {
+      border-color:rgba(245,158,11,0.25);
+      transform:translateY(-4px);
+      box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .lead-card-header {
+      padding:1.25rem;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:1rem;
+    }
+
+    .lead-avatar {
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));
+      border:1px solid rgba(245,158,11,0.3);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.1rem;
+      font-weight:700;
+      color:var(--gold-light);
+      flex-shrink:0;
+    }
+
+    .lead-customer-info h4 {
+      font-size:0.95rem;
+      font-weight:600;
+      color:white;
+    }
+
+    .lead-customer-info p {
+      font-size:0.75rem;
+      color:rgba(255,255,255,0.4);
+    }
+
+    .lead-status-badge {
+      padding:0.25rem 0.6rem;
+      border-radius:50px;
+      font-size:0.65rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+
+    .lead-status-badge.new { background:rgba(59,130,246,0.15); color:#93c5fd; border:1px solid rgba(59,130,246,0.3); }
+    .lead-status-badge.assigned { background:rgba(245,158,11,0.15); color:var(--gold-light); border:1px solid rgba(245,158,11,0.3); }
+    .lead-status-badge.confirmed { background:rgba(16,185,129,0.15); color:var(--emerald-light); border:1px solid rgba(16,185,129,0.3); }
+    .lead-status-badge.rejected { background:rgba(239,68,68,0.15); color:#fca5a5; border:1px solid rgba(239,68,68,0.3); }
+    .lead-status-badge.completed { background:rgba(139,92,246,0.15); color:#c4b5fd; border:1px solid rgba(139,92,246,0.3); }
+
+    .lead-card-body {
+      padding:1.25rem;
+    }
+
+    .lead-detail-row {
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      margin-bottom:0.5rem;
+      font-size:0.825rem;
+      color:rgba(255,255,255,0.6);
+    }
+
+    .lead-detail-row i {
+      width:14px;
+      color:var(--emerald);
+      font-size:0.75rem;
+      flex-shrink:0;
+    }
+
+    .lead-tags {
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.3rem;
+      margin-top:0.75rem;
+    }
+
+    .lead-tag {
+      padding:0.2rem 0.6rem;
+      background:rgba(16,185,129,0.08);
+      border:1px solid rgba(16,185,129,0.2);
+      color:var(--emerald-light);
+      font-size:0.65rem;
+      font-weight:600;
+      border-radius:50px;
+    }
+
+    .lead-card-footer {
+      padding:1rem 1.25rem;
+      border-top:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      gap:0.5rem;
+    }
+
+    .btn-accept {
+      flex:1;
+      padding:0.7rem;
+      background:linear-gradient(135deg,#10b981,#059669);
+      color:white;
+      font-weight:700;
+      font-size:0.8rem;
+      border-radius:8px;
+      transition:var(--transition);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.4rem;
+    }
+
+    .btn-accept:hover {
+      transform:translateY(-1px);
+      box-shadow:0 5px 15px rgba(16,185,129,0.3);
+    }
+
+    .btn-reject {
+      padding:0.7rem 1rem;
+      background:rgba(239,68,68,0.1);
+      border:1px solid rgba(239,68,68,0.2);
+      color:#fca5a5;
+      font-weight:600;
+      font-size:0.8rem;
+      border-radius:8px;
+      transition:var(--transition);
+    }
+
+    .btn-reject:hover { background:rgba(239,68,68,0.2); }
+
+    .btn-whatsapp {
+      padding:0.7rem 1rem;
+      background:rgba(37,211,102,0.1);
+      border:1px solid rgba(37,211,102,0.2);
+      color:#25d366;
+      font-weight:600;
+      font-size:0.8rem;
+      border-radius:8px;
+      transition:var(--transition);
+      display:flex;
+      align-items:center;
+      gap:0.4rem;
+    }
+
+    .btn-whatsapp:hover { background:rgba(37,211,102,0.2); }
+
+    .lead-card.accepted {
+      border-color:rgba(245,158,11,0.35);
+      background:rgba(245,158,11,0.03);
+    }
+
+    .lead-card.locked {
+      opacity:0.6;
+      pointer-events:none;
+    }
+
+    .lock-overlay {
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:0.5rem;
+      border-radius:16px;
+    }
+
+    .lock-overlay i { font-size:2rem; color:rgba(255,255,255,0.4); }
+    .lock-overlay p { font-size:0.85rem; color:rgba(255,255,255,0.5); }
+
+    .timer-badge {
+      padding:0.2rem 0.6rem;
+      background:rgba(239,68,68,0.1);
+      border:1px solid rgba(239,68,68,0.2);
+      color:#fca5a5;
+      font-size:0.7rem;
+      border-radius:50px;
+      display:inline-block;
+      margin-top:0.5rem;
+    }
+
+    .empty-state {
+      text-align:center;
+      padding:4rem 2rem;
+      color:rgba(255,255,255,0.3);
+    }
+
+    .empty-state i { font-size:3rem; margin-bottom:1rem; display:block; opacity:0.3; }
+    .empty-state p { font-size:1rem; }
+
+    /* Toast */
+    #agent-toast {
+      position:fixed;
+      top:1.5rem;
+      right:1.5rem;
+      z-index:1000;
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+    }
+
+    .ag-toast {
+      padding:0.875rem 1.25rem;
+      border-radius:10px;
+      background:var(--dark-3);
+      border:1px solid rgba(255,255,255,0.08);
+      color:white;
+      font-size:0.85rem;
+      font-weight:500;
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+      min-width:260px;
+      animation:slideIn 0.3s ease;
+      box-shadow:0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .ag-toast.success { border-color:var(--emerald); }
+    .ag-toast.success i { color:var(--emerald); }
+    .ag-toast.error { border-color:#ef4444; }
+    .ag-toast.error i { color:#ef4444; }
+    .ag-toast.info { border-color:var(--gold); }
+    .ag-toast.info i { color:var(--gold); }
+
+    @keyframes slideIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+
+    @media (max-width:768px) {
+      .portal-content { padding:1.5rem 1rem; }
+      .leads-grid { grid-template-columns:1fr; }
+      .portal-stats { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="agent-toast"></div>
+
+  <!-- ===== AUTH ===== -->
+  <div id="agent-auth">
+    <div class="agent-auth-card">
+      <div class="agent-logo">
+        <span class="agent-logo-main">AL MUNTAHA</span>
+        <span class="agent-logo-sub">TRAVELS & TOURS</span>
+      </div>
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <span class="portal-badge"><i class="fas fa-user-tie"></i> Travel Agent Portal</span>
+        <h2 style="font-size:1.3rem;font-weight:700;color:white;margin-bottom:0.4rem;">Agent Login</h2>
+        <p style="font-size:0.85rem;color:rgba(255,255,255,0.45);">Approved agents only</p>
+      </div>
+
+      <div id="agent-auth-error" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;padding:0.75rem 1rem;border-radius:8px;font-size:0.85rem;margin-bottom:1rem;">
+        <i class="fas fa-exclamation-circle"></i> Invalid credentials
+      </div>
+
+      <form id="agent-auth-form">
+        <input type="email" class="auth-input" id="agent-email" placeholder="agent@almuntahatravels.com" required autocomplete="email" />
+        <input type="password" class="auth-input" id="agent-pass" placeholder="Password" required autocomplete="current-password" />
+        <button type="submit" class="auth-btn">
+          <i class="fas fa-sign-in-alt"></i> Login to Portal
+        </button>
+        <p style="text-align:center;margin-top:1rem;font-size:0.75rem;color:rgba(255,255,255,0.3);">
+          Demo: agent@almuntahatravels.com / agent123
+        </p>
+      </form>
+
+      <div style="text-align:center;margin-top:1.5rem;">
+        <a href="index.html" style="font-size:0.8rem;color:rgba(255,255,255,0.3);">← Back to Website</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="admin.html" style="font-size:0.8rem;color:var(--gold);">Admin Panel</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PORTAL ===== -->
+  <div id="agent-portal">
+    <!-- Topbar -->
+    <div class="portal-topbar">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="portal-logo-text">AL MUNTAHA</span>
+        <span style="font-size:0.65rem;color:var(--emerald-light);letter-spacing:2px;text-transform:uppercase;">Agent Portal</span>
+      </div>
+      <div class="agent-info">
+        <div class="agent-avatar">A</div>
+        <div>
+          <div class="agent-name" id="agent-display-name">Travel Agent</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);">Approved Agent</div>
+        </div>
+        <button class="btn-logout-agent" onclick="agentLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="portal-content">
+      <!-- Stats -->
+      <div class="portal-stats">
+        <div class="portal-stat">
+          <div class="num" id="ps-available">—</div>
+          <div class="lbl">Available Leads</div>
+        </div>
+        <div class="portal-stat">
+          <div class="num" id="ps-accepted">—</div>
+          <div class="lbl">My Accepted Leads</div>
+        </div>
+        <div class="portal-stat">
+          <div class="num" id="ps-confirmed">—</div>
+          <div class="lbl">Confirmed</div>
+        </div>
+        <div class="portal-stat">
+          <div class="num" id="ps-conversion">—%</div>
+          <div class="lbl">Conversion Rate</div>
+        </div>
+      </div>
+
+      <!-- Leads Section -->
+      <div class="leads-section">
+        <h2>
+          <i class="fas fa-inbox" style="color:var(--gold);"></i>
+          Available Leads
+          <span id="lead-count-badge">0 new</span>
+        </h2>
+
+        <div class="leads-filter">
+          <button class="active" onclick="filterAgentLeads('all',this)">All</button>
+          <button onclick="filterAgentLeads('New',this)">New</button>
+          <button onclick="filterAgentLeads('accepted',this)">My Leads</button>
+          <button onclick="filterAgentLeads('Confirmed',this)">Confirmed</button>
+        </div>
+
+        <div class="leads-grid" id="agent-leads-grid">
+          <div class="empty-state"><i class="fas fa-inbox"></i><p>Loading leads...</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+
+    // Agent credentials (demo - in production use server-side auth)
+    const AGENT_CREDS = [
+      { email: 'agent@almuntahatravels.com', password: 'agent123', name: 'Ahmed Raza', id: 'agent_1' },
+      { email: 'agent2@almuntahatravels.com', password: 'agent456', name: 'Sara Khan', id: 'agent_2' }
+    ];
+
+    let currentAgent = null;
+    let allAgentLeads = [];
+
+    // Auth
+    document.getElementById('agent-auth-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('agent-email').value.trim();
+      const pass = document.getElementById('agent-pass').value;
+      const agent = AGENT_CREDS.find(a => a.email === email && a.password === pass);
+      
+      if (agent) {
+        currentAgent = agent;
+        sessionStorage.setItem('agent-session', JSON.stringify({ id: agent.id, name: agent.name }));
+        document.getElementById('agent-auth').style.display = 'none';
+        document.getElementById('agent-portal').style.display = 'block';
+        document.getElementById('agent-display-name').textContent = agent.name;
+        loadAgentLeads();
+      } else {
+        document.getElementById('agent-auth-error').style.display = 'flex';
+        document.getElementById('agent-auth-error').innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials. Contact admin for access.';
+      }
+    });
+
+    // Check existing session
+    const savedSession = sessionStorage.getItem('agent-session');
+    if (savedSession) {
+      try {
+        const sess = JSON.parse(savedSession);
+        currentAgent = AGENT_CREDS.find(a => a.id === sess.id) || { id: sess.id, name: sess.name };
+        document.getElementById('agent-auth').style.display = 'none';
+        document.getElementById('agent-portal').style.display = 'block';
+        document.getElementById('agent-display-name').textContent = sess.name;
+        loadAgentLeads();
+      } catch (e) {}
+    }
+
+    function agentLogout() {
+      sessionStorage.removeItem('agent-session');
+      currentAgent = null;
+      document.getElementById('agent-auth').style.display = 'flex';
+      document.getElementById('agent-portal').style.display = 'none';
+    }
+
+    async function loadAgentLeads() {
+      try {
+        const res = await fetch('tables/leads?limit=100');
+        const data = await res.json();
+        allAgentLeads = (data.data || []).filter(l => l.status !== 'Rejected');
+        updatePortalStats();
+        renderAgentLeads(allAgentLeads);
+      } catch (err) {
+        document.getElementById('agent-leads-grid').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Failed to load leads. Please refresh.</p>
+          </div>`;
+      }
+    }
+
+    function updatePortalStats() {
+      const available = allAgentLeads.filter(l => l.status === 'New').length;
+      const myAccepted = allAgentLeads.filter(l => l.assigned_agent === currentAgent?.id).length;
+      const confirmed = allAgentLeads.filter(l => l.status === 'Confirmed' && l.assigned_agent === currentAgent?.id).length;
+      const conversion = myAccepted > 0 ? Math.round((confirmed / myAccepted) * 100) : 0;
+
+      document.getElementById('ps-available').textContent = available;
+      document.getElementById('ps-accepted').textContent = myAccepted;
+      document.getElementById('ps-confirmed').textContent = confirmed;
+      document.getElementById('ps-conversion').textContent = conversion + '%';
+      document.getElementById('lead-count-badge').textContent = available + ' new';
+    }
+
+    function filterAgentLeads(filter, btn) {
+      document.querySelectorAll('.leads-filter button').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      let filtered;
+      if (filter === 'all') filtered = allAgentLeads;
+      else if (filter === 'accepted') filtered = allAgentLeads.filter(l => l.assigned_agent === currentAgent?.id);
+      else filtered = allAgentLeads.filter(l => l.status === filter);
+      
+      renderAgentLeads(filtered);
+    }
+
+    function renderAgentLeads(leads) {
+      const grid = document.getElementById('agent-leads-grid');
+      
+      if (!leads || leads.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>No leads found in this category</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = leads.map(lead => {
+        const isMyLead = lead.assigned_agent === currentAgent?.id;
+        const isLocked = lead.assigned_agent && lead.assigned_agent !== currentAgent?.id;
+        const isNew = lead.status === 'New';
+        const statusClass = lead.status?.toLowerCase().replace(' ', '-') || 'new';
+
+        return `
+          <div class="lead-card ${isMyLead ? 'accepted' : ''}" id="card-${sanitizeAgent(lead.id)}">
+            ${isLocked ? `<div class="lock-overlay"><i class="fas fa-lock"></i><p>Assigned to another agent</p></div>` : ''}
+            
+            <div class="lead-card-header">
+              <div style="display:flex;align-items:center;gap:0.75rem;">
+                <div class="lead-avatar">${sanitizeAgent(lead.customer_name?.charAt(0) || 'U')}</div>
+                <div class="lead-customer-info">
+                  <h4>${sanitizeAgent(lead.customer_name)}</h4>
+                  <p>${sanitizeAgent(lead.city || 'Pakistan')} · ${sanitizeAgent(lead.traveler_type || 'Individual')}</p>
+                </div>
+              </div>
+              <span class="lead-status-badge ${statusClass}">${sanitizeAgent(lead.status)}</span>
+            </div>
+
+            <div class="lead-card-body">
+              <div class="lead-detail-row">
+                <i class="fas fa-kaaba"></i>
+                <span>${sanitizeAgent(lead.journey_type || 'Umrah')} · ${sanitizeAgent(lead.travelers || '1')} travelers</span>
+              </div>
+              <div class="lead-detail-row">
+                <i class="fas fa-calendar"></i>
+                <span>Dep: ${sanitizeAgent(formatAgentDate(lead.departure_date))}</span>
+              </div>
+              <div class="lead-detail-row">
+                <i class="fas fa-hotel"></i>
+                <span>${sanitizeAgent(lead.hotel_makkah || 'Flexible')}</span>
+              </div>
+              <div class="lead-detail-row">
+                <i class="fas fa-money-bill"></i>
+                <span>Budget: ${sanitizeAgent(lead.budget_range || 'Not specified')}</span>
+              </div>
+              ${lead.transport ? `<div class="lead-detail-row"><i class="fas fa-car"></i><span>${sanitizeAgent(lead.transport)}</span></div>` : ''}
+              
+              <div class="lead-tags">
+                ${lead.journey_type ? `<span class="lead-tag">${sanitizeAgent(lead.journey_type)}</span>` : ''}
+                ${lead.budget_range ? `<span class="lead-tag">${sanitizeAgent(lead.budget_range)}</span>` : ''}
+                ${lead.meals ? `<span class="lead-tag">${sanitizeAgent(lead.meals.split('-')[0])}</span>` : ''}
+              </div>
+
+              ${isMyLead && lead.status === 'In Progress' ? `<div class="timer-badge">
+                <i class="fas fa-clock"></i> 24hr response window active
+              </div>` : ''}
+            </div>
+
+            <div class="lead-card-footer">
+              ${isNew && !isLocked ? `
+                <button class="btn-accept" onclick="acceptLead('${sanitizeAgent(lead.id)}')">
+                  <i class="fas fa-check"></i> Accept Lead
+                </button>
+                <button class="btn-reject" onclick="rejectLead('${sanitizeAgent(lead.id)}')">
+                  <i class="fas fa-times"></i>
+                </button>
+              ` : ''}
+
+              ${isMyLead ? `
+                <a href="https://wa.me/${(lead.whatsapp || '').replace(/[^0-9]/g,'')}?text=Assalamu%20Alaikum%20${encodeURIComponent(lead.customer_name || '')}!%20I%20am%20from%20Al%20Muntaha%20Travels%20regarding%20your%20Umrah%20package%20inquiry." 
+                   target="_blank" rel="noopener" class="btn-whatsapp">
+                  <i class="fab fa-whatsapp"></i> Contact
+                </a>
+                <select onchange="updateMyLead('${sanitizeAgent(lead.id)}',this.value)" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:white;padding:0.5rem;border-radius:8px;font-size:0.75rem;cursor:pointer;">
+                  ${['In Progress','Confirmed','Completed'].map(s => `<option value="${s}" ${lead.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              ` : ''}
+
+              ${!isNew && !isMyLead && !isLocked ? `
+                <span style="color:rgba(255,255,255,0.3);font-size:0.8rem;width:100%;text-align:center;">Lead is being processed</span>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function acceptLead(id) {
+      if (!currentAgent) return;
+      
+      try {
+        const res = await fetch(`tables/leads/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: 'In Progress',
+            assigned_agent: currentAgent.id,
+            agent_accepted_at: new Date().toISOString()
+          })
+        });
+
+        if (res.ok) {
+          // Update local data
+          const lead = allAgentLeads.find(l => l.id === id);
+          if (lead) {
+            lead.status = 'In Progress';
+            lead.assigned_agent = currentAgent.id;
+          }
+          updatePortalStats();
+          renderAgentLeads(allAgentLeads);
+          agentToast('Lead accepted! Contact the customer within 24 hours.', 'success');
+        }
+      } catch (err) {
+        agentToast('Failed to accept lead. Please try again.', 'error');
+      }
+    }
+
+    async function rejectLead(id) {
+      try {
+        await fetch(`tables/leads/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Rejected' })
+        });
+        allAgentLeads = allAgentLeads.filter(l => l.id !== id);
+        updatePortalStats();
+        renderAgentLeads(allAgentLeads);
+        agentToast('Lead rejected.', 'info');
+      } catch (err) {
+        agentToast('Failed to update lead', 'error');
+      }
+    }
+
+    async function updateMyLead(id, status) {
+      try {
+        await fetch(`tables/leads/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        const lead = allAgentLeads.find(l => l.id === id);
+        if (lead) lead.status = status;
+        updatePortalStats();
+        agentToast(`Lead marked as: ${status}`, 'success');
+      } catch (err) {
+        agentToast('Update failed', 'error');
+      }
+    }
+
+    function sanitizeAgent(str) {
+      if (typeof str !== 'string') return String(str || '');
+      return str.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function formatAgentDate(d) {
+      if (!d) return 'Flexible';
+      try {
+        return new Date(d).toLocaleDateString('en-PK', { day:'2-digit', month:'short', year:'numeric' });
+      } catch { return d; }
+    }
+
+    function agentToast(message, type = 'success') {
+      const container = document.getElementById('agent-toast');
+      const icons = { success:'check-circle', error:'exclamation-circle', info:'info-circle' };
+      const toast = document.createElement('div');
+      toast.className = `ag-toast ${type}`;
+      toast.innerHTML = `<i class="fas fa-${icons[type]}"></i> ${sanitizeAgent(message)}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>

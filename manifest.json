@@ -1,0 +1,46 @@
+{
+  "name": "Al Muntaha Travels",
+  "short_name": "Al Muntaha",
+  "description": "Premium Umrah & Hajj Packages from Karachi, Pakistan. Trusted Islamic travel company.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111827",
+  "theme_color": "#10b981",
+  "lang": "en-PK",
+  "categories": ["travel", "lifestyle"],
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Umrah",
+      "short_name": "Book",
+      "url": "/#packages",
+      "description": "View Umrah packages"
+    },
+    {
+      "name": "Custom Package",
+      "short_name": "Builder",
+      "url": "/#package-builder-promo",
+      "description": "Build custom package"
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "url": "/#contact",
+      "description": "Contact Al Muntaha Travels"
+    }
+  ]
+}

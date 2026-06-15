@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /agent-portal.html
+Disallow: /js/admin.js
+
+Sitemap: https://almuntahatravels.com/sitemap.xml
